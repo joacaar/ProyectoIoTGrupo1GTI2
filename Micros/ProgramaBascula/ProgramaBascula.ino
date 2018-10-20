@@ -6,8 +6,7 @@
 
    Implementado: Wifi, UDP, formato JSON, recopila datos del sensor.
 
-   TO DO: Configurar el envio de datos al pulsar el pulsador, 
-          faltara configurar la entrada como pulldown o en su defecto como pullup e invertir el funcionamiento
+   TO DO: 
 */
 
 #include <M5Stack.h>
@@ -33,8 +32,8 @@ void setup()
 
   pinMode(TriggerPin, OUTPUT);
   pinMode(EchoPin, INPUT);
-  pinMode(botonAuxiliar);
-  /*
+  pinMode(botonAuxiliar, INPUT_PULLUP);
+  
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
@@ -42,7 +41,7 @@ void setup()
       Serial.print(".");
     }
     Serial.println(" CONNECTED");
-
+/*
     if (udp.listen(1234)) {
       Serial.print("UDP Listening on IP: ");
       Serial.println(WiFi.localIP());
@@ -52,13 +51,13 @@ void setup()
         Serial.println();
       });
     }
-  */
+*/  
 }
 
 void loop()
 {
-  if (digitalRead(4) != HIGH) {
-    while (digitalRead(4) != HIGH) {
+  if (digitalRead(4) == LOW) {
+    while (digitalRead(4) == LOW) {
     }
     
     delay(200);
@@ -69,7 +68,7 @@ void loop()
 
     envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
 
-    //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
+    udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
 
     Serial.print("Enviarndo: ");
     Serial.println(texto);
