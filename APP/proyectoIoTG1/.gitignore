@@ -1,5 +1,8 @@
 .DS_Store
 
+.idea
+.gradle
+
 # Archivos de la aplicacion creados.
 *.apk
 *.ap_
