@@ -16,6 +16,9 @@
 #include "sensorMagnetico.h"
 #include "sensorMovimiento.h"
 
+AsyncUDP udp;
+StaticJsonBuffer<200> jsonBuffer;                 //tamaño maximo de los datos
+JsonObject& envio = jsonBuffer.createObject();
 
 const char * ssid = "Grupo1";
 const char * password = "123456789";
@@ -28,13 +31,13 @@ void setup() {
   configuracionSensorMovimiento();
 
 //--------------CONEXION WIFI----------------
-  WiFi.mode(WIFI_STA);
+/*  WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
       delay(500);
       Serial.print(".");
     }
-    Serial.println(" CONNECTED");
+    Serial.println(" CONNECTED");*/
 /*
         if (udp.listen(1234)) {
           Serial.print("UDP Listening on IP: ");
@@ -49,16 +52,48 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  
+    char texto[200];
+
 
   // Si no se usasen variables globales
   /*int PinMag = 5;  //Pin del sensor magnético
   int PinMov = 16; //Pin delsensor de movimiento
   int PinLedMov = 5; //Pin del led del circuito del sensor de movimiento*/
+
+  //---------------PUERTA---------------
   
-  lecturaPuerta();
-  lecturaMovimiento();
+  if (lecturaPuerta()==true){
+    envio["Puerta"] = "Principal";
+    envio["Estado"] = "Abierta";
+    envio.printTo(texto); 
+    Serial.print("Enviando: ");
+    Serial.println(texto);
+  }else{
+    envio["Puerta"] = "Principal";
+    envio["EstadoP"] = "Cerrada";
+    envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
+    Serial.print("Enviando: ");
+    Serial.println(texto);
+  }
 
-
+  //--------------MOVIMIENTO------------
+  
+  if(lecturaMovimiento()==true){
+        envio["Habitación"] = "Comedor";
+        envio["EstadoM"] = "Hay alguien";
+        envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
+        //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
+        Serial.print("Enviando: ");
+        Serial.println(texto);
+  }else{
+        envio["Habitación"] = "Comedor";
+        envio["EstadoM"] = "No hay nadie";
+        envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
+        //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
+        Serial.print("Enviando: ");
+        Serial.println(texto);
+  }
+  
   
 }

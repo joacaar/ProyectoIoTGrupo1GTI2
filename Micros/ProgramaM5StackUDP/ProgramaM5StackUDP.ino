@@ -104,6 +104,9 @@ void loop()
     M5.Lcd.println();
     M5.Lcd.print("Peso :");
     M5.Lcd.println(peso);
+    M5.Lcd.println();
+    M5.Lcd.print("Puerta :");
+    M5.Lcd.println(puerta);
     getLocalTime(&timeinfo);
     M5.Lcd.print(&timeinfo, "%A, %B %d %Y %H:%M:%S");
     M5.Lcd.println();

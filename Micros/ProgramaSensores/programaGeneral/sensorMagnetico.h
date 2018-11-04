@@ -1,7 +1,5 @@
 
-AsyncUDP udp;
-StaticJsonBuffer<200> jsonBuffer;                 //tamaño maximo de los datos
-JsonObject& envio = jsonBuffer.createObject(); //creación del objeto "envio"
+ //creación del objeto "envio"
 
 
 //Constantes y variables globales
@@ -15,22 +13,18 @@ void configuracionPuerta() {
 }
 
 //PUERTA
-void lecturaPuerta(){
+bool lecturaPuerta(){
   
-  char texto[200];
 
   if (puertaAbierta) {
     if (digitalRead(Pin) == LOW) {
       delay(1000);
       if (digitalRead(Pin) == LOW) {
-        envio["Puerta"] = "Principal";
-        envio["Estado"] = "Cerrada";
+        
         puertaAbierta = false;
-        envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
-        udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
-        Serial.print("Enviando: ");
-        Serial.println(texto);
+        //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         delay(200);
+        return true;
       }
     }
 
@@ -38,14 +32,10 @@ void lecturaPuerta(){
     if (digitalRead(Pin) == HIGH) {
       delay(1000);
       if (digitalRead(Pin) == HIGH) {
-        envio["Puerta"] = "Principal";
-        envio["Estado"] = "Abierta";
         puertaAbierta = true;
-        envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
-        udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
-        Serial.print("Enviando: ");
-        Serial.println(texto);
+        //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         delay(200);
+        return false;
       }
     }
   }
