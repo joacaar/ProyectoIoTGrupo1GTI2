@@ -3,40 +3,31 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="preferencias_principal" >
     <CheckBoxPreference
-        android:key="musica"
-        android:title="Reproducir música"
-        android:summary="Se reproduce música de fondo"/>
-    <ListPreference
-        android:key="graficos"
-        android:title="Tipo de gráficos"
-        android:summary="Se escoge la representación de gráficos"
-        android:entries="@array/tiposGraficos"
-        android:entryValues="@array/tiposGraficosValores"
-        android:defaultValue="1"
-        />
-    <EditTextPreference
-        android:key="fragmentos"
-        android:title="Número de Fragmentos"
-        android:summary="En cuantos trozos se divide un asteroide"
-        android:inputType="number"
-        android:defaultValue="3"/>
-
+        android:key="notificaciones"
+        android:title="Recibir Notificaciones"
+        android:summary="Recibir notificaciones en la barra de estado"/>
 
     <PreferenceCategory
-        android:key="notificacionPorcorreos"
-        android:title="Notificaciones por correo">
-        <CheckBoxPreference
-            android:key="recibirCorreos"
-            android:title="Recibir correos"/>
-        <EditTextPreference
-            android:key="direccionCorreo"
-            android:title="Dirección de correo"/>
+        android:key="otraCosa"
+        android:title="Selección de medidas">
         <ListPreference
-            android:key="tipoDeNotificacion"
-            android:title=" Tipo de notificacion"
-            android:entries="@array/tiposNotificaciones"
-            android:entryValues="@array/tiposNotificacionesValores"
-            android:defaultValue="1"/>
+            android:key="masa"
+            android:title="Seleccione unidades de masa"
+            android:entries="@array/masa"
+            android:entryValues="@array/masaIndice"
+            android:defaultValue="0"/>
+        <ListPreference
+            android:key="longitud"
+            android:title="Seleccione unidades de longitud"
+            android:entries="@array/longitud"
+            android:entryValues="@array/longitudIndice"
+            android:defaultValue="0"/>
+        <ListPreference
+            android:key="fecha"
+            android:title="Seleccione formato de fecha"
+            android:entries="@array/fecha"
+            android:entryValues="@array/fechaIndice"
+            android:defaultValue="0"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

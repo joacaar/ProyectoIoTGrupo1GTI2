@@ -20,7 +20,7 @@ void setup() {
   Serial.begin(115200);
 
   pinMode(Pin, INPUT_PULLUP);
-  /*
+  
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
@@ -28,7 +28,7 @@ void setup() {
       Serial.print(".");
     }
     Serial.println(" CONNECTED");
-
+/*
         if (udp.listen(1234)) {
           Serial.print("UDP Listening on IP: ");
           Serial.println(WiFi.localIP());
