@@ -69,6 +69,7 @@ void setup()
 
 int altura;
 int peso;
+int puerta;
 
 void loop()
 {
@@ -89,7 +90,7 @@ void loop()
 
     altura = recibo["Altura"];
     peso = recibo["Peso"];
-
+    puerta = recibo["Estado"];
     //Serial.println();             //nueva línea
     //int segundo = recibo["Segundo"]; //extraigo el dato "Segundo" del objeto "recibido" y lo almaceno en la variable "segundo"
     //Serial.println(segundo);      //envio por el puerto serie la variable segundo
@@ -105,6 +106,8 @@ void loop()
     M5.Lcd.println(peso);
     getLocalTime(&timeinfo);
     M5.Lcd.print(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+    M5.Lcd.println();
+    M5.Lcd.println(puerta);
     
 
   }
@@ -121,6 +124,12 @@ void loop()
       case 'P':
         Serial.print("Peso: ");
         Serial.print(peso);
+        Serial.print(" a :");
+        Serial.print(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+        break;
+      case 'E':
+        Serial.print("Puerta: ");
+        Serial.print(puerta);
         Serial.print(" a :");
         Serial.print(&timeinfo, "%A, %B %d %Y %H:%M:%S");
         break;

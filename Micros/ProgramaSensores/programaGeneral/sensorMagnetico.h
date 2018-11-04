@@ -1,4 +1,3 @@
-#include <M5Stack.h>
 
 AsyncUDP udp;
 StaticJsonBuffer<200> jsonBuffer;                 //tamaño maximo de los datos
@@ -28,7 +27,7 @@ void lecturaPuerta(){
         envio["Estado"] = "Cerrada";
         puertaAbierta = false;
         envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
-        //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
+        udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         Serial.print("Enviando: ");
         Serial.println(texto);
         delay(200);
@@ -43,7 +42,7 @@ void lecturaPuerta(){
         envio["Estado"] = "Abierta";
         puertaAbierta = true;
         envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
-        //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
+        udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         Serial.print("Enviando: ");
         Serial.println(texto);
         delay(200);

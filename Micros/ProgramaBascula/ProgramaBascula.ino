@@ -16,7 +16,7 @@
 
 const int EchoPin = 19;
 const int TriggerPin = 18;
-const int botonAuxiliar = 4;
+//const int botonAuxiliar = 4;
 
 const char * ssid = "Grupo1";
 const char * password = "123456789";
@@ -32,7 +32,7 @@ void setup()
 
   pinMode(TriggerPin, OUTPUT);
   pinMode(EchoPin, INPUT);
-  pinMode(botonAuxiliar, INPUT_PULLUP);
+  //pinMode(botonAuxiliar, INPUT_PULLUP);
   
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
@@ -56,9 +56,9 @@ void setup()
 
 void loop()
 {
-  if (digitalRead(4) == LOW) {
+  /*if (digitalRead(4) == LOW) {
     while (digitalRead(4) == LOW) {
-    }
+    }*/
     
     delay(200);
     char texto[200];
@@ -73,8 +73,8 @@ void loop()
     Serial.print("Enviarndo: ");
     Serial.println(texto);
   }
-}
 
+//}
 
 //------------------------------------------------------------------------------------------------
 //  Funciones
