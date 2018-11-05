@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "891176088516",
-    "firebase_url": "https://proyectoiotg1.firebaseio.com",
-    "project_id": "proyectoiotg1",
-    "storage_bucket": "proyectoiotg1.appspot.com"
+    "project_number": "612210103283",
+    "firebase_url": "https://proyecto-iot-g1-2018.firebaseio.com",
+    "project_id": "proyecto-iot-g1-2018",
+    "storage_bucket": "proyecto-iot-g1-2018.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:891176088516:android:fb080630f9b65ef0",
+        "mobilesdk_app_id": "1:612210103283:android:06eb38f7c186c652",
         "android_client_info": {
-          "package_name": "com.example.santi.proyectoiotg1"
+          "package_name": "com.GTI.Grupo1.IoT"
         }
       },
       "oauth_client": [
         {
-          "client_id": "891176088516-3ua7mopi66mc97c8iac7vl9tior6njke.apps.googleusercontent.com",
+          "client_id": "612210103283-4gff7qm7hg9h4tbnb8t85hoik31l4cl3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.santi.proyectoiotg1",
-            "certificate_hash": "d98cf998e419d046b1842942e5e73a3b26a843e4"
+            "package_name": "com.GTI.Grupo1.IoT",
+            "certificate_hash": "a3330aca991fe889094fc417d9d6c25321a1f447"
           }
         },
         {
-          "client_id": "891176088516-j289d52sprpq771r4it0o2nuk7e1sel0.apps.googleusercontent.com",
+          "client_id": "612210103283-23mb7vsnjcos74b1bhbmrrg19dbk85q1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDUl44kkTAYykObfX27Bbfw3zI382RpBaM"
+          "current_key": "AIzaSyB7IlSqARHdwlLCcX_vJz24myoc-Q2rvXg"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "891176088516-j289d52sprpq771r4it0o2nuk7e1sel0.apps.googleusercontent.com",
+              "client_id": "612210103283-23mb7vsnjcos74b1bhbmrrg19dbk85q1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
