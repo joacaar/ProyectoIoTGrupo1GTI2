@@ -68,8 +68,7 @@ void lecturaPuerta(int Pin){
         Serial.print("Enviando: ");
         Serial.println(texto);
         delay(200);
-      }
+      
     }
   }
 }//lecturaPuerta()
-
