@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tiposGraficos">
+        <item>vectorial</item>
+        <item>bitmap</item>
+        <item>3D</item>
+    </string-array>
+    <string-array name="tiposGraficosValores">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="tiposNotificaciones">
+        <item>Nuevos lugares</item>
+        <item>Cerca de mi</item>
+        <item>Mejor valorados</item>
+    </string-array>
+    <string-array name="tiposNotificacionesValores">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="masa">
+        <item>Kg</item>
+        <item>Onza</item>
+        <item>Libra</item>
+    </string-array>
+    <string-array name="masaIndice">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="longitud">
+        <item>metros (m)</item>
+        <item>Pie (foot)</item>
+        <item>Pulgadas (inch)</item>
+    </string-array>
+    <string-array name="longitudIndice">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="fecha">
+        <item>DD-MM-YYYY</item>
+        <item>MM-DD_YYYY</item>
+        <item>YYYY-MM-DD</item>
+    </string-array>
+    <string-array name="fechaIndice">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+</resources>

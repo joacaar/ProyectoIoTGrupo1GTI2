@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="preferencias_principal" >
+    <CheckBoxPreference
+        android:key="notificaciones"
+        android:title="Recibir Notificaciones"
+        android:summary="Recibir notificaciones en la barra de estado"/>
+
+    <PreferenceCategory
+        android:key="otraCosa"
+        android:title="Selección de medidas">
+        <ListPreference
+            android:key="masa"
+            android:title="Seleccione unidades de masa"
+            android:entries="@array/masa"
+            android:entryValues="@array/masaIndice"
+            android:defaultValue="0"/>
+        <ListPreference
+            android:key="longitud"
+            android:title="Seleccione unidades de longitud"
+            android:entries="@array/longitud"
+            android:entryValues="@array/longitudIndice"
+            android:defaultValue="0"/>
+        <ListPreference
+            android:key="fecha"
+            android:title="Seleccione formato de fecha"
+            android:entries="@array/fecha"
+            android:entryValues="@array/fechaIndice"
+            android:defaultValue="0"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
+
+
+
