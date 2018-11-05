@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/acercaDe"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:text="Aplicación desarrollada por el Grupo 1 de segundo de Tecnologias Interactivas para ayudar a toda persona con necesidades"></TextView>

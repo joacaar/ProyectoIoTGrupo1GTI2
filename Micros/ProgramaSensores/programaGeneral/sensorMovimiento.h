@@ -3,6 +3,8 @@ const int PIRPin = 16;         // pin de entrada (para PIR sensor)
  
 int pirState = LOW;           // de inicio no hay movimiento
 int val = 0;                  // estado del pin
+
+ //creación del objeto "envio"
  
 void configuracionSensorMovimiento() 
 {
@@ -10,7 +12,7 @@ void configuracionSensorMovimiento()
    pinMode(PIRPin, INPUT);
 }
  
-void lecturaMovimiento()
+bool lecturaMovimiento()
 {
    val = digitalRead(PIRPin);
    if (val == HIGH)   //si está activado
@@ -18,8 +20,8 @@ void lecturaMovimiento()
       digitalWrite(LEDPin, HIGH);  //LED ON
       if (pirState == LOW)  //si previamente estaba apagado
       {
-        Serial.println("HAY ALGUIEN");
-        pirState = HIGH;
+        pirState = HIGH; //Hay alguien
+        return true;
       }
    } 
    else   //si esta desactivado
@@ -27,8 +29,8 @@ void lecturaMovimiento()
       digitalWrite(LEDPin, LOW); // LED OFF
       if (pirState == HIGH)  //si previamente estaba encendido
       {
-        Serial.println("NO HAY NADIE");
-        pirState = LOW;
+        pirState = LOW; //No hay nadie
+        return false;
       }
    }
 }
