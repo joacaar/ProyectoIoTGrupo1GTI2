@@ -13,6 +13,7 @@
     <string name="este_programa_ha_sido_desarrollado_como_ejemplo_en_el_curso_de_android_para_demostrar_c_mo_se_pueden_lanzar_nuevas_actividades_desde_la_actividad_principal">Este programa ha sido desarrollado como ejemplo en el curso de Android para demostrar cómo se pueden lanzar nuevas actividades desde la actividad principal.</string>
     <string name="casa">Casa</string>
     <string name="configuraci_n">Configuración</string>
+    <string name="cerrar_sesion">Cerrar Sesión</string>
     <string name="communicate">Communicate</string>
     <string name="notificaciones">Notificaciones</string>
     <string name="red_de_sensores">RED DE SENSORES</string>

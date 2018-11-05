@@ -6,16 +6,24 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/inicio"
-            android:icon="@drawable/home_icon2"
+        android:icon="@drawable/home_icon2"
+
             android:title="@string/inicio" />
+        <!--android:icon="@drawable/home_icon2"-->
+        <!--android:icon="@drawable/ic_menu_slideshow"-->
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/bascula"
             android:title="@string/bascula" />
+        <!--android:icon="@drawable/bascula"-->
+        <!--android:icon="@drawable/ic_menu_camera"-->
+
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/phone_home"
             android:title="@string/casa" />
+        <!--android:icon="@drawable/phone_home"-->
+        <!--android:icon="@drawable/ic_menu_gallery"-->
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
@@ -24,8 +32,8 @@
         <item
             android:id="@+id/cerrar"
             android:icon="@drawable/settings_power"
-            android:title="Cerrar Sesion"
-            android:onClick=""></item>
+            android:title="@string/cerrar_sesion"/>
+        <!--android:icon="@drawable/settings_power"-->
     </group>
 
     <item android:title="@string/communicate">
@@ -37,7 +45,7 @@
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="" />
+                android:title="Mensajes" />
         </menu>
     </item>
 
