@@ -37,7 +37,6 @@ project.properties
 *.iws
 
 # Archivos Gradle de Construccion.
-.gradle
 build/
 *.bin
 *.lock
