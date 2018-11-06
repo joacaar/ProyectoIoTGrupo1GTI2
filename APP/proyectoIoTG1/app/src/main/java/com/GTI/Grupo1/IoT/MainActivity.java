@@ -1,5 +1,6 @@
 package com.GTI.Grupo1.IoT;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +26,10 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -37,6 +43,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FragmentTabHost tabHost;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +53,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-       FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//
-
-//
-//        nombre.setText("Pepe");
-//        correo.setText("Correo");
-
-//        nombre.setText(user.getDisplayName());
-//        correo.setText(user.getEmail());
-
+       user = FirebaseAuth.getInstance().getCurrentUser();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -72,40 +70,30 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+// Codigo para mostrar los datos del usuario en la parte superior del menu
+        //Obtenemos las referencias de las vistas
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menuView = navigationView.getMenu();
         View headerView = navigationView.getHeaderView(0);
         TextView nombre = headerView.findViewById(R.id.nombreUsuario);
         TextView correo = headerView.findViewById(R.id.correoUsuario);
         final ImageView foto = headerView.findViewById(R.id.fotoUsuario);
+        // Asignamos los valores que se desean mostrar a las vistas
         nombre.setText(user.getDisplayName());
         correo.setText(user.getEmail());
-        String uri = user.getPhotoUrl().toString();
-        Picasso.with(getBaseContext()).load(uri).into(foto);
-
-        /*Opcion para icono redondo, en fase de prueba*/
-//        Picasso.with(getApplicationContext()).load(uri)
-//                .into(foto, new Snackbar.Callback() {
-//                    @Override
-//                    public void onSuccess() {
-//                        Bitmap imageBitmap = ((BitmapDrawable) foto.getDrawable()).getBitmap();
-//                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
-//                        imageDrawable.setCircular(true);
-//                        imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
-//                        foto.setImageDrawable(imageDrawable);
-//                    }
-//                    @Override
-//                    public void onError() {
-//                        foto.setImageResource(R.drawable.manolo);
-//                    }
-//                });
-
-//        Bitmap imageBitmap = ((BitmapDrawable) foto.getDrawable()).getBitmap();
-//        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
-//        imageDrawable.setCircular(true);
-//        imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
-//        foto.setImageDrawable(imageDrawable);
+// Codigo para identificar el provedor, soluciona problema cuando se hace login por Correo-contraseña
+// no hay foto y da error, de esta manera filtramos y solo ejecuta el codigo cuando se hace login por google.
+        String proveedor = user.getProviders().get(0);
+        if(proveedor.equals("google.com")){
+            String uri = user.getPhotoUrl().toString();
+            Picasso.with(getBaseContext()).load(uri).into(foto);
+            System.out.println("dentro de getPhoto");
+        }
+//        System.out.println("El proveedor de la cuenta es " + proveedor +".");
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Creamos las dos pestañas para visualizar dtos de diferentes cosas
         tabHost = findViewById(android.R.id.tabhost);
         tabHost.setup(this,
                 getSupportFragmentManager(),android.R.id.tabcontent);
@@ -125,6 +113,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+/*
+*  Codigo para el funcionamiento del segundo menu, ubicado a la parte superio derecha del activity_main
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -153,6 +145,9 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+/*
+* Codigo para el funcionamiento del menu principal estilo google
+*/
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -160,8 +155,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.inicio) {
-            // Handle the camera action
-            // Handle the camera action
+
 
         } else if (id == R.id.nav_gallery) {
 
@@ -174,6 +168,19 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
+
+        }else if (id == R.id.cerrar){
+            AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                            Intent.FLAG_ACTIVITY_NEW_TASK|
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                    MainActivity.this.finish();
+                }
+            });
 
         }
 
@@ -190,6 +197,5 @@ public class MainActivity extends AppCompatActivity
         Intent i = new Intent(this, PreferenciasActivity.class);
         startActivity(i);
     }
-
 
 }
