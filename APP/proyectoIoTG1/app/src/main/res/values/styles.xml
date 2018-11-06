@@ -18,7 +18,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="TemaLogin" parent="AppTheme.NoActionBar">
-        <item name="android:background">#FFF1A378</item>
+        <item name="android:background">#2b778c</item>
     </style>
 
 </resources>
