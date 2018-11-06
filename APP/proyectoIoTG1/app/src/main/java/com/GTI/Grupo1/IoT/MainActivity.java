@@ -2,9 +2,11 @@ package com.GTI.Grupo1.IoT;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,10 +16,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+/*
+* TODO: En el menu se muestran los datos del usuario (Nombre y correo), la implementacion para que se muestre la foto está pero esta no se muestra
+* TODO:  Cuando el usuario se regitra por usuario y contraseña, se muestra el nombre y el correo, pero la foto se muestra la que hay por defecto
+**/
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,10 +39,13 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+       FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 //
-//        TextView nombre = findViewById(R.id.nombreUsuario);
-//        TextView correo = findViewById(R.id.correoUsuario);
+
+//
+//        nombre.setText("Pepe");
+//        correo.setText("Correo");
 
 //        nombre.setText(user.getDisplayName());
 //        correo.setText(user.getEmail());
@@ -56,6 +67,13 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView nombre = headerView.findViewById(R.id.nombreUsuario);
+        TextView correo = headerView.findViewById(R.id.correoUsuario);
+        ImageView foto = headerView.findViewById(R.id.fotoUsuario);
+        nombre.setText(user.getDisplayName());
+        correo.setText(user.getEmail());
+        foto.setImageURI(user.getPhotoUrl());
         navigationView.setNavigationItemSelectedListener(this);
         tabHost = findViewById(android.R.id.tabhost);
         tabHost.setup(this,
@@ -102,6 +120,7 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
