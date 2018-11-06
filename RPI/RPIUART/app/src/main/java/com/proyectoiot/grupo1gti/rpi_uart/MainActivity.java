@@ -39,11 +39,13 @@ public class MainActivity extends Activity {
         String peso = uart.leer();
         Log.d(TAG, "Recibido de Arduino: "+peso);
 
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> datos = new HashMap<>();
-        datos.put("dato_1", "hola mundo");
-        datos.put("dato_2", peso);
-        db.collection("coleccion").document("documento").set(datos);
+        datos.put("Altura", altura);
+        datos.put("Peso", peso);
+        db.collection("coleccion").document("documento").update(datos);
+
     }
 
     @Override
