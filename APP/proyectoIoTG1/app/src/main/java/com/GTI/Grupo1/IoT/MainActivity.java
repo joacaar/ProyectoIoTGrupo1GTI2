@@ -1,12 +1,17 @@
 package com.GTI.Grupo1.IoT;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,9 +26,10 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 /*
-* TODO: En el menu se muestran los datos del usuario (Nombre y correo), la implementacion para que se muestre la foto está pero esta no se muestra
+* TODO: Modificar la foto que se muestra de la cuenta de google en forma redonda
 * TODO:  Cuando el usuario se regitra por usuario y contraseña, se muestra el nombre y el correo, pero la foto se muestra la que hay por defecto
 **/
 
@@ -70,10 +76,33 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         TextView nombre = headerView.findViewById(R.id.nombreUsuario);
         TextView correo = headerView.findViewById(R.id.correoUsuario);
-        ImageView foto = headerView.findViewById(R.id.fotoUsuario);
+        final ImageView foto = headerView.findViewById(R.id.fotoUsuario);
         nombre.setText(user.getDisplayName());
         correo.setText(user.getEmail());
-        foto.setImageURI(user.getPhotoUrl());
+        String uri = user.getPhotoUrl().toString();
+        Picasso.with(getBaseContext()).load(uri).into(foto);
+//        Picasso.with(getApplicationContext()).load(uri)
+//                .into(foto, new Snackbar.Callback() {
+//                    @Override
+//                    public void onSuccess() {
+//                        Bitmap imageBitmap = ((BitmapDrawable) foto.getDrawable()).getBitmap();
+//                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
+//                        imageDrawable.setCircular(true);
+//                        imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
+//                        foto.setImageDrawable(imageDrawable);
+//                    }
+//                    @Override
+//                    public void onError() {
+//                        foto.setImageResource(R.drawable.manolo);
+//                    }
+//                });
+
+//        Bitmap imageBitmap = ((BitmapDrawable) foto.getDrawable()).getBitmap();
+//        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
+//        imageDrawable.setCircular(true);
+//        imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
+//        foto.setImageDrawable(imageDrawable);
+
         navigationView.setNavigationItemSelectedListener(this);
         tabHost = findViewById(android.R.id.tabhost);
         tabHost.setup(this,
