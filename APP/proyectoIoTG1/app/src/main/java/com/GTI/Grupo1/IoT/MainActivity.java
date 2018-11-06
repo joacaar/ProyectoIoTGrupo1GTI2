@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity
         correo.setText(user.getEmail());
         String uri = user.getPhotoUrl().toString();
         Picasso.with(getBaseContext()).load(uri).into(foto);
+
+        /*Opcion para icono redondo, en fase de prueba*/
 //        Picasso.with(getApplicationContext()).load(uri)
 //                .into(foto, new Snackbar.Callback() {
 //                    @Override
