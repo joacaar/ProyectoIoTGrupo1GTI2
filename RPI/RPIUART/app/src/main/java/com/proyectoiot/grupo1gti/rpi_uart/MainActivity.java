@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -11,6 +16,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Log.i(TAG, "Lista de UART disponibles: " + ArduinoUart.disponibles());
         ArduinoUart uart = new ArduinoUart("UART0", 115200);
         Log.d(TAG, "Mandado a Arduino: A");
@@ -32,6 +38,12 @@ public class MainActivity extends Activity {
         }
         String peso = uart.leer();
         Log.d(TAG, "Recibido de Arduino: "+peso);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> datos = new HashMap<>();
+        datos.put("dato_1", "hola mundo");
+        datos.put("dato_2", peso);
+        db.collection("coleccion").document("documento").set(datos);
     }
 
     @Override
