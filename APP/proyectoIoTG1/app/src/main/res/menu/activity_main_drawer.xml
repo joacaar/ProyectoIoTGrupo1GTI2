@@ -30,7 +30,7 @@
             android:title="@string/configuraci_n" />
 
         <item
-            android:id="@+id/cerrar"
+            android:id="@+id/Compartir"
             android:icon="@drawable/ic_menu_send"
             android:title="Compartir" />
         <!--android:icon="@drawable/settings_power"-->

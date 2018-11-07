@@ -199,6 +199,10 @@ public class MainActivity extends AppCompatActivity
             return true;
 
         } else if (id == R.id.perfil) {
+
+            layout2 = findViewById(R.id.fragment_container2);
+            layout2.setVisibility(View.VISIBLE);
+
             layout = findViewById(R.id.fragment_container);
             layout.setVisibility(View.GONE);
 
