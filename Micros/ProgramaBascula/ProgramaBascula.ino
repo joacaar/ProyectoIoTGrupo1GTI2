@@ -20,7 +20,7 @@
 const char * ssid = "Grupo1";
 const char * password = "123456789";
 
-//AsyncUDP udp;
+AsyncUDP udp;
 StaticJsonBuffer<200> jsonBuffer;                 //tamaño maximo de los datos
 JsonObject& envio = jsonBuffer.createObject();    //creación del objeto "envio"
 
@@ -30,13 +30,13 @@ void setup()
   Serial.begin(115200);
   configuracionAltura();
   configuracionPeso();
-    /*WiFi.mode(WIFI_STA);
+    WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
       delay(500);
       Serial.print(".");
     }
-    Serial.println(" CONNECTED");*/
+    Serial.println(" CONNECTED");
 /*
     if (udp.listen(1234)) {
       Serial.print("UDP Listening on IP: ");
@@ -68,12 +68,10 @@ void loop()
 
     envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
 
-    //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
+    udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
 
     Serial.print("Enviando: ");
     Serial.println(texto);
   }
 
 //}
-
-
