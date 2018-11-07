@@ -36,13 +36,13 @@ LlamaSetup();
 confHumTemp();
 iniciarLDR();
 //--------------CONEXION WIFI----------------
-/*  WiFi.mode(WIFI_STA);
+ WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
       delay(500);
       Serial.print(".");
     }
-    Serial.println(" CONNECTED");*/
+    Serial.println(" CONNECTED");
 /*
         if (udp.listen(1234)) {
           Serial.print("UDP Listening on IP: ");
@@ -67,13 +67,15 @@ void loop() {
 
   //---------------PUERTA---------------
    lecturaPuerta(envio, texto);
-
+   delay(100);
+udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
 
   //--------------MOVIMIENTO------------
   lecturaMovimiento(envio, texto);
   medirFuego(envio, texto);
        calcularHumTemp(envio, texto);
      calcularLuminosidad(envio, texto);
+udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
 
   delay(100);
   
