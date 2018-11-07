@@ -6,38 +6,72 @@
 const int Pin = 25;
 bool puertaAbierta = false;
 
-void configuracionPuerta() {
+void configuracionPuerta(JsonObject& envio) {
   // put your setup code here, to run once:
-  Serial.begin(115200);
+ 
   pinMode(Pin, INPUT_PULLUP);
+   char texto[1000];
+   if (digitalRead(Pin) == LOW) {
+    
+     envio["Puerta"] = "Principal";
+    envio["Estado"] = "Cerrada";
+    envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
+    Serial.print("Enviando: ");
+    Serial.println(texto);
+        
+        puertaAbierta = false;
+        //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
+        delay(200);
+       
+      
+    }else if(digitalRead(Pin) == HIGH){
+      
+     envio["Puerta"] = "Principal";
+    envio["Estado"] = "Abierta";
+    envio.printTo(texto); 
+    Serial.print("Enviando: ");
+    Serial.println(texto);
+        puertaAbierta = true;
+        //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
+        delay(200);
+
+      }
 }
 
 //PUERTA
-bool lecturaPuerta(){
+void lecturaPuerta(JsonObject& envio, char ( &texto )[1000]){
   
 
   if (puertaAbierta) {
     if (digitalRead(Pin) == LOW) {
       delay(1000);
-      if (digitalRead(Pin) == LOW) {
+     envio["Puerta"] = "Principal";
+    envio["Estado"] = "Cerrada";
+    envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
+    Serial.print("Enviando: ");
+    Serial.println(texto);
         
         puertaAbierta = false;
         //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         delay(200);
-        return true;
-      }
+       
+      
     }
 
   } else {
     if (digitalRead(Pin) == HIGH) {
       delay(1000);
-      if (digitalRead(Pin) == HIGH) {
+     envio["Puerta"] = "Principal";
+    envio["Estado"] = "Abierta";
+    envio.printTo(texto); 
+    Serial.print("Enviando: ");
+    Serial.println(texto);
         puertaAbierta = true;
         //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         delay(200);
 
-        return false;
-      }
+        
+      
 
     }
   }
