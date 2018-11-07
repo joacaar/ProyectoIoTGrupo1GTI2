@@ -23,7 +23,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
@@ -42,20 +44,42 @@ import com.squareup.picasso.Picasso;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FragmentTabHost tabHost;
     private FirebaseUser user;
+    private FragmentTabHost tabHost;
+
+    FrameLayout layout;
+    FrameLayout layout2;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Creamos las dos pestañas para visualizar dtos de diferentes cosas
+        tabHost = findViewById(android.R.id.tabhost);
+        tabHost.setup(this,
+                getSupportFragmentManager(),android.R.id.tabcontent);
+        tabHost.addTab(tabHost.newTabSpec("bascula").setIndicator("Bascula"),
+                Tab1.class, null);
+        tabHost.addTab(tabHost.newTabSpec("redDeSensores").setIndicator("Red de sensores"),
+                Tab2.class, null);
+
+        //Página de inicio
+        InicioFragment fragment = new InicioFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.commit();
 
 
        user = FirebaseAuth.getInstance().getCurrentUser();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,16 +115,11 @@ public class MainActivity extends AppCompatActivity
         }
 //        System.out.println("El proveedor de la cuenta es " + proveedor +".");
 
+
+
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Creamos las dos pestañas para visualizar dtos de diferentes cosas
-        tabHost = findViewById(android.R.id.tabhost);
-        tabHost.setup(this,
-                getSupportFragmentManager(),android.R.id.tabcontent);
-        tabHost.addTab(tabHost.newTabSpec("bascula").setIndicator("Bascula"),
-                Tab1.class, null);
-        tabHost.addTab(tabHost.newTabSpec("redDeSensores").setIndicator("Red de sensores"),
-                Tab2.class, null);
+
     }
 
     @Override
@@ -154,10 +173,24 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+
+
         if (id == R.id.inicio) {
 
+            layout = findViewById(R.id.fragment_container);
+            layout.setVisibility(View.VISIBLE);
+
+            layout2 = findViewById(R.id.fragment_container2);
+            layout2.setVisibility(View.GONE);
+
+            InicioFragment fragment = new InicioFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.commit();
 
         } else if (id == R.id.nav_gallery) {
+
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -165,11 +198,17 @@ public class MainActivity extends AppCompatActivity
             lanzarPreferencias(null);
             return true;
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.perfil) {
+            layout = findViewById(R.id.fragment_container);
+            layout.setVisibility(View.GONE);
 
-        } else if (id == R.id.nav_send) {
+            PerfilFragment fragment = new PerfilFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container2, fragment);
+            fragmentTransaction.commit();
 
-        }else if (id == R.id.cerrar){
+        } else if (id == R.id.cerrar_sesion) {
             AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -181,7 +220,6 @@ public class MainActivity extends AppCompatActivity
                     MainActivity.this.finish();
                 }
             });
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

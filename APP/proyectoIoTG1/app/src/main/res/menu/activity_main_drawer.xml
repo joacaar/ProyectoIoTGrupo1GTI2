@@ -31,21 +31,21 @@
 
         <item
             android:id="@+id/cerrar"
-            android:icon="@drawable/settings_power"
-            android:title="@string/cerrar_sesion"/>
+            android:icon="@drawable/ic_menu_send"
+            android:title="Compartir" />
         <!--android:icon="@drawable/settings_power"-->
     </group>
 
     <item android:title="@string/communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/notificaciones" />
+                android:id="@+id/perfil"
+                android:icon="@drawable/ic_user"
+                android:title="Perfil" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Mensajes" />
+                android:id="@+id/cerrar_sesion"
+                android:icon="@drawable/cerrar_sesion"
+                android:title="Cerrar Sesión" />
         </menu>
     </item>
 
