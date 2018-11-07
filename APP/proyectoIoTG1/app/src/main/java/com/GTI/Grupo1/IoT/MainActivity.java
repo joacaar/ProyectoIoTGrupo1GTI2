@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        if (id == R.id.inicio) {
+        if (id == R.id.nav_inicio) {
 
             layout = findViewById(R.id.fragment_container);
             layout.setVisibility(View.VISIBLE);
@@ -189,16 +189,28 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_bascula) {
 
+        } else if (id == R.id.nav_casa) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_usuarios) {
+            layout2 = findViewById(R.id.fragment_container2);
+            layout2.setVisibility(View.VISIBLE);
 
-        } else if (id == R.id.nav_manage) {
+            layout = findViewById(R.id.fragment_container);
+            layout.setVisibility(View.GONE);
+
+            UsuariosFragment fragment = new UsuariosFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container2, fragment);
+            fragmentTransaction.commit();
+
+        } else if (id == R.id.nav_preferencias) {
             lanzarPreferencias(null);
             return true;
 
-        } else if (id == R.id.perfil) {
+        } else if (id == R.id.nav_perfil) {
 
             layout2 = findViewById(R.id.fragment_container2);
             layout2.setVisibility(View.VISIBLE);
@@ -212,7 +224,7 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.fragment_container2, fragment);
             fragmentTransaction.commit();
 
-        } else if (id == R.id.cerrar_sesion) {
+        } else if (id == R.id.nav_cerrar_sesion) {
             AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -240,4 +252,8 @@ public class MainActivity extends AppCompatActivity
         startActivity(i);
     }
 
+    public void lanzarUsuarios (View view) {
+        Intent i = new Intent (this, UsuariosActivity.class);
+        startActivity(i);
+    }
 }

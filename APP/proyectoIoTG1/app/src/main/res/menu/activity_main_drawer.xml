@@ -5,32 +5,36 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/inicio"
+            android:id="@+id/nav_inicio"
         android:icon="@drawable/home_icon2"
 
             android:title="@string/inicio" />
         <!--android:icon="@drawable/home_icon2"-->
         <!--android:icon="@drawable/ic_menu_slideshow"-->
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_bascula"
             android:icon="@drawable/bascula"
             android:title="@string/bascula" />
         <!--android:icon="@drawable/bascula"-->
         <!--android:icon="@drawable/ic_menu_camera"-->
 
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_casa"
             android:icon="@drawable/phone_home"
             android:title="@string/casa" />
         <!--android:icon="@drawable/phone_home"-->
         <!--android:icon="@drawable/ic_menu_gallery"-->
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_usuarios"
+            android:icon="@drawable/usuarios"
+            android:title="@string/usuarios" />
+        <item
+            android:id="@+id/nav_preferencias"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/configuraci_n" />
 
         <item
-            android:id="@+id/Compartir"
+            android:id="@+id/nav_compartir"
             android:icon="@drawable/ic_menu_send"
             android:title="Compartir" />
         <!--android:icon="@drawable/settings_power"-->
@@ -39,11 +43,11 @@
     <item android:title="@string/communicate">
         <menu>
             <item
-                android:id="@+id/perfil"
+                android:id="@+id/nav_perfil"
                 android:icon="@drawable/ic_user"
                 android:title="Perfil" />
             <item
-                android:id="@+id/cerrar_sesion"
+                android:id="@+id/nav_cerrar_sesion"
                 android:icon="@drawable/cerrar_sesion"
                 android:title="Cerrar Sesión" />
         </menu>
