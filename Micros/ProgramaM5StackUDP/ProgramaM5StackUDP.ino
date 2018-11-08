@@ -38,7 +38,7 @@ const char* temperatura;
 const char* humedad;
 
 
-char texto[1000];
+char texto[500];
 int altura;
 int peso;
 
@@ -94,7 +94,7 @@ void loop()
     //Serial.println (texto);
     //Serial.println (hora);
 
-    StaticJsonBuffer<1000> jsonBufferRecv; //definición del buffer para almacenar el objero JSON, 200 máximo
+    StaticJsonBuffer<500> jsonBufferRecv; //definición del buffer para almacenar el objero JSON, 200 máximo
     JsonObject& recibo = jsonBufferRecv.parseObject(texto); //paso de texto a formato JSON
     //recibo.printTo(Serial);       //envio por el puerto serie el objeto "recibido"
 

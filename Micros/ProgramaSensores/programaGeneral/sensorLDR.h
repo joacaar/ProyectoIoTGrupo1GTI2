@@ -13,7 +13,7 @@ void iniciarLDR()
   
 }
  
-void calcularLuminosidad(JsonObject& envio, char ( &texto )[1000])
+bool calcularLuminosidad(JsonObject& envio, char ( &texto )[500])
 {
    V = analogRead(APin);         
  
@@ -25,27 +25,30 @@ void calcularLuminosidad(JsonObject& envio, char ( &texto )[1000])
     envio["Luces"] = "Hace falta luz";
      envio.printTo(texto); 
     Serial.print("Enviando: ");
-    Serial.println(texto);
+   // Serial.println(texto);
       
         //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         //delay(200);
     aux=false;
     sePuedeEncender = true;
+    return true;
     }
   }else{
-      if(ilum > 130){
+      if(ilum > 120){
    digitalWrite(LEDPin1, LOW);
     envio["Luces"] = "No hace falta luz";
      envio.printTo(texto); 
     Serial.print("Enviando: ");
-    Serial.println(texto);
+   // Serial.println(texto);
       
         //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         //delay(100);
     aux=true;
     sePuedeEncender = false;
+    return true;
     }
   }
+  return false;
 }
 
  

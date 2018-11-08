@@ -24,7 +24,7 @@ void confHumTemp() {
 }
  float auxT = 0;
  float auxH =0;
-void calcularHumTemp(JsonObject& envio, char ( &texto )[1000]) {
+bool calcularHumTemp(JsonObject& envio, char ( &texto )[500]) {
    // Wait a few seconds between measurements.
 
  
@@ -34,7 +34,7 @@ void calcularHumTemp(JsonObject& envio, char ( &texto )[1000]) {
  if(auxT != t || auxH != h){
    if (isnan(h) || isnan(t)) {
       Serial.println("Failed to read from DHT sensor!");
-      return;
+      return false;
    }
  auxT=t;
  auxH=h;
@@ -43,9 +43,10 @@ void calcularHumTemp(JsonObject& envio, char ( &texto )[1000]) {
    envio["Humedad"] = h;
     envio.printTo(texto); 
     Serial.print("Enviando: ");
-    Serial.println(texto);
-      
+    //Serial.println(texto);
+      return true;
         //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         //delay(200);
  }
+ return false;
 }
