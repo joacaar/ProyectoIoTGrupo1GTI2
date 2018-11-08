@@ -122,18 +122,19 @@ void loop()
     M5.Lcd.println(peso);
     M5.Lcd.print("Puerta :");
     M5.Lcd.println(puerta);
+    M5.Lcd.println();
     M5.Lcd.print("Movimiento :");
     M5.Lcd.println(movimiento);
     M5.Lcd.print("");
-    /*
     M5.Lcd.print("Incendio :");
     M5.Lcd.println(incendio);
+    M5.Lcd.println();
     M5.Lcd.print("Luces:");
     M5.Lcd.println(luces);
     M5.Lcd.print("Temperatura :");
     M5.Lcd.println(temperatura);
     M5.Lcd.print("Humedad :");
-    M5.Lcd.println(humedad);*/
+    M5.Lcd.println(humedad);
     getLocalTime(&timeinfo);
     M5.Lcd.print(&timeinfo, "%A, %B %d %Y %H:%M:%S");
     
@@ -168,6 +169,31 @@ void loop()
         Serial.print(" a :");
         Serial.print(&timeinfo, "%A, %B %d %Y %H:%M:%S");
         break;
+     case 'G':
+        Serial.print("Incendio");
+        Serial.print(incendio);
+        Serial.print(" a :");
+        Serial.print(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+        break;
+     case 'H':
+        Serial.print("Luces");
+        Serial.print(luces);
+        Serial.print(" a :");
+        Serial.print(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+        break;
+     case 'I':
+        Serial.print("Temperatura");
+        Serial.print(temperatura);
+        Serial.print(" a :");
+        Serial.print(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+        break;
+     case 'J':
+        Serial.print("Humedad");
+        Serial.print(humedad);
+        Serial.print(" a :");
+        Serial.print(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+        break;
+      
     }
   }
 }

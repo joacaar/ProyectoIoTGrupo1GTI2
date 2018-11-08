@@ -38,7 +38,7 @@
             android:paddingTop="20dp">
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/nombreUsuario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="USUARIO" />
@@ -91,12 +91,40 @@
                     app:srcCompat="@drawable/ic_email" />
 
                 <EditText
-                    android:id="@+id/editText2"
+                    android:id="@+id/correoUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="textEmailAddress"
                     android:text="usuario@gmail.com" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="34dp"
+                    android:layout_height="46dp"
+                    android:paddingRight="2dp"
+                    app:srcCompat="@drawable/sexo" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textEmailAddress"
+                    android:text="Hombre" />
             </LinearLayout>
 
         </LinearLayout>
@@ -124,34 +152,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="end" />
 
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/imageView6"
-                    android:layout_width="34dp"
-                    android:layout_height="46dp"
-                    android:paddingRight="2dp"
-                    app:srcCompat="@drawable/sexo" />
-
-                <EditText
-                    android:id="@+id/editText2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textEmailAddress" />
             </LinearLayout>
 
         </LinearLayout>

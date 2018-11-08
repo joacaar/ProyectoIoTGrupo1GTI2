@@ -71,12 +71,63 @@ public class MainActivity extends Activity {
         String movimiento = uart.leer();
         Log.d(TAG, "Recibido de Arduino: "+ movimiento);
 
+        //G
+        Log.d(TAG, "Mandado a Arduino: G");
+        uart.escribir("G");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            Log.w(TAG, "Error en sleep()", e);
+        }
+        String incendio = uart.leer();
+        Log.d(TAG, "Recibido de Arduino: "+ incendio);
+
+        //H --> luces
+        Log.d(TAG, "Mandado a Arduino: H");
+        uart.escribir("H");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            Log.w(TAG, "Error en sleep()", e);
+        }
+        String luces = uart.leer();
+        Log.d(TAG, "Recibido de Arduino: "+ luces);
+
+        //I --> temperatura
+        Log.d(TAG, "Mandado a Arduino: I");
+        uart.escribir("I");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            Log.w(TAG, "Error en sleep()", e);
+        }
+        String temperatura = uart.leer();
+        Log.d(TAG, "Recibido de Arduino: "+ temperatura);
+
+        //J --> humedad
+        Log.d(TAG, "Mandado a Arduino: J");
+        uart.escribir("J");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            Log.w(TAG, "Error en sleep()", e);
+        }
+        String humedad = uart.leer();
+        Log.d(TAG, "Recibido de Arduino: "+ humedad);
+
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
        // Create a new user with a first and last name
         Map<String, Object> user = new HashMap<>();
-        user.put("first", "Ada");
-        user.put("last", "Lovelace");
-        user.put("born", 1815);
+        user.put("altura", altura);
+        user.put("peso", peso);
+        user.put("puerta", puerta);
+        user.put("movimiento", movimiento);
+        user.put("luces", luces);
+        user.put("incendio", incendio);
+        user.put("temperatura", temperatura);
+        user.put("humedad", humedad);
+
 
 // Add a new document with a generated ID
         db.collection("users")
