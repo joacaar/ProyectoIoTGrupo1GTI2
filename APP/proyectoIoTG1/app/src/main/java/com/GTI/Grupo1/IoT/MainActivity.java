@@ -219,6 +219,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_preferencias) {
             lanzarPreferencias(null);
             return true;
+        } else if (id == R.id.nav_chart){
+            lanzarChart(null);
+            return true;
 
         } else if (id == R.id.nav_perfil) {
 
@@ -259,6 +262,11 @@ public class MainActivity extends AppCompatActivity
 
     public void lanzarPreferencias(View view){
         Intent i = new Intent(this, PreferenciasActivity.class);
+        startActivity(i);
+    }
+
+    public void lanzarChart(View view){
+        Intent i = new Intent(this, ChartActivity.class);
         startActivity(i);
     }
 }

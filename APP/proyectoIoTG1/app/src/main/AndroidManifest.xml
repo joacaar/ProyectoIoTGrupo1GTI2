@@ -32,7 +32,7 @@
             android:label="Configuración"
             android:theme="@android:style/Theme.DeviceDefault.Light"/>
 
-        <activity android:name="com.GTI.Grupo1.IoT.UsuariosActivity"
+        <activity android:name="com.GTI.Grupo1.IoT.ChartActivity"
             android:label="Usuarios"
             android:theme="@android:style/Theme.DeviceDefault.Light.DarkActionBar"/>
     </application>
