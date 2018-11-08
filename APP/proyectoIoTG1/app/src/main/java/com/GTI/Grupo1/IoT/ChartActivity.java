@@ -18,16 +18,15 @@ public class ChartActivity extends Activity {
 
         PieChartView pieChartView = findViewById(R.id.chart);
         List<SliceValue> pieData = new ArrayList<>();
-        pieData.add(new SliceValue(10, Color.LTGRAY).setLabel("Grasa corporal: 19.4"));
-        pieData.add(new SliceValue(23, Color.DKGRAY).setLabel("Masa corporal: 45.6"));
-        pieData.add(new SliceValue(17, Color.WHITE).setLabel(""));
-        pieData.add(new SliceValue(50, 100).setLabel(""));
+        pieData.add(new SliceValue(10, Color.parseColor("#2b778c")).setLabel("Grasa corporal: 19.4"));
+        pieData.add(new SliceValue(23, Color.parseColor("#56b0ca")).setLabel("Masa corporal: 45.6"));
+        pieData.add(new SliceValue(17, Color.parseColor("#f1a378")).setLabel("Otros: 35"));
+        pieData.add(new SliceValue(50, Color.WHITE).setLabel(""));
         PieChartData pieChartData = new PieChartData(pieData);
         pieChartData.setHasLabels(true);
         pieChartData.setHasCenterCircle(true);
         pieChartView.setPieChartData(pieChartData);
         pieChartView.setChartRotation(180, true);
         pieChartView.setChartRotationEnabled(false);
-        pieChartData.setCenterCircleScale(100);
     }
 }
