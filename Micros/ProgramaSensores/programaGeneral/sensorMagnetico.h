@@ -39,7 +39,7 @@ void configuracionPuerta(JsonObject& envio) {
 }
 
 //PUERTA
-void lecturaPuerta(JsonObject& envio, char ( &texto )[1000]){
+bool lecturaPuerta(JsonObject& envio, char ( &texto )[500]){
   
 
   if (puertaAbierta) {
@@ -49,12 +49,12 @@ void lecturaPuerta(JsonObject& envio, char ( &texto )[1000]){
     envio["Estado"] = "Cerrada";
     envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
     Serial.print("Enviando: ");
-    Serial.println(texto);
+    //Serial.println(texto);
         
         puertaAbierta = false;
         //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         delay(200);
-       
+       return true;
       
     }
 
@@ -65,14 +65,15 @@ void lecturaPuerta(JsonObject& envio, char ( &texto )[1000]){
     envio["Estado"] = "Abierta";
     envio.printTo(texto); 
     Serial.print("Enviando: ");
-    Serial.println(texto);
+    //Serial.println(texto);
         puertaAbierta = true;
         //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         delay(200);
 
         
-      
+      return true;
 
     }
   }
+  return false;
 }//lecturaPuerta()

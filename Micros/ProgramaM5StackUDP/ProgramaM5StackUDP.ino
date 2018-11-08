@@ -27,9 +27,20 @@ const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = 3600;
 const int   daylightOffset_sec = 3600;
 
-char texto[200];
 int hora;
 boolean rec = 0;
+
+const char* puerta;
+const char* movimiento;
+const char* incendio;
+const char* luces;
+const char* temperatura;
+const char* humedad;
+
+
+char texto[500];
+int altura;
+int peso;
 
 AsyncUDP udp;
 
@@ -67,9 +78,8 @@ void setup()
   }
 }
 
-int altura;
-int peso;
-int puerta;
+
+
 
 void loop()
 {
@@ -84,13 +94,19 @@ void loop()
     //Serial.println (texto);
     //Serial.println (hora);
 
-    StaticJsonBuffer<200> jsonBufferRecv; //definición del buffer para almacenar el objero JSON, 200 máximo
+    StaticJsonBuffer<500> jsonBufferRecv; //definición del buffer para almacenar el objero JSON, 200 máximo
     JsonObject& recibo = jsonBufferRecv.parseObject(texto); //paso de texto a formato JSON
     //recibo.printTo(Serial);       //envio por el puerto serie el objeto "recibido"
 
     altura = recibo["Altura"];
     peso = recibo["Peso"];
     puerta = recibo["Estado"];
+    movimiento = recibo["EstadoM"];
+    incendio = recibo["Incendio"];
+    luces = recibo["Luces"];
+    temperatura = recibo["Temperatura"];
+    humedad = recibo["Humedad"];
+    
     //Serial.println();             //nueva línea
     //int segundo = recibo["Segundo"]; //extraigo el dato "Segundo" del objeto "recibido" y lo almaceno en la variable "segundo"
     //Serial.println(segundo);      //envio por el puerto serie la variable segundo
@@ -100,17 +116,27 @@ void loop()
     M5.Lcd.setCursor(0, 10);    //posicion inicial del cursor
     M5.Lcd.setTextColor(BLANCO);  //color del texto
     M5.Lcd.print("Altura: ");
-    M5.Lcd.println(altura);
-    M5.Lcd.println();
+    M5.Lcd.print(altura);
+    M5.Lcd.print("      ");
     M5.Lcd.print("Peso :");
     M5.Lcd.println(peso);
-    M5.Lcd.println();
     M5.Lcd.print("Puerta :");
     M5.Lcd.println(puerta);
+    M5.Lcd.print("Movimiento :");
+    M5.Lcd.println(movimiento);
+    M5.Lcd.print("");
+    /*
+    M5.Lcd.print("Incendio :");
+    M5.Lcd.println(incendio);
+    M5.Lcd.print("Luces:");
+    M5.Lcd.println(luces);
+    M5.Lcd.print("Temperatura :");
+    M5.Lcd.println(temperatura);
+    M5.Lcd.print("Humedad :");
+    M5.Lcd.println(humedad);*/
     getLocalTime(&timeinfo);
     M5.Lcd.print(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-    M5.Lcd.println();
-    M5.Lcd.println(puerta);
+    
     
 
   }
@@ -133,6 +159,12 @@ void loop()
       case 'E':
         Serial.print("Puerta: ");
         Serial.print(puerta);
+        Serial.print(" a :");
+        Serial.print(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+        break;
+     case 'F':
+        Serial.print("Movimiento: ");
+        Serial.print(movimiento);
         Serial.print(" a :");
         Serial.print(&timeinfo, "%A, %B %d %Y %H:%M:%S");
         break;

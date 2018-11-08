@@ -20,7 +20,7 @@
 #include "sensorHumTemp.h"
 #include "sensorLDR.h"
 AsyncUDP udp;
-StaticJsonBuffer<1000> jsonBuffer;                 //tamaño maximo de los datos
+StaticJsonBuffer<500> jsonBuffer;                 //tamaño maximo de los datos
 JsonObject& envio = jsonBuffer.createObject();
 
 const char * ssid = "Grupo1";
@@ -36,13 +36,13 @@ LlamaSetup();
 confHumTemp();
 iniciarLDR();
 //--------------CONEXION WIFI----------------
-/*  WiFi.mode(WIFI_STA);
+WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
       delay(500);
       Serial.print(".");
     }
-    Serial.println(" CONNECTED");*/
+    Serial.println(" CONNECTED");
 /*
         if (udp.listen(1234)) {
           Serial.print("UDP Listening on IP: ");
@@ -55,9 +55,9 @@ iniciarLDR();
         }
   */
 }
-
+bool enviar=false;
 void loop() {
-  char texto[1000];
+  char texto[500];
   
 
   // Si no se usasen variables globales
@@ -66,14 +66,36 @@ void loop() {
   int PinLedMov = 5; //Pin del led del circuito del sensor de movimiento*/
 
   //---------------PUERTA---------------
-   lecturaPuerta(envio, texto);
-
+   enviar=lecturaPuerta(envio, texto);
+   if(enviar==true){
+    Serial.println(texto);
+  udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
+ }
+ 
 
   //--------------MOVIMIENTO------------
-  lecturaMovimiento(envio, texto);
-  medirFuego(envio, texto);
-       calcularHumTemp(envio, texto);
-     calcularLuminosidad(envio, texto);
+ enviar=lecturaMovimiento(envio, texto);
+   if(enviar==true){
+    Serial.println(texto);
+  udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
+ }
+ //-------------------INCENDIO------------------
+  enviar=medirFuego(envio, texto);
+     if(enviar==true){
+    Serial.println(texto);
+  udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
+ }
+      enviar= calcularHumTemp(envio, texto);
+       if(enviar==true){
+    Serial.println(texto);
+  udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
+ }
+     enviar=calcularLuminosidad(envio, texto);
+       if(enviar==true){
+    Serial.println(texto);
+  udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
+ }
+
 
   delay(100);
   

@@ -12,7 +12,7 @@ void configuracionSensorMovimiento()
    pinMode(PIRPin, INPUT);
 }
  
-void lecturaMovimiento(JsonObject& envio, char (&texto)[1000])
+bool lecturaMovimiento(JsonObject& envio, char (&texto)[500])
 {
    
    val = digitalRead(PIRPin);
@@ -26,9 +26,9 @@ void lecturaMovimiento(JsonObject& envio, char (&texto)[1000])
         envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
         //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         Serial.print("Enviando: ");
-        Serial.println(texto);
+       // Serial.println(texto);
         pirState = HIGH; //Hay alguien
-      
+      return true;
       }
    } 
    else   //si esta desactivado
@@ -41,9 +41,10 @@ void lecturaMovimiento(JsonObject& envio, char (&texto)[1000])
         envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
         //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         Serial.print("Enviando: ");
-        Serial.println(texto);
+       // Serial.println(texto);
         pirState = LOW; //No hay nadie
-       
+       return true;
       }
    }
+   return false;
 }
