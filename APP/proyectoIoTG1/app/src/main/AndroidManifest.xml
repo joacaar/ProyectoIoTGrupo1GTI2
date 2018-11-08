@@ -4,7 +4,7 @@
     package="com.GTI.Grupo1.IoT">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo_nube"
@@ -31,13 +31,8 @@
             android:name="com.GTI.Grupo1.IoT.PreferenciasActivity"
             android:label="Configuración"
             android:theme="@android:style/Theme.DeviceDefault.Light"/>
-
-<<<<<<< HEAD
         <activity android:name="com.GTI.Grupo1.IoT.ChartActivity"
             android:label="Usuarios"
             android:theme="@android:style/Theme.DeviceDefault.Light.DarkActionBar"/>
-=======
->>>>>>> d0ac53e77908fe3adcfe1d670caee9245f5c535c
     </application>
-
 </manifest>
