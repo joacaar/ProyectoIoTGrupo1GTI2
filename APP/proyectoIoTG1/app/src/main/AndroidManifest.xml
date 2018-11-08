@@ -26,11 +26,15 @@
         <activity
             android:name="com.GTI.Grupo1.IoT.AcercaDeActivity"
             android:label="Acerca de ..."
-            android:theme="@android:style/Theme.Holo.Light.Dialog"></activity>
+            android:theme="@android:style/Theme.Holo.Light.Dialog"/>
         <activity
             android:name="com.GTI.Grupo1.IoT.PreferenciasActivity"
             android:label="Configuración"
-            android:theme="@android:style/Theme.DeviceDefault.Light"></activity>
+            android:theme="@android:style/Theme.DeviceDefault.Light"/>
+
+        <activity android:name="com.GTI.Grupo1.IoT.UsuariosActivity"
+            android:label="Usuarios"
+            android:theme="@android:style/Theme.DeviceDefault.Light.DarkActionBar"/>
     </application>
 
 </manifest>

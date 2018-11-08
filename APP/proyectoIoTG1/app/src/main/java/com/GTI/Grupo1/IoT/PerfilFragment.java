@@ -24,5 +24,4 @@ public class PerfilFragment extends Fragment {
         return inflater.inflate(R.layout.perfil, container, false);
     }
 
-
 }

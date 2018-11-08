@@ -13,6 +13,8 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -49,6 +51,12 @@ public class MainActivity extends AppCompatActivity
 
     FrameLayout layout;
     FrameLayout layout2;
+
+    ////////recycler view////////
+    private RecyclerView recyclerView;
+    public AdaptadorUsuarios adaptador;
+    private RecyclerView.LayoutManager layoutManager;
+    public static UsuarioInterface usuarios = new UsuariosVector();
 
 
 
@@ -194,6 +202,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_casa) {
 
         } else if (id == R.id.nav_usuarios) {
+
             layout2 = findViewById(R.id.fragment_container2);
             layout2.setVisibility(View.VISIBLE);
 
@@ -205,6 +214,7 @@ public class MainActivity extends AppCompatActivity
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container2, fragment);
             fragmentTransaction.commit();
+
 
         } else if (id == R.id.nav_preferencias) {
             lanzarPreferencias(null);
@@ -249,11 +259,6 @@ public class MainActivity extends AppCompatActivity
 
     public void lanzarPreferencias(View view){
         Intent i = new Intent(this, PreferenciasActivity.class);
-        startActivity(i);
-    }
-
-    public void lanzarUsuarios (View view) {
-        Intent i = new Intent (this, UsuariosActivity.class);
         startActivity(i);
     }
 }
