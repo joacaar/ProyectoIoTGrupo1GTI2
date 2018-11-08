@@ -33,22 +33,25 @@
                 <TextView
                     android:id="@+id/peso"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="IMC" />
+                    android:layout_height="wrap_content"
+                    android:text="IMC: 40%"
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Agua" />
+                    android:text="Agua : 70%"
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="GC" />
+                    android:text="GC:25%"
+                    android:textSize="24sp" />
             </LinearLayout>
 
         </LinearLayout>
