@@ -7,7 +7,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_nube"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme"
@@ -32,9 +32,6 @@
             android:label="Configuración"
             android:theme="@android:style/Theme.DeviceDefault.Light"/>
 
-        <activity android:name="com.GTI.Grupo1.IoT.UsuariosActivity"
-            android:label="Usuarios"
-            android:theme="@android:style/Theme.DeviceDefault.Light.DarkActionBar"/>
     </application>
 
 </manifest>

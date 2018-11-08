@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="#2b778c"
+    android:background="@drawable/fondo_menu"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -26,12 +26,14 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/manolo"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/browser_actions_bg_grey" />
 
     <TextView
         android:id="@+id/correoUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/manolo_gmail_com" />
+        android:text="@string/manolo_gmail_com"
+        android:textColor="@color/browser_actions_bg_grey" />
 
 </LinearLayout>
