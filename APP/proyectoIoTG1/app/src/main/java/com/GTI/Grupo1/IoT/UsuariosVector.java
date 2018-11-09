@@ -40,12 +40,12 @@ public class UsuariosVector implements UsuarioInterface {
         ArrayList<Usuario> lugares = new ArrayList<Usuario>();
         lugares.add(new Usuario("Abuelo Tiranias", " Abuelo de marta"));
         lugares.add(new Usuario("Harold Holdepein", " Amigo de mi mujer"));
-        lugares.add(new Usuario("Manolo", "  "));
-        lugares.add(new Usuario("La chica cuyo nombre no recuerdo", "No recuerdo su nombre"));
-        lugares.add(new Usuario("El tio Gepeto", "No es tan rico como parece"));
-        lugares.add(new Usuario("Agustin", "En realidad está incomodin"));
-        lugares.add(new Usuario("Mi tío abuelo Stu", "'Stu'pefacto se quedará cuando vea la app"));
-        lugares.add(new Usuario("Jorge", "Esta vez no se apellida Nitales"));
+        lugares.add(new Usuario("Manolo", " Padre de miguel "));
+        lugares.add(new Usuario("Elisa", " Amiga de miguel"));
+        lugares.add(new Usuario("Pepe ", " Amigo mio"));
+        lugares.add(new Usuario("Agustin", " Mi hijo"));
+        lugares.add(new Usuario("Mariola", " Amiga de mi madre"));
+        lugares.add(new Usuario("Jorge", " Mi sobrino"));
         return lugares;
     }
 }
