@@ -35,7 +35,9 @@
 
         <item
             android:id="@+id/nav_chart"
-            android:title="Grafica" />
+            android:title="Grafica"
+            android:icon="@drawable/ic_grafica"
+            />
 
         <item
             android:id="@+id/nav_compartir"

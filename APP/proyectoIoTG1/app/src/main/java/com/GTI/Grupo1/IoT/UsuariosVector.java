@@ -38,9 +38,9 @@ public class UsuariosVector implements UsuarioInterface {
     }
     public static ArrayList<Usuario> ejemploUsuarios() {
         ArrayList<Usuario> lugares = new ArrayList<Usuario>();
-        lugares.add(new Usuario("Abuelo Tiranias", "Es un poco cascarrabias"));
-        lugares.add(new Usuario("Harold Holdepein", "No le gusta su vida pero se aguanta"));
-        lugares.add(new Usuario("Manolo", " Nadie sabe porque no tiene apellido"));
+        lugares.add(new Usuario("Abuelo Tiranias", " Abuelo de marta"));
+        lugares.add(new Usuario("Harold Holdepein", " Amigo de mi mujer"));
+        lugares.add(new Usuario("Manolo", "  "));
         lugares.add(new Usuario("La chica cuyo nombre no recuerdo", "No recuerdo su nombre"));
         lugares.add(new Usuario("El tio Gepeto", "No es tan rico como parece"));
         lugares.add(new Usuario("Agustin", "En realidad está incomodin"));
