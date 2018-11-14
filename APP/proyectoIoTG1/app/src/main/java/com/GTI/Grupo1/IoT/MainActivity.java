@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity
             PerfilFragment fragment = new PerfilFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container2, fragment);
+            fragmentTransaction.replace(R.id.fragment_container2, fragment);//.addToBackStack(null); //para hacer que al pulsar atras no salga de la aplicación
             fragmentTransaction.commit();
 
         } else if (id == R.id.nav_cerrar_sesion) {
