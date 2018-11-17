@@ -42,3 +42,9 @@ build/
 *.bin
 *.lock
 *.ser
+*.bin
+*.bin
+*.lock
+*.ser
+APP/proyectoIoTG1/.idea/workspace.xml
+*.properties
