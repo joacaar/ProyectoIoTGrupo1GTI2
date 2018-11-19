@@ -19,7 +19,7 @@
 
     <style name="TemaLogin" parent="AppTheme.NoActionBar">
         <item name="android:background">#2b778c</item>
-        <item name="android:textColor">#fff</item>
+        <item name="android:editTextColor">#fff</item>
     </style>
 
 </resources>

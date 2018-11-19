@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
@@ -47,10 +48,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseUser user;
-    private FragmentTabHost tabHost;
 
-    FrameLayout layout;
-    FrameLayout layout2;
 
     ////////recycler view////////
     private RecyclerView recyclerView;
@@ -68,14 +66,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Creamos las dos pestañas para visualizar dtos de diferentes cosas
-        tabHost = findViewById(android.R.id.tabhost);
-        tabHost.setup(this,
-                getSupportFragmentManager(),android.R.id.tabcontent);
-        tabHost.addTab(tabHost.newTabSpec("bascula").setIndicator("Bascula"),
-                Tab1.class, null);
-        tabHost.addTab(tabHost.newTabSpec("redDeSensores").setIndicator("Red de sensores"),
-                Tab2.class, null);
 
         //Página de inicio
         InicioFragment fragment = new InicioFragment();
@@ -179,23 +169,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        Fragment fragment = null;
+
         int id = item.getItemId();
 
-
-
         if (id == R.id.nav_inicio) {
-
-            layout = findViewById(R.id.fragment_container);
-            layout.setVisibility(View.VISIBLE);
-
-            layout2 = findViewById(R.id.fragment_container2);
-            layout2.setVisibility(View.GONE);
-
-            InicioFragment fragment = new InicioFragment();
+            fragment = new InicioFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.replace(R.id.fragment_container, fragment);//.addToBackStack(null); //para hacer que al pulsar atras no salga de la aplicación
             fragmentTransaction.commit();
+
 
         } else if (id == R.id.nav_bascula) {
 
@@ -203,16 +187,10 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_usuarios) {
 
-            layout2 = findViewById(R.id.fragment_container2);
-            layout2.setVisibility(View.VISIBLE);
-
-            layout = findViewById(R.id.fragment_container);
-            layout.setVisibility(View.GONE);
-
-            UsuariosFragment fragment = new UsuariosFragment();
+            fragment = new UsuariosFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container2, fragment);
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
 
 
@@ -225,16 +203,10 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_perfil) {
 
-            layout2 = findViewById(R.id.fragment_container2);
-            layout2.setVisibility(View.VISIBLE);
-
-            layout = findViewById(R.id.fragment_container);
-            layout.setVisibility(View.GONE);
-
-            PerfilFragment fragment = new PerfilFragment();
+            fragment = new PerfilFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container2, fragment);//.addToBackStack(null); //para hacer que al pulsar atras no salga de la aplicación
+            fragmentTransaction.replace(R.id.fragment_container, fragment);//.addToBackStack(null); //para hacer que al pulsar atras no salga de la aplicación
             fragmentTransaction.commit();
 
         } else if (id == R.id.nav_cerrar_sesion) {
