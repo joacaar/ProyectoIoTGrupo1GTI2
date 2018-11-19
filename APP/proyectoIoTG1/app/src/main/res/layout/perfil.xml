@@ -19,14 +19,14 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imageView5"
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/fotoUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="125dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/foto_perfil" />
-
+                android:src="@drawable/manolo" />
         </LinearLayout>
 
         <LinearLayout
