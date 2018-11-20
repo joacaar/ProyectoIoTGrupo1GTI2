@@ -1,5 +1,6 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -15,37 +16,60 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
                 android:background="@drawable/contenedor_rnd"
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="103dp"
-                    app:srcCompat="@drawable/grafica" />
+                <lecho.lib.hellocharts.view.PieChartView
+                    android:id="@+id/graficaInicio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp" />
+
+                <!--<ImageView-->
+                <!--android:id="@+id/imageView2"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="103dp"-->
+                <!--app:srcCompat="@drawable/grafica" />-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="23dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:text="19.4 %"
+                        android:textColor="@color/browser_actions_text_color"
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/textView4"
                         android:layout_width="23dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@color/fui_bgAnonymous" />
+                        android:background="@color/colorPrimaryDark" />
 
                     <TextView
-                        android:id="@+id/peso"
+                        android:id="@+id/imc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="8dp"
                         android:layout_marginRight="5dp"
-                        android:text="IMC: 20"
+                        android:layout_weight="1"
+                        android:text="45.6 %"
                         android:textColor="@color/browser_actions_text_color"
                         android:textSize="18sp" />
 
@@ -53,35 +77,19 @@
                         android:id="@+id/textView6"
                         android:layout_width="23dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@color/colorPrecaucion" />
+                        android:background="@color/colorAccent" />
 
                     <TextView
                         android:id="@+id/textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:text="Agua : 35%"
+                        android:text="35 %"
                         android:textColor="@color/browser_actions_text_color"
                         android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/textView7"
-                        android:layout_width="23dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@color/colorMal" />
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_weight="1"
-                        android:text="GC:25%"
-                        android:textColor="@color/browser_actions_text_color"
-                        android:textSize="18sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -94,25 +102,42 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <TextView
-                    android:id="@+id/peso1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Peso: 80kg"
-                    android:textColor="@color/browser_actions_text_color"
-                    android:textSize="24sp" />
-
-                <ImageView
-                    android:id="@+id/imageView"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="177dp"
-                    app:srcCompat="@drawable/grafica_peso" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/textoPeso"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Peso: "
+                        android:textColor="@color/browser_actions_text_color"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/peso"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="80kg"
+                        android:textColor="@color/browser_actions_text_color"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+                <lecho.lib.hellocharts.view.ColumnChartView
+                    android:id="@+id/chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginBottom="8dp"></lecho.lib.hellocharts.view.ColumnChartView>
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
                 android:background="@drawable/contenedor_rnd"
                 android:orientation="horizontal"
                 android:padding="20dp">
@@ -128,7 +153,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:text="Altura: 170cm"
+                    android:text="Altura: "
+                    android:textColor="@color/browser_actions_text_color"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/altura"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="170 cm"
                     android:textColor="@color/browser_actions_text_color"
                     android:textSize="30sp" />
 
