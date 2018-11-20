@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-//-----------------------------------------
+//------------------------------------------------------------------------------------------------------------------
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document("YCBIiP0cbezTvmHiFPq3").get()
                 .addOnCompleteListener(
@@ -203,6 +203,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_inicio) {
+
             fragment = new InicioFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
@@ -211,6 +212,12 @@ public class MainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_bascula) {
+
+            fragment = new BasculaFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);//.addToBackStack(null); //para hacer que al pulsar atras no salga de la aplicación
+            fragmentTransaction.commit();
 
         } else if (id == R.id.nav_casa) {
 
@@ -252,7 +259,7 @@ public class MainActivity extends AppCompatActivity
             });
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
