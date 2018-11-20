@@ -31,6 +31,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.auth.api.Auth;
@@ -38,6 +39,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 /*
@@ -118,7 +121,32 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
+//-----------------------------------------
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").document("YCBIiP0cbezTvmHiFPq3").get()
+                .addOnCompleteListener(
+                        new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task){
+                                if (task.isSuccessful()) {
+                                    String dato1 = task.getResult().getString("peso");
+                                    //double dato2 = task.getResult().getDouble("altura");
 
+                                    Toast toast1 = Toast.makeText(getApplicationContext(), dato1, Toast.LENGTH_SHORT);
+
+                                    TextView view3 = findViewById(R.id.peso1);
+
+                                    view3.setText(dato1);
+                                    toast1.show();
+                                } else {
+                                    Toast toast2 = Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT);
+
+
+                                    toast2.show();
+                                }
+                            }
+                        });
+//-------------------------------------------------------------------------------------------------------------------
     }
 
     @Override

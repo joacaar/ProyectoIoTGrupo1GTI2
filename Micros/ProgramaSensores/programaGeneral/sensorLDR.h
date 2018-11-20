@@ -20,13 +20,13 @@ bool calcularLuminosidad(JsonObject& envio, char ( &texto )[500])
    //ilum = ((long)(1024-V)*A*10)/((long)B*Rc*V);  //usar si LDR entre GND y A0 
    ilum = -((long)V*A*10)/((long)B*Rc*(1024-V));    //usar si LDR entre A0 y Vcc (como en el esquema anterior)
  if(aux){
-  if(ilum < 130){
+  if(ilum <= 140){
     digitalWrite(LEDPin1, HIGH);
     envio["Luces"] = "Hace falta luz";
      envio.printTo(texto); 
     Serial.print("Enviando: ");
    // Serial.println(texto);
-      
+     // Serial.print(ilum);
         //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         //delay(200);
     aux=false;
@@ -34,7 +34,7 @@ bool calcularLuminosidad(JsonObject& envio, char ( &texto )[500])
     return true;
     }
   }else{
-      if(ilum > 120){
+      if(ilum > 140){
    digitalWrite(LEDPin1, LOW);
     envio["Luces"] = "No hace falta luz";
      envio.printTo(texto); 
