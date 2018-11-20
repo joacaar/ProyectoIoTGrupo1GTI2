@@ -18,4 +18,5 @@
     <string name="notificaciones">Notificaciones</string>
     <string name="red_de_sensores">RED DE SENSORES</string>
     <string name="usuarios">Usuarios</string>
+    <string name="otro">Otro</string>
 </resources>
