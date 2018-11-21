@@ -1,12 +1,16 @@
 package com.GTI.Grupo1.IoT;
 
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,11 +18,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
+
 
 public class PerfilFragment extends Fragment{
 
 
     private FirebaseUser user;
+
+    private static final String TAG = "PerfilFragment";
+    private EditText mDisplayDate;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -48,10 +58,38 @@ public class PerfilFragment extends Fragment{
             System.out.println("dentro de getPhoto");
         }
 
+        //CALENARIO
+        mDisplayDate = view.findViewById(R.id.editTextFecha);
+
+
+        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(getActivity(),
+                        mDateSetListener,
+                        year,month,day);
+                dialog.show();
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
+
+                String date = day + "/" + month + "/" + year;
+                mDisplayDate.setText(date);
+            }
+        };
 
         return view;
+
     }
-
-
 
 }
