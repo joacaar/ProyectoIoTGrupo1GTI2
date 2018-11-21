@@ -3,14 +3,30 @@ package com.GTI.Grupo1.IoT;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.Double.*;
 
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
@@ -22,9 +38,17 @@ import lecho.lib.hellocharts.model.SubcolumnValue;
 import lecho.lib.hellocharts.view.ColumnChartView;
 import lecho.lib.hellocharts.view.PieChartView;
 
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+
 public class BasculaFragment extends Fragment {
 
+    View vistaInicio;
+
     float ultimoPeso;
+    float[] valoresPeso = new float[5];
+
+    List<java.util.Date> fechas;
+
 
     public BasculaFragment() {
         // Required empty public constructor
@@ -36,8 +60,14 @@ public class BasculaFragment extends Fragment {
                 Bundle savedInstanceState) {
             //Inflate the layout for this fragment
 
-            View vistaInicio = inflater.inflate(R.layout.bascula, container, false);
+            vistaInicio = inflater.inflate(R.layout.bascula, container, false);
 
+            consultaDatos();
+
+            return vistaInicio;
+        }
+
+        private void graficaCircular (){
             PieChartView pieChartView = (PieChartView) vistaInicio.findViewById(R.id.graficaInicio);
             List<SliceValue> pieData = new ArrayList<>();
             pieData.add(new SliceValue(10, Color.parseColor("#2b778c")).setLabel("Grasa corporal"));
@@ -51,21 +81,14 @@ public class BasculaFragment extends Fragment {
             pieChartView.setPieChartData(pieChartData);
             pieChartView.setChartRotation(180, true);
             pieChartView.setChartRotationEnabled(false);
-
-            ColumnChartView chart = (ColumnChartView) vistaInicio.findViewById(R.id.chart);
-            generateData(chart);
-
-            TextView vistaPeso = vistaInicio.findViewById(R.id.peso);
-            vistaPeso.setText(Float.toString(ultimoPeso));
-
-
-            return vistaInicio;
         }
 
 
-        private void generateData(ColumnChartView chart) {
+        private void generateData() {
             int numSubcolumns = 1;
             int numColumns = 5;
+
+            ColumnChartView chart = (ColumnChartView) vistaInicio.findViewById(R.id.chart);
 
             // Column can have many subcolumns, here by default I use 1 subcolumn in each of 8 columns.
             List<Column> columns = new ArrayList<Column>();
@@ -76,13 +99,13 @@ public class BasculaFragment extends Fragment {
                 values = new ArrayList<SubcolumnValue>();
                 for (int j = 0; j < numSubcolumns; ++j) {
 
-                    float pesoValor = (float) Math.random() * 50f + 5;
+                    //float pesoValor = (float) Math.random() * 50f + 5;
 
                     if(i == numColumns-1){
-                        values.add(new SubcolumnValue(pesoValor, Color.parseColor("#56b0ca")));
-                        ultimoPeso = pesoValor;
+                        values.add(new SubcolumnValue(valoresPeso[i], Color.parseColor("#56b0ca")));
+                        ultimoPeso = valoresPeso[i];
                     }else {
-                        values.add(new SubcolumnValue(pesoValor, Color.parseColor("#2b778c")));
+                        values.add(new SubcolumnValue(valoresPeso[i], Color.parseColor("#2b778c")));
                     }
                 }
 
@@ -121,4 +144,54 @@ public class BasculaFragment extends Fragment {
             chart.setColumnChartData(data);
 
         }
+
+        private void datoUltimoPeso (){
+            TextView vistaPeso = vistaInicio.findViewById(R.id.peso);
+            vistaPeso.setText(Float.toString(ultimoPeso));
+        }
+
+        public void consultaDatos (){
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+//            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+//                    .setTimestampsInSnapshotsEnabled(true)
+//                    .build();
+//            db.setFirestoreSettings(settings);
+
+            db.collection("pruebaDatosBascula")
+                    .orderBy("fecha", Query.Direction.ASCENDING)
+                    .limit(5)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                int i = 0;
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    System.out.println(document.getId() + " => " + document.getData());
+                                    System.out.println(document.getData().get("peso").getClass());
+
+                                    String numero = document.getData().get("peso").toString();
+                                    valoresPeso[i] = Float.parseFloat(numero);
+
+                                    //Double numero2 = document.getData().get("peso");
+
+                                    //valoresPeso[i] = document.getData().get("peso");
+
+                                    Timestamp timestamp = document.getTimestamp("fecha");
+                                    fechas.add(timestamp.toDate());
+                                    i++;
+                                }
+
+                                generateData();
+                                datoUltimoPeso();
+                                graficaCircular();
+
+                            } else {
+                                System.out.println("Error getting documents." + task.getException());
+                            }
+                        }
+                    });
+        }
     }
+
