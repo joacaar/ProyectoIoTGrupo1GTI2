@@ -4,7 +4,9 @@ package com.GTI.Grupo1.IoT;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,10 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -24,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 import lecho.lib.hellocharts.formatter.ColumnChartValueFormatter;
+import lecho.lib.hellocharts.formatter.SimpleColumnChartValueFormatter;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
@@ -64,7 +70,27 @@ public class BasculaFragment extends Fragment {
         return vistaBascula;
     }
 
-    public void consultaDatos (){
+    private void consultaDatosRT(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("coleccion");
+
+//        db.collection("coleccion").document("documento").addSnapshotListener(
+//                new EventListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onEvent(@Nullable DocumentSnapshot snapshot,
+//                                        @Nullable FirebaseFirestoreException e){
+//                        if (e != null) {
+//                            Log.e("Firebase", "Error al leer", e);
+//                        } else if (snapshot == null || !snapshot.exists()) {
+//                            Log.e("Firebase", "Error: documento no encontrado ");
+//                        } else {
+//                            Log.e("Firestore", "datos:" + snapshot.getData());
+//                        }
+//                    }
+//                });
+    }
+
+    private void consultaDatos (){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 //            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -88,9 +114,7 @@ public class BasculaFragment extends Fragment {
                                 String numero = document.getData().get("peso").toString();
                                 valoresPeso[i] = Float.parseFloat(numero);
 
-                                System.out.println("Anted de obtener altura");
                                 altura = document.getData().get("altura").toString();
-                                System.out.println("Despues de obtener altura");
                                 //altura = Float.parseFloat(alturaS);
 
                                 Timestamp timestamp = document.getTimestamp("fecha");
@@ -123,11 +147,8 @@ public class BasculaFragment extends Fragment {
             PieChartData pieChartData = new PieChartData(pieData);
             pieChartData.setHasLabels(true);
             pieChartData.setHasCenterCircle(true);
-            System.out.println("Anted de dar formato a la fecha de la pie");
             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            System.out.println("En medio de dar formato a la fecha de la pie");
             pieChartData.setCenterText1(formateador.format(ultimaFecha)).setCenterText1FontSize(15);
-            System.out.println("Despues de dar formato a la fecha de la pie");
             pieChartView.setPieChartData(pieChartData);
             pieChartView.setChartRotation(180, true);
             pieChartView.setChartRotationEnabled(false);
@@ -171,7 +192,7 @@ public class BasculaFragment extends Fragment {
 //                        return 0;
 //                    }
 //                }
-                //column.setFormatter(formatter);
+                column.setFormatter(new SimpleColumnChartValueFormatter(2));
                 column.setHasLabels(true);// muestra el valor de la columna
                 column.setHasLabelsOnlyForSelected(false);//muestra el valor de la columna al pulsar en ella
                 columns.add(column);
@@ -198,7 +219,7 @@ public class BasculaFragment extends Fragment {
             }
 
             Axis axisX = new Axis().setValues(valores);//cuando creamos el eje le pasamos la lista de los valores que tendra el eje
-            Axis axisY = Axis.generateAxisFromRange(0, 100, 5);// para añadir un rango al eje Y
+            Axis axisY = Axis.generateAxisFromRange(0, 150, 10);// para añadir un rango al eje Y
             axisY.setHasLines(true);
 
             // Añadimos titulo a los indices

@@ -129,7 +129,8 @@
                     android:id="@+id/chart"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:layout_marginBottom="8dp"></lecho.lib.hellocharts.view.ColumnChartView>
+                    android:layout_marginBottom="8dp"
+                    android:paddingTop="16dp"></lecho.lib.hellocharts.view.ColumnChartView>
 
             </LinearLayout>
 
