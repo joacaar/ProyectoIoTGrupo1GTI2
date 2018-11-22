@@ -33,13 +33,13 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/manolo"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/browser_actions_bg_grey" />
+        android:textColor="@color/browser_actions_text_color" />
 
     <TextView
         android:id="@+id/correoUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/manolo_gmail_com"
-        android:textColor="@color/browser_actions_bg_grey" />
+        android:textColor="@color/browser_actions_text_color" />
 
 </LinearLayout>
