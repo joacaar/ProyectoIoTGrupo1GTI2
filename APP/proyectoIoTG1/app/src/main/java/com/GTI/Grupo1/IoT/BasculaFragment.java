@@ -5,29 +5,25 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.lang.Double.*;
 
+import lecho.lib.hellocharts.formatter.ColumnChartValueFormatter;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
@@ -38,16 +34,17 @@ import lecho.lib.hellocharts.model.SubcolumnValue;
 import lecho.lib.hellocharts.view.ColumnChartView;
 import lecho.lib.hellocharts.view.PieChartView;
 
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
-
 public class BasculaFragment extends Fragment {
 
-    View vistaInicio;
+    View vistaBascula;
 
     float ultimoPeso;
     float[] valoresPeso = new float[5];
 
-    List<java.util.Date> fechas;
+    String altura;
+
+    List<Date> fechas = new ArrayList<Date>();
+    Date ultimaFecha = new Date();
 
 
     public BasculaFragment() {
@@ -55,20 +52,69 @@ public class BasculaFragment extends Fragment {
 
     }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            //Inflate the layout for this fragment
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        //Inflate the layout for this fragment
 
-            vistaInicio = inflater.inflate(R.layout.bascula, container, false);
+        vistaBascula = inflater.inflate(R.layout.bascula, container, false);
 
-            consultaDatos();
+        consultaDatos();
 
-            return vistaInicio;
-        }
+        return vistaBascula;
+    }
+
+    public void consultaDatos (){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+//                    .setTimestampsInSnapshotsEnabled(true)
+//                    .build();
+//            db.setFirestoreSettings(settings);
+
+        db.collection("pruebaDatosBascula")
+                .orderBy("fecha", Query.Direction.ASCENDING)
+                .limit(5)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int i = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                System.out.println(document.getId() + " => " + document.getData());
+//                                System.out.println(document.getData().get("peso").getClass());
+
+                                String numero = document.getData().get("peso").toString();
+                                valoresPeso[i] = Float.parseFloat(numero);
+
+                                System.out.println("Anted de obtener altura");
+                                altura = document.getData().get("altura").toString();
+                                System.out.println("Despues de obtener altura");
+                                //altura = Float.parseFloat(alturaS);
+
+                                Timestamp timestamp = document.getTimestamp("fecha");
+                                fechas.add(timestamp.toDate());
+                                ultimaFecha = timestamp.toDate();
+                                i++;
+                            }
+
+                            generateData();
+                            datoUltimoPeso();
+                            graficaCircular();
+                            mostrarAltura();
+
+                        } else {
+                            System.out.println("Error getting documents." + task.getException());
+                        }
+                    }
+                });
+
+        //System.out.println(db.collection("pruebaDatosBascula").getId());
+    }
 
         private void graficaCircular (){
-            PieChartView pieChartView = (PieChartView) vistaInicio.findViewById(R.id.graficaInicio);
+            PieChartView pieChartView = (PieChartView) vistaBascula.findViewById(R.id.graficaInicio);
             List<SliceValue> pieData = new ArrayList<>();
             pieData.add(new SliceValue(10, Color.parseColor("#2b778c")).setLabel("Grasa corporal"));
             pieData.add(new SliceValue(23, Color.parseColor("#56b0ca")).setLabel("Masa corporal"));
@@ -77,10 +123,19 @@ public class BasculaFragment extends Fragment {
             PieChartData pieChartData = new PieChartData(pieData);
             pieChartData.setHasLabels(true);
             pieChartData.setHasCenterCircle(true);
-            pieChartData.setCenterText1("20/11/2018").setCenterText1FontSize(15);
+            System.out.println("Anted de dar formato a la fecha de la pie");
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            System.out.println("En medio de dar formato a la fecha de la pie");
+            pieChartData.setCenterText1(formateador.format(ultimaFecha)).setCenterText1FontSize(15);
+            System.out.println("Despues de dar formato a la fecha de la pie");
             pieChartView.setPieChartData(pieChartData);
             pieChartView.setChartRotation(180, true);
             pieChartView.setChartRotationEnabled(false);
+        }
+
+        private void mostrarAltura (){
+            TextView vistaAltura = vistaBascula.findViewById(R.id.altura);
+            vistaAltura.setText(altura + " cm");
         }
 
 
@@ -88,7 +143,7 @@ public class BasculaFragment extends Fragment {
             int numSubcolumns = 1;
             int numColumns = 5;
 
-            ColumnChartView chart = (ColumnChartView) vistaInicio.findViewById(R.id.chart);
+            ColumnChartView chart = (ColumnChartView) vistaBascula.findViewById(R.id.chart);
 
             // Column can have many subcolumns, here by default I use 1 subcolumn in each of 8 columns.
             List<Column> columns = new ArrayList<Column>();
@@ -110,6 +165,13 @@ public class BasculaFragment extends Fragment {
                 }
 
                 Column column = new Column(values);
+//                ColumnChartValueFormatter formatter = new ColumnChartValueFormatter() {
+//                    @Override
+//                    public int formatChartValue(char[] formattedValue, SubcolumnValue value) {
+//                        return 0;
+//                    }
+//                }
+                //column.setFormatter(formatter);
                 column.setHasLabels(true);// muestra el valor de la columna
                 column.setHasLabelsOnlyForSelected(false);//muestra el valor de la columna al pulsar en ella
                 columns.add(column);
@@ -121,9 +183,16 @@ public class BasculaFragment extends Fragment {
             List<AxisValue> valores = new ArrayList<AxisValue>();
 
             String[] dias = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingas"};
+            String[] diasPesado = new String[numColumns];
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
+
+//            for(int i = 0; i<numColumns; i++){
+//                diasPesado[i] = formateador.format(fechas.get(i));
+//            }
 
             for (int i = 0; i < numColumns; i++){
-                axisValueX = new AxisValue(i).setLabel(dias[i]);// se le asigna a cada posicion el label que se desea
+                diasPesado[i] = formateador.format(fechas.get(i));
+                axisValueX = new AxisValue(i).setLabel(diasPesado[i]);// se le asigna a cada posicion el label que se desea
                 // "i" es el valor del indice y dias es el string que mostrara el label
                 valores.add(axisValueX);//añadimos cada valor del eje x a una lista
             }
@@ -146,52 +215,10 @@ public class BasculaFragment extends Fragment {
         }
 
         private void datoUltimoPeso (){
-            TextView vistaPeso = vistaInicio.findViewById(R.id.peso);
+            TextView vistaPeso = vistaBascula.findViewById(R.id.peso);
             vistaPeso.setText(Float.toString(ultimoPeso));
         }
 
-        public void consultaDatos (){
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-//            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-//                    .setTimestampsInSnapshotsEnabled(true)
-//                    .build();
-//            db.setFirestoreSettings(settings);
-
-            db.collection("pruebaDatosBascula")
-                    .orderBy("fecha", Query.Direction.ASCENDING)
-                    .limit(5)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                int i = 0;
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    System.out.println(document.getId() + " => " + document.getData());
-                                    System.out.println(document.getData().get("peso").getClass());
-
-                                    String numero = document.getData().get("peso").toString();
-                                    valoresPeso[i] = Float.parseFloat(numero);
-
-                                    //Double numero2 = document.getData().get("peso");
-
-                                    //valoresPeso[i] = document.getData().get("peso");
-
-                                    Timestamp timestamp = document.getTimestamp("fecha");
-                                    fechas.add(timestamp.toDate());
-                                    i++;
-                                }
-
-                                generateData();
-                                datoUltimoPeso();
-                                graficaCircular();
-
-                            } else {
-                                System.out.println("Error getting documents." + task.getException());
-                            }
-                        }
-                    });
-        }
     }
 
