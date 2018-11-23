@@ -43,3 +43,5 @@ build/
 *.ser
 APP/proyectoIoTG1/.gradle/buildOutputCleanup/cache.properties
 *.properties
+APP/proyectoIoTG1/.gradle/buildOutputCleanup/cache.properties
+*.properties

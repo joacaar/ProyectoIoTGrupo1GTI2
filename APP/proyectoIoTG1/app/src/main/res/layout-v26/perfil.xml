@@ -11,7 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,9 +26,9 @@
                 android:id="@+id/fotoUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="125dp"
+                android:src="@drawable/manolo"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/manolo" />
+                app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
 
         <LinearLayout
@@ -40,7 +42,7 @@
                 android:id="@+id/nombreUsuario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="USUARIO" />
+                android:text="@string/usuario" />
         </LinearLayout>
 
         <LinearLayout
@@ -72,11 +74,12 @@
 
                     <TextView
                         android:id="@+id/correoUsuario"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
                         android:layout_weight="1"
-                        android:text="TextView" />
+                        android:text="@string/textview" />
 
                 </LinearLayout>
 
@@ -127,11 +130,13 @@
                         android:layout_width="34dp"
                         android:layout_height="46dp"
                         android:layout_marginLeft="40dp"
-                        android:contentDescription="TODO"
+                        android:contentDescription="@string/todo"
+                        android:paddingEnd="2dp"
                         android:paddingRight="2dp"
                         app:srcCompat="@drawable/sexo" />
 
                     <RadioGroup
+                        android:id="@+id/radioSex"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -140,17 +145,20 @@
                             android:id="@+id/Masculino"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="8dp"
-                            android:text="Maculino" />
+                            android:text="@string/maculino" />
 
                         <RadioButton
                             android:id="@+id/Femenino"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="8dp"
-                            android:text="Femenino" />
+                            android:text="@string/femenino" />
+
                     </RadioGroup>
 
                 </LinearLayout>
@@ -165,14 +173,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="40dp"
                     android:layout_marginLeft="40dp"
                     android:gravity="center">
 
                     <ImageView
                         android:id="@+id/iconSillaRuedas"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:contentDescription="TODO"
                         app:srcCompat="@drawable/ic_silla" />
 
                     <Switch
@@ -199,8 +209,10 @@
                         android:id="@+id/imageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0"
+                        android:contentDescription="TODO"
                         android:onClick="showDatePickerDialog"
+                        android:paddingStart="40dp"
                         android:paddingLeft="40dp"
                         app:srcCompat="@drawable/ic_calendario" />
 
@@ -208,13 +220,56 @@
                         android:id="@+id/editTextFecha"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
                         android:layout_weight="1"
+                        android:autofillHints=""
                         android:ems="10"
-                        android:inputType="date"
-                        android:focusableInTouchMode="false"/>
+                        android:focusableInTouchMode="false"
+                        android:inputType="date" />
 
                 </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="25dp">
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/ejercicio" />
+
+                    <SeekBar
+                        android:id="@+id/seekBar"
+                        style="@style/Widget.AppCompat.SeekBar.Discrete"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="40dp"
+                        android:layout_weight="3"
+                        android:isScrollContainer="false"
+                        android:max="4"
+                        android:progress="1" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/guardar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableBottom="@drawable/contenedor_rnd"
+                android:text="Guardar" />
 
         </LinearLayout>
 

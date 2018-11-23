@@ -19,4 +19,9 @@
     <string name="red_de_sensores">RED DE SENSORES</string>
     <string name="usuarios">Usuarios</string>
     <string name="otro">Otro</string>
+    <string name="usuario">USUARIO</string>
+    <string name="femenino">Femenino</string>
+    <string name="maculino">Maculino</string>
+    <string name="textview">TextView</string>
+    <string name="todo">TODO</string>
 </resources>

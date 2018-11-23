@@ -4,24 +4,38 @@ package com.GTI.Grupo1.IoT;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class PerfilFragment extends Fragment{
+public class PerfilFragment extends Fragment {
 
 
     private FirebaseUser user;
@@ -29,6 +43,16 @@ public class PerfilFragment extends Fragment{
     private static final String TAG = "PerfilFragment";
     private EditText mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+
+
+    private RadioGroup radioSexGroup;
+    private RadioButton radioSexButton;
+    private Button btnDisplay;
+
+    private String date;
+    private SeekBar seekBar;
+
+
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -52,15 +76,14 @@ public class PerfilFragment extends Fragment{
         correo.setText(user.getEmail());
         String proveedor = user.getProviders().get(0);
 
-        if(proveedor.equals("google.com")){
+        if (proveedor.equals("google.com")) {
             String uri = user.getPhotoUrl().toString();
             Picasso.with(getActivity().getBaseContext()).load(uri).into(foto);
             System.out.println("dentro de getPhoto");
         }
 
-        //CALENARIO
+//---------------------------  CALENARIO  ------------------------------------------------------------------------------------
         mDisplayDate = view.findViewById(R.id.editTextFecha);
-
 
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +95,7 @@ public class PerfilFragment extends Fragment{
 
                 DatePickerDialog dialog = new DatePickerDialog(getActivity(),
                         mDateSetListener,
-                        year,month,day);
+                        year, month, day);
                 dialog.show();
             }
         });
@@ -83,13 +106,74 @@ public class PerfilFragment extends Fragment{
                 month = month + 1;
                 Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
 
-                String date = day + "/" + month + "/" + year;
+                date = day + "/" + month + "/" + year;
                 mDisplayDate.setText(date);
             }
         };
 
+//------------------------------  SEEKBAR  ---------------------------------------------------------------------------------
+        seekBar = view.findViewById(R.id.seekBar);
+        if (seekBar != null) {
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    // Write code to perform some action when progress is changed.
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    // Write code to perform some action when touch is started.
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    // Write code to perform some action when touch is stopped.
+                    Toast.makeText(getActivity(), "Nivel de ejercicio " + seekBar.getProgress(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        addListenerOnButton(view);
+
         return view;
+    }//onCreate()
+
+//-------------------  GUARDAR DATOS DEL USUARIO  -----------------------------------------------------------------------
+    public void addListenerOnButton(View view) {
+
+        radioSexGroup = view.findViewById(R.id.radioSex);
+        btnDisplay = view.findViewById(R.id.guardar);
+
+
+        btnDisplay.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // get selected radio button from radioGroup
+                int selectedId = radioSexGroup.getCheckedRadioButtonId();
+
+                // find the radiobutton by returned id
+                radioSexButton = getView().findViewById(selectedId);
+
+
+                if(radioSexButton!=null || date!=null) {
+                    Toast.makeText(getActivity(),
+                            radioSexButton.getText(), Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getActivity(),
+                            date, Toast.LENGTH_LONG).show();
+
+                    Toast.makeText(getActivity(),
+                            "Nivel de ejercicio " + seekBar.getProgress(), Toast.LENGTH_SHORT).show();
+
+                }//if()
+            }
+
+        });
 
     }
 
-}
+}//()
+
+
