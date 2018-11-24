@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,9 @@ public class InicioFragment extends Fragment {
 
     private String tiposMedidasPeso = " Kg ";
     private String tiposMedidasAltura = " cm ";
+
+    MotionEvent event;
+
 
     public InicioFragment() {
         // Required empty public constructor
@@ -83,7 +88,6 @@ public class InicioFragment extends Fragment {
         final TextView textoPersonas = view.findViewById(R.id.personas);
 
 
-
         FirebaseFirestore db2 = FirebaseFirestore.getInstance();
         db2.collection("CASAS").document("Casa1.123456789").get()
                 .addOnCompleteListener(
@@ -102,13 +106,13 @@ public class InicioFragment extends Fragment {
                                     if(puerta==false || luces==false) {
                                         estadoPuerta = "Cerrada";
                                         estadoLuces = "Apagada";
+
                                     }
 
                                     //Añadir el texto de la bd en el layout
                                     textoPuerta.setText(estadoPuerta);
                                     textoTemp.setText(temperatura + "Cº/");
                                     textoHum.setText(humedad + " % ");
-                                    textoLuces.setText(estadoLuces);
                                     textoPersonas.setText("Hay " + personas);
 
                                 }
@@ -118,4 +122,5 @@ public class InicioFragment extends Fragment {
         return view;
 
     }//onCreate()
+
 }//()

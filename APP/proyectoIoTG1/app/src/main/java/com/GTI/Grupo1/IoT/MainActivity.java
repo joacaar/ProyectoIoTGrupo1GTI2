@@ -3,6 +3,7 @@ package com.GTI.Grupo1.IoT;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,7 +29,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,16 +47,27 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
+import static santi.example.com.comun.Mqtt.*;
+
 /*
 * TODO: Modificar la foto que se muestra de la cuenta de google en forma redonda
 * TODO:  Cuando el usuario se regitra por usuario y contraseña, se muestra el nombre y el correo, pero la foto se muestra la que hay por defecto
 **/
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MqttCallback {
 
     private FirebaseUser user;
 
+    MqttClient client;
 
     ////////recycler view////////
     private RecyclerView recyclerView;
@@ -81,20 +96,30 @@ public class MainActivity extends AppCompatActivity
 
        user = FirebaseAuth.getInstance().getCurrentUser();
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//-------------------------------------SONOFF--------------------------------------------
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        try {
+            Log.i(TAG, "Conectando al broker " + broker);
+            client = new MqttClient(broker, clientId, new MemoryPersistence());
+            MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts.setCleanSession(true);
+            connOpts.setKeepAliveInterval(60);
+            connOpts.setWill(topicRoot+"WillTopic", "App desconectada".getBytes(),
+                    qos, false);
+
+            client.connect(connOpts);
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al conectar.", e);
+        }
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot+"POWER");
+            client.subscribe(topicRoot+"POWER", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+
 
 // Codigo para mostrar los datos del usuario en la parte superior del menu
         //Obtenemos las referencias de las vistas
@@ -280,5 +305,45 @@ public class MainActivity extends AppCompatActivity
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+
+    public void botonLuz (View view){
+        try {
+            Log.i(TAG, "Publicando mensaje: " + "hola");
+            MqttMessage message = new MqttMessage("TOGGLE".getBytes());
+            message.setQos(qos);
+            message.setRetained(false);
+            client.publish(topicRoot+ "cmnd/POWER", message);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al publicar.", e);
+        }
+    }
+
+
+    @Override
+    public void connectionLost(Throwable cause) {
+        Log.d(TAG, "Conexión perdida");
+
+    }
+
+    @Override public void messageArrived(String topic, MqttMessage message)
+            throws Exception {
+        final String payload = new String(message.getPayload());
+        Log.d(TAG, "Recibiendo: " + topic + "->" + payload);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView a = findViewById(R.id.luces);
+                a.setText(payload);
+
+            }
+        });
+    }
+
+    @Override
+    public void deliveryComplete(IMqttDeliveryToken token) {
+        Log.d(TAG, "Entrega completa");
     }
 }

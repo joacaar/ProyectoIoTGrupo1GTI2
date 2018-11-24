@@ -150,6 +150,7 @@
                             android:layout_height="wrap_content"
                             android:padding="10dp"
                             android:text="Puerta"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused"
                             android:textSize="18sp" />
 
                         <TextView
@@ -157,14 +158,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:text="Puerta principal " />
+                            android:text="Puerta principal "
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
                         <TextView
                             android:id="@+id/textView13"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:text="Fecha" />
+                            android:text="Fecha"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -198,6 +201,7 @@
                             android:layout_height="wrap_content"
                             android:padding="10dp"
                             android:text="Personas"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused"
                             android:textSize="18sp" />
 
                         <TextView
@@ -205,14 +209,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:text="Personas" />
+                            android:text="Personas"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
                         <TextView
                             android:id="@+id/textView15"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:text="Fecha" />
+                            android:text="Fecha"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
                     </LinearLayout>
 
@@ -260,6 +266,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Temp"
+                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
                                 android:textSize="18sp" />
 
                             <TextView
@@ -267,6 +274,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Hum"
+                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
                                 android:textSize="18sp" />
                         </LinearLayout>
 
@@ -275,14 +283,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:text="Temperatura" />
+                            android:text="Temperatura"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
                         <TextView
                             android:id="@+id/textView17"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:text="Fecha" />
+                            android:text="Fecha"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
                     </LinearLayout>
 
@@ -294,11 +304,12 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/contenedor_rnd"
+                    android:onClick="botonLuz"
                     android:orientation="horizontal"
                     android:padding="5dp">
 
                     <ImageView
-                        android:id="@+id/imageView74"
+                        android:id="@+id/imagenLuz"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -308,7 +319,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="4"
                         android:orientation="vertical">
 
                         <TextView
@@ -317,6 +328,7 @@
                             android:layout_height="wrap_content"
                             android:padding="10dp"
                             android:text="Luces"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused"
                             android:textSize="18sp" />
 
                         <TextView
@@ -324,14 +336,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:text="Luces" />
+                            android:text="Comedor"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
                         <TextView
                             android:id="@+id/textView19"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:text="Fecha" />
+                            android:text="Fecha"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
                     </LinearLayout>
 
