@@ -61,8 +61,8 @@
                     android:id="@+id/iconEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:contentDescription="TODO"
+                    android:layout_marginStart="40dp"
+                    android:contentDescription="@string/asd"
                     app:srcCompat="@drawable/ic_email" />
 
                 <TextView
@@ -72,7 +72,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:text="@string/textview" />
+                    android:text="correoDelUsuario" />
 
             </LinearLayout>
 
@@ -98,7 +98,7 @@
 
                 <TextView
                     android:id="@+id/telefonoUsuario"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
@@ -123,7 +123,7 @@
                     android:layout_width="34dp"
                     android:layout_height="46dp"
                     android:layout_marginLeft="40dp"
-                    android:contentDescription="@string/todo"
+                    android:contentDescription="ptodo"
                     android:paddingEnd="2dp"
                     android:paddingRight="2dp"
                     app:srcCompat="@drawable/sexo" />

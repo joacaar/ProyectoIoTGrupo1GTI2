@@ -213,7 +213,6 @@ public class PerfilFragment extends Fragment {
                                     Log.w(TAG, "Error adding document", e);
                                 }
                             });
-
                 }//if()
 
 

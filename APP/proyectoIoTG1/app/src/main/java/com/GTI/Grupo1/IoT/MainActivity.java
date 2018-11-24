@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity
 
                                     Toast toast1 = Toast.makeText(getApplicationContext(), dato1, Toast.LENGTH_SHORT);
 
-                                    TextView view3 = findViewById(R.id.peso1);
+                                    TextView view3 = findViewById(R.id.peso);
 
                                     view3.setText(dato1);
                                     toast1.show();
