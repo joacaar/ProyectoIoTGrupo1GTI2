@@ -273,20 +273,20 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/guardar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/guardar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/my_button_bg"
-                android:text="Guardar" />
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:background="@drawable/my_button_bg"
+            android:text="Guardar" />
 
     </LinearLayout>
 
