@@ -84,7 +84,7 @@ public class InicioFragment extends Fragment {
         final TextView textoPuerta = view.findViewById(R.id.puerta);
         final TextView textoTemp = view.findViewById(R.id.temp);
         final TextView textoHum = view.findViewById(R.id.hum);
-        final TextView textoLuces = view.findViewById(R.id.luces);
+        //final TextView textoLuces = view.findViewById(R.id.luces);
         final TextView textoPersonas = view.findViewById(R.id.personas);
 
 
@@ -100,12 +100,12 @@ public class InicioFragment extends Fragment {
                                     puerta = task.getResult().getBoolean("PuertaAbierta");
                                     temperatura = task.getResult().getDouble("Temperatura").toString();
                                     humedad = task.getResult().getDouble("Humedad").toString();
-                                    luces = task.getResult().getBoolean("Luces");
+                                    //luces = task.getResult().getBoolean("Luces");
                                     personas = task.getResult().getDouble("Personas").toString();
 
                                     if(puerta==false || luces==false) {
                                         estadoPuerta = "Cerrada";
-                                        estadoLuces = "Apagada";
+                                        //estadoLuces = "Apagada";
 
                                     }
 
