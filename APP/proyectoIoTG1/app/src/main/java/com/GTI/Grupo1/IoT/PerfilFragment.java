@@ -47,10 +47,13 @@ public class PerfilFragment extends Fragment {
 
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
-    private Button btnDisplay;
+    private Button btnGuardar;
 
     private String date;
     private SeekBar seekBar;
+    private String nivelEjer;
+    private TextView textViewEjer;
+
 
 
 
@@ -113,6 +116,8 @@ public class PerfilFragment extends Fragment {
 
 //------------------------------  SEEKBAR  ---------------------------------------------------------------------------------
         seekBar = view.findViewById(R.id.seekBar);
+        textViewEjer = view.findViewById(R.id.TextoEjer);
+
         if (seekBar != null) {
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
@@ -128,11 +133,26 @@ public class PerfilFragment extends Fragment {
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
                     // Write code to perform some action when touch is stopped.
-                    Toast.makeText(getActivity(), "Nivel de ejercicio " + seekBar.getProgress(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "Nivel de ejercicio " + seekBar.getProgress(), Toast.LENGTH_SHORT).show();
+
+                    if (seekBar.getProgress() == 0){
+                        nivelEjer = "Nada de ejercicio ";
+                    }else if (seekBar.getProgress()== 1){
+                        nivelEjer = "Poco ejercicio";
+                    }else if (seekBar.getProgress()== 2){
+                        nivelEjer = "Ejercicio una vez por semana";
+                    }else if (seekBar.getProgress()== 3){
+                        nivelEjer = "Bastante ejercicio";
+                    }else if (seekBar.getProgress()== 4){
+                        nivelEjer = "Mucho ejercicio";
+                    }
+
+                    textViewEjer.setText(nivelEjer);
                 }
             });
         }
 
+        //Guardar datos del usuario
         addListenerOnButton(view);
 
         return view;
@@ -142,10 +162,10 @@ public class PerfilFragment extends Fragment {
     public void addListenerOnButton(View view) {
 
         radioSexGroup = view.findViewById(R.id.radioSex);
-        btnDisplay = view.findViewById(R.id.guardar);
+        btnGuardar = view.findViewById(R.id.guardar);
 
 
-        btnDisplay.setOnClickListener(new View.OnClickListener() {
+        btnGuardar.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -167,7 +187,37 @@ public class PerfilFragment extends Fragment {
                     Toast.makeText(getActivity(),
                             "Nivel de ejercicio " + seekBar.getProgress(), Toast.LENGTH_SHORT).show();
 
+
+
+//-------------------------GUARDAR LOS DATOS DEL USUARIO EN LA BASE DE DATOS---------------------------------------
+
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    // Create a new user with a first and last name
+                    Map<String, Object> perfilUser = new HashMap<>();
+                    perfilUser.put("Sexo", radioSexButton.getText());
+                    perfilUser.put("Fecha de nacimiento", date);
+                    perfilUser.put("Nivel de ejercicio", seekBar.getProgress());
+
+                    // Add a new document with a generated ID
+                    db.collection("perfilUser")
+                            .add(perfilUser)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error adding document", e);
+                                }
+                            });
+
                 }//if()
+
+
+
             }
 
         });
