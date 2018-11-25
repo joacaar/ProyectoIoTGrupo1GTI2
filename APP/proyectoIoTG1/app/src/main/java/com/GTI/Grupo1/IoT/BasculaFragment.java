@@ -70,9 +70,17 @@ public class BasculaFragment extends Fragment {
         return vistaBascula;
     }
 
-    private void consultaDatosRT(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("coleccion");
+//    private void consultaDatosRT(){
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        db.collection("coleccion").addSnapshotListener(
+//                new EventListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+//                                        @Nullable FirebaseFirestoreException e) {
+//
+//                    }
+//                }
+//        );
 
 //        db.collection("coleccion").document("documento").addSnapshotListener(
 //                new EventListener<DocumentSnapshot>() {
@@ -88,7 +96,7 @@ public class BasculaFragment extends Fragment {
 //                        }
 //                    }
 //                });
-    }
+    //}
 
     private void consultaDatos (){
 

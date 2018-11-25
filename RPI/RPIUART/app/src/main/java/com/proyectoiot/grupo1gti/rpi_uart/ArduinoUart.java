@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.android.things.pio.PeripheralManager;
 import com.google.android.things.pio.UartDevice;
+import com.google.android.things.pio.UartDeviceCallback;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,21 +12,23 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 public class ArduinoUart {
-    private UartDevice uart;
+
+    public UartDevice uartPrivada;
+
     public ArduinoUart(String nombre, int baudios) {
         try {
-            uart = PeripheralManager.getInstance().openUartDevice(nombre);
-            uart.setBaudrate(baudios);
-            uart.setDataSize(8);
-            uart.setParity(UartDevice.PARITY_NONE);
-            uart.setStopBits(1);
+            uartPrivada = PeripheralManager.getInstance().openUartDevice(nombre);
+            uartPrivada.setBaudrate(baudios);
+            uartPrivada.setDataSize(8);
+            uartPrivada.setParity(UartDevice.PARITY_NONE);
+            uartPrivada.setStopBits(1);
         } catch (IOException e) {
             Log.w(TAG, "Error iniciando UART", e);
         }
     }
     public void escribir(String s) {
         try {
-            int escritos = uart.write(s.getBytes(), s.length());
+            int escritos = uartPrivada.write(s.getBytes(), s.length());
             Log.d(TAG, escritos+" bytes escritos en UART");
         } catch (IOException e) {
             Log.w(TAG, "Error al escribir en UART", e);
@@ -38,7 +41,7 @@ public class ArduinoUart {
         byte[] buffer = new byte[maxCount];
         try {
             do {
-                len = uart.read(buffer, buffer.length);
+                len = uartPrivada.read(buffer, buffer.length);
                 for (int i=0; i<len; i++) {
                     s += (char)buffer[i];
                 }
@@ -49,10 +52,10 @@ public class ArduinoUart {
         return s;
     }
     public void cerrar() {
-        if (uart != null) {
+        if (uartPrivada != null) {
             try {
-                uart.close();
-                uart = null;
+                uartPrivada.close();
+                uartPrivada = null;
             } catch (IOException e) {
                 Log.w(TAG, "Error cerrando UART", e);
             }
@@ -61,4 +64,9 @@ public class ArduinoUart {
     static public List<String> disponibles() {
         return PeripheralManager.getInstance().getUartDeviceList();
     }
+
+    public UartDevice getUartPrivada() {
+        return uartPrivada;
+    }
+
 }
