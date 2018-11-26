@@ -81,6 +81,8 @@ public class PerfilFragment extends Fragment {
 
         if (proveedor.equals("google.com")) {
             String uri = user.getPhotoUrl().toString();
+            Log.d("ygh", uri);
+            uri = uri.replace("s96-c", "s300-c");
             Picasso.with(getActivity().getBaseContext()).load(uri).into(foto);
             System.out.println("dentro de getPhoto");
         }
