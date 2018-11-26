@@ -1,4 +1,4 @@
-package com.GTI.Grupo1.IoT;
+/*package com.GTI.Grupo1.IoT;
 
 
 import android.os.Bundle;
@@ -37,4 +37,4 @@ public class UsuariosFragment extends Fragment {
     }
 
 
-}
+}*/

@@ -1,4 +1,4 @@
-package com.GTI.Grupo1.IoT;
+/*package com.GTI.Grupo1.IoT;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -58,4 +58,5 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
         return usuarios.tamanyo();
     }
 }
+*/
 

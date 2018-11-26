@@ -25,10 +25,6 @@
         <!--android:icon="@drawable/phone_home"-->
         <!--android:icon="@drawable/ic_menu_gallery"-->
         <item
-            android:id="@+id/nav_usuarios"
-            android:icon="@drawable/usuarios"
-            android:title="@string/usuarios" />
-        <item
             android:id="@+id/nav_preferencias"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/configuraci_n" />

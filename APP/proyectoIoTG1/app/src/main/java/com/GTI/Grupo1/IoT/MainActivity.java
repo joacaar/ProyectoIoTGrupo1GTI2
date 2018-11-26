@@ -59,7 +59,7 @@ import static santi.example.com.comun.Mqtt.*;
 
 /*
 * TODO: Modificar la foto que se muestra de la cuenta de google en forma redonda
-* TODO:  Cuando el usuario se regitra por usuario y contraseña, se muestra el nombre y el correo, pero la foto se muestra la que hay por defecto
+* TODO:  Cuando el usuario se registra por usuario y contraseña, se muestra el nombre y el correo, pero la foto se muestra la que hay por defecto
 **/
 
 public class MainActivity extends AppCompatActivity
@@ -69,11 +69,11 @@ public class MainActivity extends AppCompatActivity
 
     MqttClient client;
 
-    ////////recycler view////////
+    /*////////recycler view////////
     private RecyclerView recyclerView;
     public AdaptadorUsuarios adaptador;
     private RecyclerView.LayoutManager layoutManager;
-    public static UsuarioInterface usuarios = new UsuariosVector();
+    public static UsuarioInterface usuarios = new UsuariosVector();*/
 
 
 
@@ -152,8 +152,13 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 //------------------------------------------------------------------------------------------------------------------
+
+        // se hace una busqueda a la base de datos que voy a aprovechar para descargar datos
+
+
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").document("YCBIiP0cbezTvmHiFPq3").get()
+        /*db.collection("users").document("YCBIiP0cbezTvmHiFPq3").get()
                 .addOnCompleteListener(
                         new OnCompleteListener<DocumentSnapshot>() {
                             @Override
@@ -175,7 +180,42 @@ public class MainActivity extends AppCompatActivity
                                     toast2.show();
                                 }
                             }
-                        });
+                        });*/
+        //
+        db.collection("USUARIOS").document("gS5851pJr8mxlUhB3Vog").get()
+                .addOnCompleteListener(
+                        new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()){
+                                    /*Usuario bobMataplagas = new Usuario();
+                                    bobMataplagas.setCorreoElectronico(task.getResult().getString("Correo"));
+                                    bobMataplagas.setFechaNacimiento(task.getResult().getString("FechaNaci"));
+                                    bobMataplagas.setNivelEjercicio(task.getResult().getLong("NivelEjer"));
+                                    bobMataplagas.setNombre(task.getResult().getString("Nombre"));
+                                    bobMataplagas.setSexo(task.getResult().getString("Sexo"));*/
+                                    Usuario bobMataplagas = new Usuario(
+                                             task.getResult().getString("Correo")
+                                            ,task.getResult().getString("FechaNaci")
+                                            ,task.getResult().getLong("NivelEjer")
+                                            ,task.getResult().getString("Nombre")
+                                            ,task.getResult().getString("Sexo"));
+
+                                    Toast toast = Toast.makeText(getApplicationContext(), bobMataplagas.getCorreoElectronico(), Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    Toast toast1 = Toast.makeText(getApplicationContext(), bobMataplagas.getFechaNacimiento(), Toast.LENGTH_SHORT);
+                                    toast1.show();
+                                    Toast toast2 = Toast.makeText(getApplicationContext(), bobMataplagas.getNombre(), Toast.LENGTH_SHORT);
+                                    toast2.show();
+                                    Toast toast3 = Toast.makeText(getApplicationContext(), bobMataplagas.getSexo(), Toast.LENGTH_SHORT);
+                                    toast3.show();
+                                } else {
+                                    Toast toast1 = Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT);
+                                    toast1.show();
+                                }
+                            }
+                        }
+                );
 //-------------------------------------------------------------------------------------------------------------------
     }
 
@@ -250,17 +290,9 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.commit();
 
         } else if (id == R.id.nav_casa) {
+            return true;
 
-        } else if (id == R.id.nav_usuarios) {
-
-            fragment = new UsuariosFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
-
-
-        } else if (id == R.id.nav_preferencias) {
+        }  else if (id == R.id.nav_preferencias) {
             lanzarPreferencias(null);
             return true;
         } else if (id == R.id.nav_chart){

@@ -16,7 +16,7 @@
 #include "sensorMagnetico.h"
 #include "sensorMovimiento.h"
 #include "sensorLlama.h"
-#include "DHT.h"
+//#include "DHT.h"
 #include "sensorHumTemp.h"
 #include "sensorLDR.h"
 AsyncUDP udp;
