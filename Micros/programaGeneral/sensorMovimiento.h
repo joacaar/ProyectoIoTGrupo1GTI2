@@ -16,13 +16,14 @@ bool lecturaMovimiento(JsonObject& envio, char (&texto)[500])
 {
    
    val = digitalRead(PIRPin);
+  
    if (val == HIGH)   //si está activado
    { 
       digitalWrite(LEDPin, HIGH);  //LED ON
       if (pirState == LOW)  //si previamente estaba apagado
       {
          envio["Habitación"] = "Comedor";
-        envio["EstadoM"] = "Hay alguien";
+        envio["EstadoM"] = "s";
         envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
         //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         Serial.print("Enviando: ");
@@ -37,7 +38,7 @@ bool lecturaMovimiento(JsonObject& envio, char (&texto)[500])
       if (pirState == HIGH)  //si previamente estaba encendido
       {
         envio["Habitación"] = "Comedor";
-        envio["EstadoM"] = "No hay nadie";
+        envio["EstadoM"] = "n";
         envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
         //udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
         Serial.print("Enviando: ");

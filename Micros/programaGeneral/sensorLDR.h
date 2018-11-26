@@ -18,11 +18,16 @@ bool calcularLuminosidad(JsonObject& envio, char ( &texto )[500])
    V = analogRead(APin);         
  
    //ilum = ((long)(1024-V)*A*10)/((long)B*Rc*V);  //usar si LDR entre GND y A0 
+   
    ilum = -((long)V*A*10)/((long)B*Rc*(1024-V));    //usar si LDR entre A0 y Vcc (como en el esquema anterior)
+   if(ilum<0){
+    ilum=-ilum;
+    }
+  
  if(aux){
   if(ilum <= 140){
     digitalWrite(LEDPin1, HIGH);
-    envio["Luces"] = "Hace falta luz";
+    envio["Luces"] = "s";
      envio.printTo(texto); 
     Serial.print("Enviando: ");
    // Serial.println(texto);
@@ -36,7 +41,7 @@ bool calcularLuminosidad(JsonObject& envio, char ( &texto )[500])
   }else{
       if(ilum > 140){
    digitalWrite(LEDPin1, LOW);
-    envio["Luces"] = "No hace falta luz";
+    envio["Luces"] = "n";
      envio.printTo(texto); 
     Serial.print("Enviando: ");
    // Serial.println(texto);

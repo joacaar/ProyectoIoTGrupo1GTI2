@@ -14,7 +14,7 @@ void configuracionPuerta(JsonObject& envio) {
    if (digitalRead(Pin) == LOW) {
     
      envio["Puerta"] = "Principal";
-    envio["Estado"] = "Cerrada";
+    envio["Estado"] = "n";
     envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
     Serial.print("Enviando: ");
     Serial.println(texto);
@@ -27,7 +27,7 @@ void configuracionPuerta(JsonObject& envio) {
     }else if(digitalRead(Pin) == HIGH){
       
      envio["Puerta"] = "Principal";
-    envio["Estado"] = "Abierta";
+    envio["Estado"] = "s";
     envio.printTo(texto); 
     Serial.print("Enviando: ");
     Serial.println(texto);
@@ -46,7 +46,7 @@ bool lecturaPuerta(JsonObject& envio, char ( &texto )[500]){
     if (digitalRead(Pin) == LOW) {
       delay(1000);
      envio["Puerta"] = "Principal";
-    envio["Estado"] = "Cerrada";
+    envio["Estado"] = "n";
     envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
     Serial.print("Enviando: ");
     //Serial.println(texto);
@@ -62,7 +62,7 @@ bool lecturaPuerta(JsonObject& envio, char ( &texto )[500]){
     if (digitalRead(Pin) == HIGH) {
       delay(1000);
      envio["Puerta"] = "Principal";
-    envio["Estado"] = "Abierta";
+    envio["Estado"] = "s";
     envio.printTo(texto); 
     Serial.print("Enviando: ");
     //Serial.println(texto);
