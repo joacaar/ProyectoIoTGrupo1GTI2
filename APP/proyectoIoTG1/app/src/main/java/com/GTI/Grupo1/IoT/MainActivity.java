@@ -111,20 +111,46 @@ public class MainActivity extends AppCompatActivity
             connOpts.setKeepAliveInterval(60);
             connOpts.setWill(topicRoot+"WillTopic", "App desconectada".getBytes(),
                     qos, false);
-
             client.connect(connOpts);
         } catch (MqttException e) {
             Log.e(TAG, "Error al conectar.", e);
         }
         try {
-            Log.i(TAG, "Suscrito a " + topicRoot+"POWER");
-            client.subscribe(topicRoot+"POWER", qos);
-            client.setCallback(this);
+                Log.i(TAG, "Suscrito a " + topicRoot + "POWER");
+                client.subscribe(topicRoot + "POWER", qos);
+                client.setCallback(this);
 
         } catch (MqttException e) {
             Log.e(TAG, "Error al suscribir.", e);
         }
 
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "medicamentos");
+            client.subscribe(topicRoot + "medicamentos", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "personas");
+            client.subscribe(topicRoot + "personas", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "puerta");
+            client.subscribe(topicRoot + "puerta", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
 
 // Codigo para mostrar los datos del usuario en la parte superior del menu
         //Obtenemos las referencias de las vistas
@@ -348,7 +374,7 @@ public class MainActivity extends AppCompatActivity
 
     public void botonLuz (View view){
         try {
-            Log.i(TAG, "Publicando mensaje: " + "hola");
+            Log.i(TAG, "Publicando mensaje: " + "acción luz");
             MqttMessage message = new MqttMessage("TOGGLE".getBytes());
             message.setQos(qos);
             message.setRetained(false);
@@ -373,9 +399,19 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TextView a = findViewById(R.id.luces);
-                a.setText(payload);
-
+                   if(payload.equals("ON") || payload.equals("OFF")){
+                       TextView a = findViewById(R.id.luces);
+                       a.setText(payload);
+                   }else if(payload.contains("medicamento")){
+                       TextView b = findViewById(R.id.medicamentos);
+                       b.setText(payload);
+                   }else if(payload.contains("personas")){
+                       TextView c = findViewById(R.id.personas);
+                       c.setText(payload);
+                   }else if(payload.contains("Cerrada") || payload.contains("Abierta")){
+                       TextView d = findViewById(R.id.puerta);
+                       d.setText(payload);
+                   }
             }
         });
     }

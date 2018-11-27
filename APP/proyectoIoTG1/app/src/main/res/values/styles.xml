@@ -21,5 +21,8 @@
         <item name="android:background">#2b778c</item>
         <item name="android:editTextColor">#fff</item>
     </style>
+    <style name="TemaMed">
+        <item name="android:textColor">#ff0000</item>
+    </style>
 
 </resources>
