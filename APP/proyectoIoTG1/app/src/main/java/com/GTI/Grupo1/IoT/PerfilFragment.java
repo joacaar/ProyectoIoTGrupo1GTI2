@@ -3,7 +3,10 @@ package com.GTI.Grupo1.IoT;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,19 +23,30 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class PerfilFragment extends Fragment {
@@ -54,8 +68,9 @@ public class PerfilFragment extends Fragment {
     private String nivelEjer;
     private TextView textViewEjer;
 
-
-
+    private static final int PICK_IMAGE = 100;
+    Uri imageUri;
+    ImageView foto_gallery;
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -72,7 +87,7 @@ public class PerfilFragment extends Fragment {
 
         TextView nombre = view.findViewById(R.id.nombreUsuario);
         TextView correo = view.findViewById(R.id.correoUsuario);
-        ImageView foto = view.findViewById(R.id.fotoUsuario);
+        final ImageView foto = view.findViewById(R.id.fotoUsuario);
 
 
         nombre.setText(user.getDisplayName());
@@ -153,12 +168,37 @@ public class PerfilFragment extends Fragment {
                 }
             });
         }
+//---------------------------------------------------------------------------------------------------------------------------
+        //Editar foto de perfil
+        foto_gallery = view.findViewById(R.id.fotoUsuario);
 
+        foto_gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
+
+//-------------------------------------------------------------------
         //Guardar datos del usuario
         addListenerOnButton(view);
 
         return view;
     }//onCreate()
+
+    private void openGallery(){
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            imageUri = data.getData();
+            foto_gallery.setImageURI(imageUri);
+        }
+    }
+
 
 //-------------------  GUARDAR DATOS DEL USUARIO  -----------------------------------------------------------------------
     public void addListenerOnButton(View view) {
