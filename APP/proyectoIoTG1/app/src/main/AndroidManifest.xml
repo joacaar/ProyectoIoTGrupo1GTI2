@@ -12,27 +12,35 @@
         android:roundIcon="@mipmap/ic_launcher_nube"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity
             android:name="com.GTI.Grupo1.IoT.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity android:name="com.GTI.Grupo1.IoT.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.GTI.Grupo1.IoT.AcercaDeActivity"
             android:label="Acerca de ..."
             android:theme="@android:style/Theme.Holo.Light.Dialog"/>
+
         <activity
             android:name="com.GTI.Grupo1.IoT.PreferenciasActivity"
             android:label="Configuración"
             android:theme="@android:style/Theme.DeviceDefault.Light"/>
+
         <activity android:name="com.GTI.Grupo1.IoT.ChartActivity"
-            android:label="Usuarios"
+            android:label="Chart"
             android:theme="@android:style/Theme.DeviceDefault.Light.DarkActionBar"/>
+
+        <activity android:name="com.GTI.Grupo1.IoT.SensoresActivity"
+            android:label="Sensores"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 </manifest>

@@ -1,4 +1,4 @@
-package com.GTI.Grupo1.IoT;
+/*package com.GTI.Grupo1.IoT;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -30,3 +30,4 @@ public class ChartActivity extends Activity {
         pieChartView.setChartRotationEnabled(false);
     }
 }
+*/

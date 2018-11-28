@@ -290,13 +290,15 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.commit();
 
         } else if (id == R.id.nav_casa) {
-            return true;
+
+            fragment = new SensoresFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);//.addToBackStack(null); //para hacer que al pulsar atras no salga de la aplicación
+            fragmentTransaction.commit();
 
         }  else if (id == R.id.nav_preferencias) {
             lanzarPreferencias(null);
-            return true;
-        } else if (id == R.id.nav_chart){
-            lanzarChart(null);
             return true;
 
         } else if (id == R.id.nav_perfil) {
@@ -332,11 +334,6 @@ public class MainActivity extends AppCompatActivity
 
     public void lanzarPreferencias(View view){
         Intent i = new Intent(this, PreferenciasActivity.class);
-        startActivity(i);
-    }
-
-    public void lanzarChart(View view){
-        Intent i = new Intent(this, ChartActivity.class);
         startActivity(i);
     }
     public void showDatePickerDialog(View v) {

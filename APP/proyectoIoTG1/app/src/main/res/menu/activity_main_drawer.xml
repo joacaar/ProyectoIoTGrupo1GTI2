@@ -30,12 +30,6 @@
             android:title="@string/configuraci_n" />
 
         <item
-            android:id="@+id/nav_chart"
-            android:title="Grafica"
-            android:icon="@drawable/ic_grafica"
-            />
-
-        <item
             android:id="@+id/nav_compartir"
             android:icon="@drawable/ic_menu_send"
             android:title="Compartir" />

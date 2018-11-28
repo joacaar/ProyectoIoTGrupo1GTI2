@@ -68,7 +68,7 @@ public class Usuario
 
     @Override
     public String toString() {
-        return "Lugar{" +
+        return "Usuario{" +
                 "correoElectronico='" + correoElectronico + '\'' +
                 "fechaNacimiento='" + fechaNacimiento + '\'' +
                 "nivelEjercicio='" + nivelEjercicio + '\'' +
