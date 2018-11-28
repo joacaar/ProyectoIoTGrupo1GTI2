@@ -1,74 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:background="@drawable/contenedor_rnd"
+    android:layout_height="80dp"
     android:outlineAmbientShadowColor="@color/colorPrimary"
     android:outlineSpotShadowColor="@color/colorPrimaryDark"
     android:padding="8dp">
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="1dp"
-        android:background="@color/browser_actions_divider_color" />
+    <TextView
+        android:id="@+id/fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="fecha"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/nombre"
-        android:layout_width="122dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="105dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginLeft="104dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:maxLines="1"
         android:text="Peso"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/fecha"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nombre"
-
-        android:layout_alignParentStart="true"
-
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="-49dp"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="fecha" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.512" />
 
     <TextView
         android:id="@+id/altura"
-        android:layout_width="145dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/nombre"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="-2dp"
-        android:layout_marginEnd="13dp"
+        android:layout_width="148dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
 
 
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="8dp"
         android:gravity="right"
         android:maxLines="1"
         android:text="Altura"
         android:textAlignment="textStart"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/nombre"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.512" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/nombre"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="53dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Peso:"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+    <View
+        android:id="@+id/view"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_marginBottom="3dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

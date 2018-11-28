@@ -111,7 +111,7 @@ public class InicioFragment extends Fragment {
 
                                     //Añadir el texto de la bd en el layout
                                     textoPuerta.setText(estadoPuerta);
-                                    textoTemp.setText(temperatura + "Cº/");
+                                    textoTemp.setText(temperatura + " ºC");
                                     textoHum.setText(humedad + " % ");
                                     textoPersonas.setText("Hay " + personas);
 

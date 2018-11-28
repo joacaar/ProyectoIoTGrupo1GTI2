@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -75,7 +76,9 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView.LayoutManager layoutManager;
     public static UsuarioInterface usuarios = new UsuariosVector();*/
 
-
+    private static final int PICK_IMAGE = 100;
+    Uri imageUri;
+    ImageView foto_gallery;
 
 
     @Override
@@ -146,6 +149,24 @@ public class MainActivity extends AppCompatActivity
         try {
             Log.i(TAG, "Suscrito a " + topicRoot + "puerta");
             client.subscribe(topicRoot + "puerta", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "temperatura");
+            client.subscribe(topicRoot + "temperatura", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "humedad");
+            client.subscribe(topicRoot + "humedad", qos);
             client.setCallback(this);
 
         } catch (MqttException e) {
@@ -411,13 +432,36 @@ public class MainActivity extends AppCompatActivity
                    }else if(payload.contains("Cerrada") || payload.contains("Abierta")){
                        TextView d = findViewById(R.id.puerta);
                        d.setText(payload);
+                   }else if(payload.contains("%")){
+                       TextView i = findViewById(R.id.hum);
+                       i.setText(payload);
+                   }else {
+                       TextView e = findViewById(R.id.temp);
+                       e.setText(payload);
                    }
             }
         });
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            foto_gallery = findViewById(R.id.fotoUsuario);
+            imageUri = data.getData();
+            foto_gallery.setImageURI(imageUri);
+        }
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
         Log.d(TAG, "Entrega completa");
     }
+
+    public void editarFoto (View view){
+        openGallery();
+    }
+    private void openGallery(){
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
 }

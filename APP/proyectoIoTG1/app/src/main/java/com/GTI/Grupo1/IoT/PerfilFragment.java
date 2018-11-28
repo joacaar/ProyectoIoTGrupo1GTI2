@@ -51,6 +51,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class PerfilFragment extends Fragment {
 
+    View vistaPerfil;
 
     private FirebaseUser user;
 
@@ -68,9 +69,7 @@ public class PerfilFragment extends Fragment {
     private String nivelEjer;
     private TextView textViewEjer;
 
-    private static final int PICK_IMAGE = 100;
-    Uri imageUri;
-    ImageView foto_gallery;
+
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -81,13 +80,13 @@ public class PerfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.perfil, container, false);
+        vistaPerfil = inflater.inflate(R.layout.perfil, container, false);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        TextView nombre = view.findViewById(R.id.nombreUsuario);
-        TextView correo = view.findViewById(R.id.correoUsuario);
-        final ImageView foto = view.findViewById(R.id.fotoUsuario);
+        TextView nombre = vistaPerfil.findViewById(R.id.nombreUsuario);
+        TextView correo = vistaPerfil.findViewById(R.id.correoUsuario);
+        final ImageView foto = vistaPerfil.findViewById(R.id.fotoUsuario);
 
 
         nombre.setText(user.getDisplayName());
@@ -103,7 +102,7 @@ public class PerfilFragment extends Fragment {
         }
 
 //---------------------------  CALENARIO  ------------------------------------------------------------------------------------
-        mDisplayDate = view.findViewById(R.id.editTextFecha);
+        mDisplayDate = vistaPerfil.findViewById(R.id.editTextFecha);
 
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,8 +131,8 @@ public class PerfilFragment extends Fragment {
         };
 
 //------------------------------  SEEKBAR  ---------------------------------------------------------------------------------
-        seekBar = view.findViewById(R.id.seekBar);
-        textViewEjer = view.findViewById(R.id.TextoEjer);
+        seekBar = vistaPerfil.findViewById(R.id.seekBar);
+        textViewEjer = vistaPerfil.findViewById(R.id.TextoEjer);
 
         if (seekBar != null) {
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -168,36 +167,14 @@ public class PerfilFragment extends Fragment {
                 }
             });
         }
-//---------------------------------------------------------------------------------------------------------------------------
-        //Editar foto de perfil
-        foto_gallery = view.findViewById(R.id.fotoUsuario);
-
-        foto_gallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openGallery();
-            }
-        });
 
 //-------------------------------------------------------------------
         //Guardar datos del usuario
-        addListenerOnButton(view);
+        addListenerOnButton(vistaPerfil);
 
-        return view;
+        return vistaPerfil;
     }//onCreate()
 
-    private void openGallery(){
-        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, PICK_IMAGE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
-            imageUri = data.getData();
-            foto_gallery.setImageURI(imageUri);
-        }
-    }
 
 
 //-------------------  GUARDAR DATOS DEL USUARIO  -----------------------------------------------------------------------
@@ -256,13 +233,8 @@ public class PerfilFragment extends Fragment {
                                 }
                             });
                 }//if()
-
-
-
             }
-
         });
-
     }
 
 }//()
