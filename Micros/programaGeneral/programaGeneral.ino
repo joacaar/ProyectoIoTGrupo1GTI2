@@ -16,7 +16,7 @@
 #include "sensorMagnetico.h"
 #include "sensorMovimiento.h"
 #include "sensorLlama.h"
-//#include "DHT.h"
+#include "DHT.h"
 #include "sensorHumTemp.h"
 #include "sensorLDR.h"
 AsyncUDP udp;
@@ -43,7 +43,7 @@ WiFi.mode(WIFI_STA);
       Serial.print(".");
     }
     Serial.println(" CONNECTED");
-/*
+
         if (udp.listen(1234)) {
           Serial.print("UDP Listening on IP: ");
           Serial.println(WiFi.localIP());
@@ -53,7 +53,7 @@ WiFi.mode(WIFI_STA);
             Serial.println();
           });
         }
-  */
+  
 }
 bool enviar=false;
 void loop() {

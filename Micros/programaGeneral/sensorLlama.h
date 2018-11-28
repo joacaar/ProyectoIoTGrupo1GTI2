@@ -13,7 +13,7 @@ bool medirFuego(JsonObject& envio, char ( &texto )[500])
     if (digitalRead(sensorPin) == HIGH) {
       delay(1000);
  
-    envio["Incendio"] = "No hay fuego";
+    envio["Incendio"] = "n";
     envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
     Serial.print("Enviando: ");
     //Serial.println(texto);
@@ -29,7 +29,7 @@ bool medirFuego(JsonObject& envio, char ( &texto )[500])
     if (digitalRead(sensorPin) == LOW) {
       delay(1000);
      
-    envio["Incendio"] = "¡¡HAY FUEGO!!";
+    envio["Incendio"] = "s";
     envio.printTo(texto); 
     Serial.print("Enviando: ");
     //Serial.println(texto);

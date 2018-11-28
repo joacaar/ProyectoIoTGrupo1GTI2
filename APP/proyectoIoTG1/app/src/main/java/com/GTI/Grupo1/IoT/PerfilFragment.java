@@ -3,7 +3,10 @@ package com.GTI.Grupo1.IoT;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,23 +23,35 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.app.Activity.RESULT_OK;
+
 
 public class PerfilFragment extends Fragment {
 
+    View vistaPerfil;
 
     private FirebaseUser user;
 
@@ -56,7 +71,6 @@ public class PerfilFragment extends Fragment {
 
 
 
-
     public PerfilFragment() {
         // Required empty public constructor
     }
@@ -66,13 +80,13 @@ public class PerfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.perfil, container, false);
+        vistaPerfil = inflater.inflate(R.layout.perfil, container, false);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        TextView nombre = view.findViewById(R.id.nombreUsuario);
-        TextView correo = view.findViewById(R.id.correoUsuario);
-        ImageView foto = view.findViewById(R.id.fotoUsuario);
+        TextView nombre = vistaPerfil.findViewById(R.id.nombreUsuario);
+        TextView correo = vistaPerfil.findViewById(R.id.correoUsuario);
+        final ImageView foto = vistaPerfil.findViewById(R.id.fotoUsuario);
 
 
         nombre.setText(user.getDisplayName());
@@ -81,12 +95,14 @@ public class PerfilFragment extends Fragment {
 
         if (proveedor.equals("google.com")) {
             String uri = user.getPhotoUrl().toString();
+            Log.d("ygh", uri);
+            uri = uri.replace("s96-c", "s300-c");
             Picasso.with(getActivity().getBaseContext()).load(uri).into(foto);
             System.out.println("dentro de getPhoto");
         }
 
 //---------------------------  CALENARIO  ------------------------------------------------------------------------------------
-        mDisplayDate = view.findViewById(R.id.editTextFecha);
+        mDisplayDate = vistaPerfil.findViewById(R.id.editTextFecha);
 
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,8 +131,8 @@ public class PerfilFragment extends Fragment {
         };
 
 //------------------------------  SEEKBAR  ---------------------------------------------------------------------------------
-        seekBar = view.findViewById(R.id.seekBar);
-        textViewEjer = view.findViewById(R.id.TextoEjer);
+        seekBar = vistaPerfil.findViewById(R.id.seekBar);
+        textViewEjer = vistaPerfil.findViewById(R.id.TextoEjer);
 
         if (seekBar != null) {
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -152,11 +168,14 @@ public class PerfilFragment extends Fragment {
             });
         }
 
+//-------------------------------------------------------------------
         //Guardar datos del usuario
-        addListenerOnButton(view);
+        addListenerOnButton(vistaPerfil);
 
-        return view;
+        return vistaPerfil;
     }//onCreate()
+
+
 
 //-------------------  GUARDAR DATOS DEL USUARIO  -----------------------------------------------------------------------
     public void addListenerOnButton(View view) {
@@ -214,13 +233,8 @@ public class PerfilFragment extends Fragment {
                                 }
                             });
                 }//if()
-
-
-
             }
-
         });
-
     }
 
 }//()

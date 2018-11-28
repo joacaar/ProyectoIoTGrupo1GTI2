@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -75,7 +76,9 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView.LayoutManager layoutManager;
     public static UsuarioInterface usuarios = new UsuariosVector();*/
 
-
+    private static final int PICK_IMAGE = 100;
+    Uri imageUri;
+    ImageView foto_gallery;
 
 
     @Override
@@ -111,20 +114,64 @@ public class MainActivity extends AppCompatActivity
             connOpts.setKeepAliveInterval(60);
             connOpts.setWill(topicRoot+"WillTopic", "App desconectada".getBytes(),
                     qos, false);
-
             client.connect(connOpts);
         } catch (MqttException e) {
             Log.e(TAG, "Error al conectar.", e);
         }
         try {
-            Log.i(TAG, "Suscrito a " + topicRoot+"POWER");
-            client.subscribe(topicRoot+"POWER", qos);
-            client.setCallback(this);
+                Log.i(TAG, "Suscrito a " + topicRoot + "POWER");
+                client.subscribe(topicRoot + "POWER", qos);
+                client.setCallback(this);
 
         } catch (MqttException e) {
             Log.e(TAG, "Error al suscribir.", e);
         }
 
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "medicamentos");
+            client.subscribe(topicRoot + "medicamentos", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "personas");
+            client.subscribe(topicRoot + "personas", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "puerta");
+            client.subscribe(topicRoot + "puerta", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "temperatura");
+            client.subscribe(topicRoot + "temperatura", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "humedad");
+            client.subscribe(topicRoot + "humedad", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
 
 // Codigo para mostrar los datos del usuario en la parte superior del menu
         //Obtenemos las referencias de las vistas
@@ -217,6 +264,7 @@ public class MainActivity extends AppCompatActivity
                         }
                 );
 //-------------------------------------------------------------------------------------------------------------------
+
     }
 
     @Override
@@ -344,7 +392,7 @@ public class MainActivity extends AppCompatActivity
 
     public void botonLuz (View view){
         try {
-            Log.i(TAG, "Publicando mensaje: " + "hola");
+            Log.i(TAG, "Publicando mensaje: " + "acción luz");
             MqttMessage message = new MqttMessage("TOGGLE".getBytes());
             message.setQos(qos);
             message.setRetained(false);
@@ -369,15 +417,48 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TextView a = findViewById(R.id.luces);
-                a.setText(payload);
-
+                   if(payload.equals("ON") || payload.equals("OFF")){
+                       TextView a = findViewById(R.id.luces);
+                       a.setText(payload);
+                   }else if(payload.contains("medicamento")){
+                       TextView b = findViewById(R.id.medicamentos);
+                       b.setText(payload);
+                   }else if(payload.contains("personas")){
+                       TextView c = findViewById(R.id.personas);
+                       c.setText(payload);
+                   }else if(payload.contains("Cerrada") || payload.contains("Abierta")){
+                       TextView d = findViewById(R.id.puerta);
+                       d.setText(payload);
+                   }else if(payload.contains("%")){
+                       TextView i = findViewById(R.id.hum);
+                       i.setText(payload);
+                   }else {
+                       TextView e = findViewById(R.id.temp);
+                       e.setText(payload);
+                   }
             }
         });
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            foto_gallery = findViewById(R.id.fotoUsuario);
+            imageUri = data.getData();
+            foto_gallery.setImageURI(imageUri);
+        }
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
         Log.d(TAG, "Entrega completa");
     }
+
+    public void editarFoto (View view){
+        openGallery();
+    }
+    private void openGallery(){
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
 }
