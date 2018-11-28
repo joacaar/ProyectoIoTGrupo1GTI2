@@ -25,8 +25,9 @@ int distancia () {
   digitalWrite(TriggerPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(TriggerPin, LOW);
-  duracion = pulseIn(EchoPin, HIGH);
+  duracion = pulseIn(EchoPin, HIGH) * 3;
   distanciaCM = (((duracion * 10) / 292) / 2); //medicion en cm //mínimo de 4 cm a máximo de 3 m
+  distanciaCM = 206 - distanciaCM;
   return distanciaCM;
 }
 
