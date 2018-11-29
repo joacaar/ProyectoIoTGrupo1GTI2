@@ -199,6 +199,35 @@ public class IntroductionActivity extends AppCompatActivity {
                     }
                 });
 
+        Date date = new Date();
+        Timestamp fecha = new Timestamp(date);
+
+
+        Map<String, Object> datosIniciales = new HashMap<>();
+        datosIniciales.put("peso", 0);
+        datosIniciales.put("altura", 0);
+        datosIniciales.put("fecha", fecha);
+
+        for(int i = 0; i<4; i++) {
+            db.collection("USUARIOS").document(user.getUid())
+                    .collection("Bascula").document().set(fecha)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            //Log.d(TAG, "DocumentSnapshot successfully written!");
+                            System.out.println("Sucess");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            //Log.w(TAG, "Error writing document", e);
+                            System.out.println("Error");
+                        }
+                    });
+
+        }
+
             Map<String, Object> defecto = new HashMap<>();
             defecto.put("id", user.getUid());
         db.collection("CASAS").document(idCasa)
