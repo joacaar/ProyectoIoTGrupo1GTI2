@@ -2,19 +2,14 @@ package com.GTI.Grupo1.IoT;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
-import com.firebase.ui.auth.data.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -23,10 +18,20 @@ import java.util.Arrays;
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
     private FirebaseUser usuario;
+    private boolean isNewUsuario = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d("MisDebugs", "Dentro del OnCreate de LoginActivity");
+
+//        Intent i = new Intent(this, IntroductionActivity.class);
+////        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+////                | Intent.FLAG_ACTIVITY_NEW_TASK
+////                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(i);
+
         login();
     }
 
@@ -39,11 +44,20 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "inicia sesión: " +
                         usuario.getDisplayName() + " - " + usuario.getEmail() + " - " +
                         usuario.getProviders().get(0), Toast.LENGTH_LONG).show();
-                Intent i = new Intent(this, MainActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        | Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
+
+                if(isNewUsuario){
+                    Intent i = new Intent(this, IntroductionActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            | Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }else{
+                    Intent i = new Intent(this, MainActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            | Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }
             }else{
                 showUiLogin();
                 Toast.makeText(this, "Correo electronico no verificado", Toast.LENGTH_LONG).show();
@@ -127,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 System.out.println("Usuario contiene: "+ usuario);
                 usuario.sendEmailVerification();
+                isNewUsuario = true;
                 Toast.makeText(LoginActivity.this, "Correo de verificación enviado", Toast.LENGTH_LONG);
                 /*
                 usuario.sendEmailVerification()
