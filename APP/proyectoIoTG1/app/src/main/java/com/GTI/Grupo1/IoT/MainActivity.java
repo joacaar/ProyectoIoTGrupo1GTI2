@@ -96,10 +96,12 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        startService(new Intent(MainActivity.this,
+                IntentServiceOperacion.class));
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-
+        startService(new Intent(MainActivity.this,
+                IntentServiceOperacion.class));
         //Página de inicio
         InicioFragment fragment = new InicioFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =

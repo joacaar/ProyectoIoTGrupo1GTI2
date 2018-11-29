@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_nube"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
+        <service android:name=".IntentServiceOperacion" />
         <activity
             android:name="com.GTI.Grupo1.IoT.MainActivity"
             android:label="@string/app_name"
