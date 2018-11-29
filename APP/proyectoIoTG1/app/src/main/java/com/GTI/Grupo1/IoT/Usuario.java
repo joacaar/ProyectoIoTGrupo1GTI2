@@ -7,14 +7,17 @@ public class Usuario
     private long nivelEjercicio;
     private String nombre;
     private String sexo;
+    private String telefono;
 
-    public Usuario(String correoElectronico, String fechaNacimiento, long nivelEjercicio, String nombre, String sexo)
+
+    public Usuario(String correoElectronico, String fechaNacimiento, long nivelEjercicio, String nombre, String sexo, String tel)
     {
         this.correoElectronico = correoElectronico;
         this.fechaNacimiento = fechaNacimiento;
         this.nivelEjercicio = nivelEjercicio;
         this.nombre = nombre;
         this.sexo = sexo;
+        this.telefono = tel;
     }
 
     public Usuario ()
@@ -24,6 +27,7 @@ public class Usuario
         this.nivelEjercicio = 0;
         this.nombre = "No tienes nombre, señor";
         this.sexo = "asexual";
+        this.telefono = "No tienes telefono";
     }
 
     public String getCorreoElectronico() {
@@ -66,6 +70,14 @@ public class Usuario
         this.sexo = sexo;
     }
 
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String tel) {
+        this.telefono = tel;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
@@ -74,6 +86,7 @@ public class Usuario
                 "nivelEjercicio='" + nivelEjercicio + '\'' +
                 "nombre='" + nombre + '\'' +
                 "sexo='" + sexo + '\'' +
+                "telefono='" + telefono + '\'' +
                 '}';
     }
 }

@@ -35,6 +35,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,7 +68,9 @@ import static santi.example.com.comun.Mqtt.*;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MqttCallback {
 
-    private FirebaseUser user;
+    public static FirebaseUser user;
+
+    public static Usuario usuario;
 
     MqttClient client;
 
@@ -81,12 +85,19 @@ public class MainActivity extends AppCompatActivity
     ImageView foto_gallery;
 
 
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
 
         //Página de inicio
@@ -96,8 +107,6 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
 
-
-       user = FirebaseAuth.getInstance().getCurrentUser();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -205,57 +214,32 @@ public class MainActivity extends AppCompatActivity
 
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        /*db.collection("users").document("YCBIiP0cbezTvmHiFPq3").get()
-                .addOnCompleteListener(
-                        new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task){
-                                if (task.isSuccessful()) {
-                                    String dato1 = task.getResult().getString("peso");
-                                    //double dato2 = task.getResult().getDouble("altura");
 
-                                    Toast toast1 = Toast.makeText(getApplicationContext(), dato1, Toast.LENGTH_SHORT);
-
-                                    TextView view3 = findViewById(R.id.peso);
-
-                                    view3.setText(dato1);
-                                    toast1.show();
-                                } else {
-                                    Toast toast2 = Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT);
-
-
-                                    toast2.show();
-                                }
-                            }
-                        });*/
-        //
-        db.collection("USUARIOS").document("gS5851pJr8mxlUhB3Vog").get()
+        db.collection("USUARIOS").document(user.getUid()).get()
                 .addOnCompleteListener(
                         new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()){
-                                    /*Usuario bobMataplagas = new Usuario();
-                                    bobMataplagas.setCorreoElectronico(task.getResult().getString("Correo"));
-                                    bobMataplagas.setFechaNacimiento(task.getResult().getString("FechaNaci"));
-                                    bobMataplagas.setNivelEjercicio(task.getResult().getLong("NivelEjer"));
-                                    bobMataplagas.setNombre(task.getResult().getString("Nombre"));
-                                    bobMataplagas.setSexo(task.getResult().getString("Sexo"));*/
-                                    Usuario bobMataplagas = new Usuario(
+
+                                    usuario = new Usuario(
                                              task.getResult().getString("Correo")
                                             ,task.getResult().getString("FechaNaci")
                                             ,task.getResult().getLong("NivelEjer")
                                             ,task.getResult().getString("Nombre")
-                                            ,task.getResult().getString("Sexo"));
+                                            ,task.getResult().getString("Sexo")
+                                            ,task.getResult().getString("telefono"));
 
-                                    Toast toast = Toast.makeText(getApplicationContext(), bobMataplagas.getCorreoElectronico(), Toast.LENGTH_SHORT);
+                                    /*Toast toast = Toast.makeText(getApplicationContext(), usuario.getCorreoElectronico(), Toast.LENGTH_SHORT);
                                     toast.show();
-                                    Toast toast1 = Toast.makeText(getApplicationContext(), bobMataplagas.getFechaNacimiento(), Toast.LENGTH_SHORT);
+                                    Toast toast1 = Toast.makeText(getApplicationContext(), usuario.getFechaNacimiento(), Toast.LENGTH_SHORT);
                                     toast1.show();
-                                    Toast toast2 = Toast.makeText(getApplicationContext(), bobMataplagas.getNombre(), Toast.LENGTH_SHORT);
+                                    Toast toast2 = Toast.makeText(getApplicationContext(), usuario.getNombre(), Toast.LENGTH_SHORT);
                                     toast2.show();
-                                    Toast toast3 = Toast.makeText(getApplicationContext(), bobMataplagas.getSexo(), Toast.LENGTH_SHORT);
-                                    toast3.show();
+                                    Toast toast3 = Toast.makeText(getApplicationContext(), usuario.getSexo(), Toast.LENGTH_SHORT);
+                                    toast3.show();*/
+
+
                                 } else {
                                     Toast toast1 = Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT);
                                     toast1.show();
@@ -417,25 +401,32 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                   if(payload.equals("ON") || payload.equals("OFF")){
-                       TextView a = findViewById(R.id.luces);
-                       a.setText(payload);
-                   }else if(payload.contains("medicamento")){
-                       TextView b = findViewById(R.id.medicamentos);
-                       b.setText(payload);
-                   }else if(payload.contains("personas")){
-                       TextView c = findViewById(R.id.personas);
-                       c.setText(payload);
-                   }else if(payload.contains("Cerrada") || payload.contains("Abierta")){
-                       TextView d = findViewById(R.id.puerta);
-                       d.setText(payload);
-                   }else if(payload.contains("%")){
-                       TextView i = findViewById(R.id.hum);
-                       i.setText(payload);
-                   }else {
-                       TextView e = findViewById(R.id.temp);
-                       e.setText(payload);
-                   }
+                if(!payload.isEmpty()) {
+                    if (payload.equals("ON") || payload.equals("OFF")) {
+                        TextView a = findViewById(R.id.luces);
+                        a.setText(payload);
+                    }
+                    if (payload.contains("medicamento")) {
+                        TextView b = findViewById(R.id.medicamentos);
+                        b.setText(payload);
+                    }
+                    if (payload.contains("personas")) {
+                        TextView c = findViewById(R.id.personas);
+                        c.setText(payload);
+                    }
+                    if (payload.contains("Cerrada") || payload.contains("Abierta")) {
+                        TextView d = findViewById(R.id.puerta);
+                        d.setText(payload);
+                    }
+                    if (payload.contains("%")) {
+                        TextView i = findViewById(R.id.hum);
+                        i.setText(payload);
+                    }
+                    if (payload.contains("C")) {
+                        TextView e = findViewById(R.id.temp);
+                        e.setText(payload);
+                    }
+                }
             }
         });
     }

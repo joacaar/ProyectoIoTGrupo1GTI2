@@ -47,6 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 
 public class PerfilFragment extends Fragment {
@@ -59,9 +60,6 @@ public class PerfilFragment extends Fragment {
     private EditText mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
-
-    private RadioGroup radioSexGroup;
-    private RadioButton radioSexButton;
     private Button btnGuardar;
 
     private String date;
@@ -69,6 +67,14 @@ public class PerfilFragment extends Fragment {
     private String nivelEjer;
     private TextView textViewEjer;
 
+    public TextView fecha;
+    public TextView sexoo;
+    public TextView telefono;
+
+
+    private Usuario usuario = MainActivity.usuario;
+
+    private long progreso;
 
 
     public PerfilFragment() {
@@ -101,8 +107,20 @@ public class PerfilFragment extends Fragment {
             System.out.println("dentro de getPhoto");
         }
 
-//---------------------------  CALENARIO  ------------------------------------------------------------------------------------
-        mDisplayDate = vistaPerfil.findViewById(R.id.editTextFecha);
+        sexoo = vistaPerfil.findViewById(R.id.sexo);
+        sexoo.setText(usuario.getSexo());
+
+        /*fecha = vistaPerfil.findViewById(R.id.edFecha);
+        fecha.setText(usuario.getFechaNacimiento());*/
+
+        telefono = vistaPerfil.findViewById(R.id.textoTel);
+        telefono.setText(usuario.getTelefono());
+
+
+
+
+//---------------------------  CALENDARIO  ------------------------------------------------------------------------------------
+        mDisplayDate = vistaPerfil.findViewById(R.id.editfecha);
 
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +151,8 @@ public class PerfilFragment extends Fragment {
 //------------------------------  SEEKBAR  ---------------------------------------------------------------------------------
         seekBar = vistaPerfil.findViewById(R.id.seekBar);
         textViewEjer = vistaPerfil.findViewById(R.id.TextoEjer);
+
+        //seekBar.setProgress((int) usuario.getNivelEjercicio());
 
         if (seekBar != null) {
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -168,9 +188,12 @@ public class PerfilFragment extends Fragment {
             });
         }
 
+
+
 //-------------------------------------------------------------------
         //Guardar datos del usuario
-        addListenerOnButton(vistaPerfil);
+       addListenerOnButton(vistaPerfil);
+
 
         return vistaPerfil;
     }//onCreate()
@@ -180,8 +203,10 @@ public class PerfilFragment extends Fragment {
 //-------------------  GUARDAR DATOS DEL USUARIO  -----------------------------------------------------------------------
     public void addListenerOnButton(View view) {
 
-        radioSexGroup = view.findViewById(R.id.radioSex);
+        progreso = seekBar.getProgress();
+        //seekBar.setProgress((int) usuario.getNivelEjercicio());
         btnGuardar = view.findViewById(R.id.guardar);
+
 
 
         btnGuardar.setOnClickListener(new View.OnClickListener() {
@@ -189,53 +214,28 @@ public class PerfilFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                // get selected radio button from radioGroup
-                int selectedId = radioSexGroup.getCheckedRadioButtonId();
-
-                // find the radiobutton by returned id
-                radioSexButton = getView().findViewById(selectedId);
-
-
-                if(radioSexButton!=null || date!=null) {
-                    Toast.makeText(getActivity(),
-                            radioSexButton.getText(), Toast.LENGTH_SHORT).show();
-
-                    Toast.makeText(getActivity(),
-                            date, Toast.LENGTH_LONG).show();
-
-                    Toast.makeText(getActivity(),
-                            "Nivel de ejercicio " + seekBar.getProgress(), Toast.LENGTH_SHORT).show();
-
-
-
+                Toast toast3 = Toast.makeText(getContext(), "Se han guardado con éxito tus datos", Toast.LENGTH_SHORT);
+                toast3.show();
 //-------------------------GUARDAR LOS DATOS DEL USUARIO EN LA BASE DE DATOS---------------------------------------
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     // Create a new user with a first and last name
                     Map<String, Object> perfilUser = new HashMap<>();
-                    perfilUser.put("Sexo", radioSexButton.getText());
-                    perfilUser.put("Fecha de nacimiento", date);
-                    perfilUser.put("Nivel de ejercicio", seekBar.getProgress());
+                    if(date!=null) {
+                        perfilUser.put("Fecha de nacimiento", date);
+                    }
+                    if(perfilUser!=null) {
+                        perfilUser.put("NivelEjer", seekBar.getProgress());
+                    }
 
                     // Add a new document with a generated ID
-                    db.collection("perfilUser")
-                            .add(perfilUser)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error adding document", e);
-                                }
-                            });
-                }//if()
+                    db.collection("USUARIOS").document(user.getUid()).update(perfilUser);
+
             }
+
         });
-    }
+
+    }//Addlistener()
 
 }//()
 

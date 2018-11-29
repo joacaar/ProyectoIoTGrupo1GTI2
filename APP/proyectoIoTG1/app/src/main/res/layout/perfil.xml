@@ -45,7 +45,8 @@
                     android:id="@+id/nombreUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/usuario" />
+                    android:text="@string/usuario"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused" />
             </LinearLayout>
 
             <LinearLayout
@@ -82,7 +83,8 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
-                            android:text="correoDelUsuario" />
+                            android:text="correoDelUsuario"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
                     </LinearLayout>
 
@@ -107,12 +109,13 @@
                             app:srcCompat="@drawable/ic_telefono" />
 
                         <TextView
-                            android:id="@+id/telefonoUsuario"
+                            android:id="@+id/textoTel"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
-                            android:text="664312220" />
+                            android:text="Telefono"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
                     </LinearLayout>
 
@@ -138,31 +141,14 @@
                             android:paddingRight="2dp"
                             app:srcCompat="@drawable/sexo" />
 
-                        <RadioGroup
-                            android:id="@+id/radioSex"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <RadioButton
-                                android:id="@+id/Masculino"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="8dp"
-                                android:text="@string/maculino" />
-
-                            <RadioButton
-                                android:id="@+id/Femenino"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="8dp"
-                                android:text="@string/femenino" />
-
-                        </RadioGroup>
+                        <TextView
+                            android:id="@+id/sexo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:layout_weight="1"
+                            android:text="Sexo"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
                     </LinearLayout>
 
@@ -206,13 +192,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="5dp">
 
                         <ImageView
                             android:id="@+id/imageView"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0"
+                            android:layout_weight="1"
                             android:contentDescription="TODO"
                             android:onClick="showDatePickerDialog"
                             android:paddingStart="40dp"
@@ -220,14 +207,11 @@
                             app:srcCompat="@drawable/ic_calendario" />
 
                         <EditText
-                            android:id="@+id/editTextFecha"
+                            android:id="@+id/editfecha"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
                             android:layout_weight="1"
-                            android:autofillHints=""
                             android:ems="10"
-                            android:focusableInTouchMode="false"
                             android:inputType="date" />
 
                     </LinearLayout>

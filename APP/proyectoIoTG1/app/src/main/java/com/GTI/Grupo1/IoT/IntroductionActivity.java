@@ -49,6 +49,10 @@ public class IntroductionActivity extends AppCompatActivity {
 
     FirebaseFirestore db;
 
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
+    private String sexo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,7 @@ public class IntroductionActivity extends AppCompatActivity {
         System.out.println("Dentro de oncreate, despues de mostrar el layout");
 
         Log.d("MisDebugs", "Dentro del OnCreate");
+
 
         Button enviar = findViewById(R.id.enviar);
         enviar.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +77,11 @@ public class IntroductionActivity extends AppCompatActivity {
     }
 
     public void leerDatos(){
+
+        radioGroup = (RadioGroup) findViewById(R.id.radioSex);
+        int selectedId = radioGroup.getCheckedRadioButtonId();
+        radioButton = findViewById(selectedId);
+        sexo = (String) radioButton.getText();
 
 
         System.out.println("MisDebugs" + "Dentro del metodo leerDAtos");
@@ -177,7 +187,7 @@ public class IntroductionActivity extends AppCompatActivity {
         userData.put("Nombre", user.getDisplayName().toString());
 //        userData.put("FechaNaci", );
         userData.put("NivelEjer", ejercicio.getProgress());
-        userData.put("Sexo", sexo.getCheckedRadioButtonId());
+        userData.put("Sexo", radioButton.getText());
         userData.put("telefono", telf.getText().toString());
         userData.put("idCasa", idCasa);                     //user.getUid()
 
@@ -210,7 +220,7 @@ public class IntroductionActivity extends AppCompatActivity {
 
         for(int i = 0; i<4; i++) {
             db.collection("USUARIOS").document(user.getUid())
-                    .collection("Bascula").document().set(fecha)
+                    .collection("Bascula").document().set(datosIniciales)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
