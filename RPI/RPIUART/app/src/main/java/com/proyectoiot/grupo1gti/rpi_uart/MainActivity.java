@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,6 +57,7 @@ public class MainActivity extends Activity {
 
         String[] keyValuePairs = datos.split(",");              //split the string to creat key-value pairs
         Map<String,Object> map = new HashMap<>();
+        Date date = new Date();
 
         for(String pair : keyValuePairs)                        //iterate over the pairs
         {
@@ -69,7 +71,7 @@ public class MainActivity extends Activity {
                     map.put(entry[0].trim(), Integer.parseInt(entry[1].trim()));
                     break;
                 case "fecha":
-                    map.put(entry[0].trim(), Integer.parseInt(entry[1].trim()));
+                    map.put(entry[0].trim(), (int) date.getTime());
                     break;
                 default:
                     Log.d("Prueba Uart", "En el default del switch");
