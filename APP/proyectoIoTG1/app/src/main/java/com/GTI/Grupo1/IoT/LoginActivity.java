@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                         usuario.getProviders().get(0), Toast.LENGTH_LONG).show();
 
                 if(isNewUsuario){
+                    Log.d("Verificando", "Es nuevo usuario");
                     Intent i = new Intent(this, IntroductionActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                             | Intent.FLAG_ACTIVITY_NEW_TASK
@@ -131,6 +132,12 @@ public class LoginActivity extends AppCompatActivity {
 
         usuario = FirebaseAuth.getInstance().getCurrentUser();
 
+        if(provider.equals("google.com")){
+            if(respuesta.isNewUser()){
+                isNewUsuario = true;
+            }
+        }
+
         if(provider.equals("password")){
 
             System.out.println ("El proveedor  es password");
@@ -143,20 +150,7 @@ public class LoginActivity extends AppCompatActivity {
                 usuario.sendEmailVerification();
                 isNewUsuario = true;
                 Toast.makeText(LoginActivity.this, "Correo de verificación enviado", Toast.LENGTH_LONG);
-                /*
-                usuario.sendEmailVerification()
-                        .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    System.out.println("task es exitoso, llamando a login");
-                                    login();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "Correo no válido", Toast.LENGTH_SHORT);
-                                }
-                            }
-                        });
-                        */
+
             }else{
                 System.out.println("en el else del segundo if");
 

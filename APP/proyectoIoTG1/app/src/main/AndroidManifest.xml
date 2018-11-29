@@ -39,9 +39,9 @@
             android:label="Configuración"
             android:theme="@android:style/Theme.DeviceDefault.Light"/>
 
-        <activity android:name="com.GTI.Grupo1.IoT.ChartActivity"
-            android:label="Chart"
-            android:theme="@android:style/Theme.DeviceDefault.Light.DarkActionBar"/>
+        <!--<activity android:name="com.GTI.Grupo1.IoT.ChartActivity"-->
+            <!--android:label="Chart"-->
+            <!--android:theme="@android:style/Theme.DeviceDefault.Light.DarkActionBar"/>-->
 
         <activity android:name="com.GTI.Grupo1.IoT.SensoresActivity"
             android:label="Sensores"
