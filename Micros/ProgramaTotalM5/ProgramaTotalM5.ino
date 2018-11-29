@@ -89,7 +89,7 @@ void setup() {
   
   M5.Lcd.setTextSize(2); //Tamaño del texto
   
-   Serial.begin(9600);
+   Serial.begin(115200);
    
    SPI.begin(); //Iniciamos el Bus SPI
 mfrc522.PCD_Init(); // Iniciamos el MFRC522
@@ -323,14 +323,23 @@ M5.Lcd.println("PASE OTRO MEDICAMENTO");
 
     
     if((int)peso > 2){
+      char texto2[100];
+       StaticJsonBuffer<100> jsonBufferRecv2; //definición del buffer para almacenar el objero JSON, 200 máximo
+    JsonObject& recibo2 = jsonBufferRecv2.createObject(); //paso de texto a formato JSON
     time_t now;
+    
 String Altura= String(altura);
 String Peso=String(peso);
 
 time(&now);
+
 String Now = String(now);
-String todo="{altura:"+Altura+", peso:"+Peso+", fecha:"+Now+"}";
-     Serial.print(todo);
+//Serial.print(Peso);
+recibo2["peso"]=Peso.toFloat();
+recibo2["altura"]=Altura.toInt();
+recibo2["fecha"]=Now.toInt();
+recibo2.printTo(texto2);
+Serial.write(texto2);
     
     }
     String Temperatura = String(temperatura);
@@ -346,12 +355,12 @@ String Presencia = String(movimiento);
 
 if (Incendio=="s") {
 
- client.publish("Grupo1/practica/alertas", "¡Atención! Hay un incendio");
+ client.publish("Grupo1/practica/alertas/incendio", "¡Atención! Hay un incendio");
  }
 
   if (contadorPersonas==0&&Presencia=="s") { //Hay movimiento sin que haya habido nadie en la casa
 
- client.publish("Grupo1/practica/alertas", "¡Atención! Podría haber un intruso en la casa");
+ client.publish("Grupo1/practica/alertas/intruso", "¡Atención! Podría haber un intruso en la casa");
  }
   String Luz = String(luz);
   if (contadorPersonas!=0&&Luz=="s") {  //Hay alguien  en la casa y el LDR indica que hace falta luz
@@ -360,12 +369,12 @@ Luces=true;
  }
   if (Luces&&Luz=="n"&&contadorPersonas!=0) { //Las luces están encendidas pero el LDR no capta luminosidad
 
- client.publish("Grupo1/practica/alertas", "Es posible que haya habido un apagón");
+ client.publish("Grupo1/practica/alertas/apagón", "Es posible que haya habido un apagón");
  }
     String Puerta = String(puerta);
   if (contadorPersonas==0&&Puerta=="s") { //La puerta está abierta sin que haya nadie
 
- client.publish("Grupo1/practica/alertas", "¡Alguien se ha dejado la puerta abierta sin que haya nadie!");
+ client.publish("Grupo1/practica/alertas/puerta", "¡Alguien se ha dejado la puerta abierta sin que haya nadie!");
  }
 
    if (Puerta=="s") { 
@@ -380,17 +389,19 @@ if(Presencia=="s"||contadorPersonas==0||Luces==false){ //Se reinicia el contador
   }
 if(reloj==100&&Luces){
   
-  client.publish("Grupo1/practica/alertas", "Alguien no se ha movido en un tiempo con las luces encendidas, podría estar inconsciente");
+  client.publish("Grupo1/practica/alertas/letargo", "Alguien no se ha movido en un tiempo con las luces encendidas, podría estar inconsciente");
   }
-  if(contadorPersonas==0&&Luces){
-  Luces=false;
-  client.publish("Grupo1/practica/cmnd/POWER", "OFF");
-  }
+
                   }//recibe datos
                   
                    if (acabaDeContar||acabaDeDescontar) {
 String myString = String(contadorPersonas);
  client.publish("Grupo1/practica/personas", "Hay "+myString+" personas en la casa");
+   if(contadorPersonas==0){
+ 
+  client.publish("Grupo1/practica/cmnd/POWER", "OFF");
+   Luces=false;
+  }
  }
  
      
