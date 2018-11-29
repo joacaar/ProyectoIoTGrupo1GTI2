@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -56,7 +57,7 @@ public class BasculaFragment extends Fragment  {
     private RecyclerView Historial;
     public AdaptadorHistorial adaptador;
     private RecyclerView.LayoutManager layoutManager;
-
+    private FirebaseUser user = MainActivity.user;
     float ultimoPeso;
     float[] valoresPeso = new float[5];
     float[] valoresPeso1 = new float[10];
@@ -158,7 +159,9 @@ public class BasculaFragment extends Fragment  {
 //                    .build();
 //            db.setFirestoreSettings(settings);
 
-        /*db.collection("pruebaDatosBascula")
+        db.collection("USUARIOS")
+                .document(user.getUid())
+                .collection("Bascula")
                 .orderBy("fecha", Query.Direction.ASCENDING)
                 .limit(5)
                 .get()
@@ -193,7 +196,7 @@ public class BasculaFragment extends Fragment  {
                         }
                     }
                 });
-
+/*
         //System.out.println(db.collection("pruebaDatosBascula").getId());
         db.collection("pruebaDatosBascula")
                 .orderBy("fecha", Query.Direction.ASCENDING)
@@ -230,7 +233,7 @@ public class BasculaFragment extends Fragment  {
                         }
                     }
                 });*/
-        altura="187";
+      altura="187";
         for(int i=0; i<5; i++) {
             String numero = "67";
             valoresPeso[i] = Float.parseFloat(numero)+i;
