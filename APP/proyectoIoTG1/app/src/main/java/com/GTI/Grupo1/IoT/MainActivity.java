@@ -96,12 +96,11 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        startService(new Intent(MainActivity.this,
-                IntentServiceOperacion.class));
-        user = FirebaseAuth.getInstance().getCurrentUser();
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+/*
         startService(new Intent(MainActivity.this,
-                IntentServiceOperacion.class));
+                IntentServiceOperacion.class));*/
         //Página de inicio
         InicioFragment fragment = new InicioFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -424,10 +423,10 @@ public class MainActivity extends AppCompatActivity
                         TextView i = findViewById(R.id.hum);
                         i.setText(payload);
                     }
-                    if (payload.contains("C")) {
+                    /*else if (){
                         TextView e = findViewById(R.id.temp);
                         e.setText(payload);
-                    }
+                    }*/
                 }
             }
         });

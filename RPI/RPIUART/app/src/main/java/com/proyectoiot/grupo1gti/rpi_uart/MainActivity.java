@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.things.pio.UartDevice;
 import com.google.android.things.pio.UartDeviceCallback;
+import com.google.firebase.Timestamp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
@@ -58,6 +59,7 @@ public class MainActivity extends Activity {
         String[] keyValuePairs = datos.split(",");              //split the string to creat key-value pairs
         Map<String,Object> map = new HashMap<>();
         Date date = new Date();
+        Timestamp fecha = new Timestamp(date);
 
         for(String pair : keyValuePairs)                        //iterate over the pairs
         {
@@ -71,7 +73,8 @@ public class MainActivity extends Activity {
                     map.put(entry[0].trim(), Integer.parseInt(entry[1].trim()));
                     break;
                 case "fecha":
-                    map.put(entry[0].trim(), (int) date.getTime());
+                    map.put(entry[0].trim(), fecha);
+
                     break;
                 default:
                     Log.d("Prueba Uart", "En el default del switch");
@@ -135,7 +138,7 @@ public class MainActivity extends Activity {
     public void sendToFirestore (Map datos){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("USUARIOS").document("gS5851pJr8mxlUhB3Vog")
+        db.collection("USUARIOS").document("n5Mt1LUqQNWsRH2Ny21YZbia1Dh2")
                 .collection("Bascula").document().set(datos);
 
         System.out.println("Datos añadidos a bd");

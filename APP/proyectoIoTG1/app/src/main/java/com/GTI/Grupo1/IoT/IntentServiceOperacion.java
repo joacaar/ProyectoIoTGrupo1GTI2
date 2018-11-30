@@ -1,5 +1,5 @@
 package com.GTI.Grupo1.IoT;
-
+/*
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -375,4 +375,4 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-}
+}*/
