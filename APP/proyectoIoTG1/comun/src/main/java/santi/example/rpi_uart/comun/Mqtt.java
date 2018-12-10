@@ -1,4 +1,4 @@
-package santi.example.com.comun;
+package santi.example.rpi_uart.comun;
 
 public class Mqtt {
     public static final String TAG = "MQTT";
