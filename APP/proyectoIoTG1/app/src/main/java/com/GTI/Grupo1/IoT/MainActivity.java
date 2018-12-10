@@ -46,7 +46,7 @@ import static santi.example.rpi_uart.comun.Mqtt.*;
 **/
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MqttCallback {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     public static FirebaseUser user;
 
@@ -78,9 +78,7 @@ public class MainActivity extends AppCompatActivity
 
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-/*
-        startService(new Intent(MainActivity.this,
-                IntentServiceOperacion.class));*/
+
         //Página de inicio
         InicioFragment fragment = new InicioFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -94,74 +92,7 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-//-------------------------------------SONOFF--------------------------------------------
 
-        try {
-            Log.i(TAG, "Conectando al broker " + broker);
-            client = new MqttClient(broker, clientId, new MemoryPersistence());
-            MqttConnectOptions connOpts = new MqttConnectOptions();
-            connOpts.setCleanSession(true);
-            connOpts.setKeepAliveInterval(60);
-            connOpts.setWill(topicRoot+"WillTopic", "App desconectada".getBytes(),
-                    qos, false);
-            client.connect(connOpts);
-        } catch (MqttException e) {
-            Log.e(TAG, "Error al conectar.", e);
-        }
-        try {
-                Log.i(TAG, "Suscrito a " + topicRoot + "POWER");
-                client.subscribe(topicRoot + "POWER", qos);
-                client.setCallback(this);
-
-        } catch (MqttException e) {
-            Log.e(TAG, "Error al suscribir.", e);
-        }
-
-        //----
-        try {
-            Log.i(TAG, "Suscrito a " + topicRoot + "medicamentos");
-            client.subscribe(topicRoot + "medicamentos", qos);
-            client.setCallback(this);
-
-        } catch (MqttException e) {
-            Log.e(TAG, "Error al suscribir.", e);
-        }
-        //----
-        try {
-            Log.i(TAG, "Suscrito a " + topicRoot + "personas");
-            client.subscribe(topicRoot + "personas", qos);
-            client.setCallback(this);
-
-        } catch (MqttException e) {
-            Log.e(TAG, "Error al suscribir.", e);
-        }
-        //----
-        try {
-            Log.i(TAG, "Suscrito a " + topicRoot + "puerta");
-            client.subscribe(topicRoot + "puerta", qos);
-            client.setCallback(this);
-
-        } catch (MqttException e) {
-            Log.e(TAG, "Error al suscribir.", e);
-        }
-        //----
-        try {
-            Log.i(TAG, "Suscrito a " + topicRoot + "temperatura");
-            client.subscribe(topicRoot + "temperatura", qos);
-            client.setCallback(this);
-
-        } catch (MqttException e) {
-            Log.e(TAG, "Error al suscribir.", e);
-        }
-        //----
-        try {
-            Log.i(TAG, "Suscrito a " + topicRoot + "humedad");
-            client.subscribe(topicRoot + "humedad", qos);
-            client.setCallback(this);
-
-        } catch (MqttException e) {
-            Log.e(TAG, "Error al suscribir.", e);
-        }
 
 // Codigo para mostrar los datos del usuario en la parte superior del menu
         //Obtenemos las referencias de las vistas
@@ -355,7 +286,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void botonLuz (View view){
+   /* public void botonLuz (View view){
         try {
             Log.i(TAG, "Publicando mensaje: " + "acción luz");
             MqttMessage message = new MqttMessage("TOGGLE".getBytes());
@@ -366,51 +297,10 @@ public class MainActivity extends AppCompatActivity
         } catch (MqttException e) {
             Log.e(TAG, "Error al publicar.", e);
         }
-    }
+    }*/
 
 
-    @Override
-    public void connectionLost(Throwable cause) {
-        Log.d(TAG, "Conexión perdida");
 
-    }
-
-    @Override public void messageArrived(String topic, MqttMessage message)
-            throws Exception {
-        final String payload = new String(message.getPayload());
-        Log.d(TAG, "Recibiendo: " + topic + "->" + payload);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(!payload.isEmpty()) {
-                    if (payload.equals("ON") || payload.equals("OFF")) {
-                        TextView a = findViewById(R.id.luces);
-                        a.setText(payload);
-                    }
-                    if (payload.contains("medicamento")) {
-                        TextView b = findViewById(R.id.medicamentos);
-                        b.setText(payload);
-                    }
-                    if (payload.contains("personas")) {
-                        TextView c = findViewById(R.id.personas);
-                        c.setText(payload);
-                    }
-                    if (payload.contains("Cerrada") || payload.contains("Abierta")) {
-                        TextView d = findViewById(R.id.puerta);
-                        d.setText(payload);
-                    }
-                    if (payload.contains("%")) {
-                        TextView i = findViewById(R.id.hum);
-                        i.setText(payload);
-                    }
-                    /*else if (){
-                        TextView e = findViewById(R.id.temp);
-                        e.setText(payload);
-                    }*/
-                }
-            }
-        });
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
@@ -420,10 +310,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void deliveryComplete(IMqttDeliveryToken token) {
-        Log.d(TAG, "Entrega completa");
-    }
+
 
     public void editarFoto (View view){
         openGallery();

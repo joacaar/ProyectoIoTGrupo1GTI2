@@ -1,6 +1,7 @@
 package com.GTI.Grupo1.IoT;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -44,6 +45,7 @@ public class InicioFragment extends Fragment {
 
     private FirebaseUser user = MainActivity.user;
 
+    public static  View view;
 
     public InicioFragment() {
         // Required empty public constructor
@@ -54,10 +56,11 @@ public class InicioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.inicio, container, false);
+        view = inflater.inflate(R.layout.inicio, container, false);
 
 
-
+        getActivity().startService(new Intent(getActivity(),
+                IntentServiceOperacion.class));
 //----------------------------- DATOS DE BASCULA Y ALTURA ---------------------------------------------------------
         final TextView textoPeso = view.findViewById(R.id.peso);
         final TextView textoAltura = view.findViewById(R.id.altura);
