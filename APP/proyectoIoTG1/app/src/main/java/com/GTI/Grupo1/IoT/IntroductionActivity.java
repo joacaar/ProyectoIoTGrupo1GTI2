@@ -57,8 +57,6 @@ public class IntroductionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.introduction);
-        error = (TextView) findViewById(R.id.errorText);
-        error.setText("TextView del error");
 
         System.out.println("Dentro de oncreate, despues de mostrar el layout");
 
