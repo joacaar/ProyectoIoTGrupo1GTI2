@@ -62,6 +62,8 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
             sm.registerListener((SensorEventListener) that, sensor, SensorManager.SENSOR_DELAY_UI);
             n++;
         }
+
+
         try {
             Log.i(TAG, "Conectando al broker " + broker);
             client = new MqttClient(broker, clientId, new MemoryPersistence());
@@ -176,7 +178,7 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
 
 
         inicio = InicioFragment.view;
-
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(
                     CANAL_ID, "Mis Notificaciones",
@@ -188,7 +190,13 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
             notificationChannel.enableVibration(true);
             notificationManager.createNotificationChannel(notificationChannel);
         }
+        inicio.findViewById(R.id.botonLuz).setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View view) {
+            botonLuz(view);
+            }
+        });
 
         return START_STICKY;
     }
@@ -223,7 +231,7 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         NotificationChannel notificationChannel = new NotificationChannel(
                                 CANAL_ID, "Mis Notificaciones",
-                                NotificationManager.IMPORTANCE_HIGH);
+                                NotificationManager.IMPORTANCE_DEFAULT);
                         notificationChannel.setDescription("Descripcion del canal");
                         notificationManager.createNotificationChannel(notificationChannel);
                     }
@@ -249,7 +257,7 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         NotificationChannel notificationChannel = new NotificationChannel(
                                 CANAL_ID, "Mis Notificaciones",
-                                NotificationManager.IMPORTANCE_HIGH);
+                                NotificationManager.IMPORTANCE_DEFAULT);
                         notificationChannel.setDescription("Descripcion del canal");
                         notificationManager.createNotificationChannel(notificationChannel);
                     }
@@ -275,7 +283,7 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         NotificationChannel notificationChannel = new NotificationChannel(
                                 CANAL_ID, "Mis Notificaciones",
-                                NotificationManager.IMPORTANCE_HIGH);
+                                NotificationManager.IMPORTANCE_DEFAULT);
                         notificationChannel.setDescription("Descripcion del canal");
                         notificationManager.createNotificationChannel(notificationChannel);
                     }
@@ -303,7 +311,7 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         NotificationChannel notificationChannel = new NotificationChannel(
                                 CANAL_ID, "Mis Notificaciones",
-                                NotificationManager.IMPORTANCE_HIGH);
+                                NotificationManager.IMPORTANCE_DEFAULT);
                         notificationChannel.setDescription("Descripcion del canal");
                         notificationManager.createNotificationChannel(notificationChannel);
                     }
@@ -425,5 +433,17 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+    public void botonLuz (View view){
+        try {
+            Log.i(TAG, "Publicando mensaje: " + "acción luz");
+            MqttMessage message = new MqttMessage("TOGGLE".getBytes());
+            message.setQos(qos);
+            message.setRetained(false);
+            client.publish(topicRoot+ "cmnd/POWER", message);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al publicar.", e);
+        }
     }
 }

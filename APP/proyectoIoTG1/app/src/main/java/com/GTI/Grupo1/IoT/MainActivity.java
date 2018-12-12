@@ -286,18 +286,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-   /* public void botonLuz (View view){
-        try {
-            Log.i(TAG, "Publicando mensaje: " + "acción luz");
-            MqttMessage message = new MqttMessage("TOGGLE".getBytes());
-            message.setQos(qos);
-            message.setRetained(false);
-            client.publish(topicRoot+ "cmnd/POWER", message);
-
-        } catch (MqttException e) {
-            Log.e(TAG, "Error al publicar.", e);
-        }
-    }*/
 
 
 
