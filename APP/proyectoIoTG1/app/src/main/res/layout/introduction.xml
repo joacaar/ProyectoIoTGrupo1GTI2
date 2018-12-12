@@ -218,6 +218,7 @@
                 android:paddingLeft="64dp"
                 android:paddingRight="64dp"
                 android:text="Enviar"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
                 app:layout_constraintBottom_toTopOf="@+id/protecDatos"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"

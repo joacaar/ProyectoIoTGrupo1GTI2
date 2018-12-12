@@ -155,35 +155,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginLeft="40dp"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/iconSillaRuedas"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:contentDescription="TODO"
-                            app:srcCompat="@drawable/ic_silla" />
-
-                        <Switch
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
