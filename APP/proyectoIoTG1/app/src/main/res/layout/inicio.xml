@@ -99,7 +99,7 @@
                                 android:orientation="horizontal">
 
                                 <ImageView
-                                    android:id="@+id/imageView5"
+                                    android:id="@+id/imageView55"
                                     android:layout_width="82dp"
                                     android:layout_height="wrap_content"
                                     android:rotation="-45"
@@ -293,12 +293,12 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/botonLuz"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_margin="10dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/contenedor_rnd"
-                                android:onClick="botonLuz"
                                 android:orientation="horizontal"
                                 android:padding="5dp">
 
