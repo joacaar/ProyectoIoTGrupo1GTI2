@@ -3,9 +3,11 @@ package com.GTI.Grupo1.IoT;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -34,6 +36,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -152,7 +156,7 @@ public class BasculaFragment extends Fragment  {
     //}
 
     private void consultaDatos (){
-
+        altura="187";
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 //            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
 //                    .setTimestampsInSnapshotsEnabled(true)
@@ -233,7 +237,6 @@ public class BasculaFragment extends Fragment  {
                         }
                     }
                 });*/
-      altura="187";
         for(int i=0; i<5; i++) {
             String numero = "67";
             valoresPeso[i] = Float.parseFloat(numero)+i;
@@ -244,7 +247,7 @@ public class BasculaFragment extends Fragment  {
         for(int i=0; i<10; i++) {
             String numero2 = "50";
             valoresPeso1[i] = Float.parseFloat(numero2)+i*i;
-            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formateador = tipoFecha();
             Timestamp timestamp1 = Timestamp.now();
             fechas1.add(timestamp1.toDate());
         }
@@ -265,7 +268,7 @@ public class BasculaFragment extends Fragment  {
         PieChartData pieChartData = new PieChartData(pieData);
         pieChartData.setHasLabels(true);
         pieChartData.setHasCenterCircle(true);
-        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formateador = tipoFecha();
         pieChartData.setCenterText1(formateador.format(ultimaFecha)).setCenterText1FontSize(15);
         pieChartView.setPieChartData(pieChartData);
         pieChartView.setChartRotation(180, true);
@@ -274,7 +277,17 @@ public class BasculaFragment extends Fragment  {
 
     private void mostrarAltura (){
         TextView vistaAltura = vistaBascula.findViewById(R.id.altura);
-        vistaAltura.setText(altura + " cm");
+        float altura = cambioMedidaAltura(Float.parseFloat(this.altura));
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        if (pref.getString("altura", "0").equals("1")) {
+            vistaAltura.setText(altura + " ft");
+        } else if (pref.getString("altura", "0").equals("2")) {
+            vistaAltura.setText(altura + " in");
+        } else {
+            vistaAltura.setText(altura + " cm");
+        }
+
     }
 
 
@@ -296,10 +309,10 @@ public class BasculaFragment extends Fragment  {
                 //float pesoValor = (float) Math.random() * 50f + 5;
 
                 if(i == numColumns-1){
-                    values.add(new SubcolumnValue(valoresPeso[i], Color.parseColor("#56b0ca")));
-                    ultimoPeso = valoresPeso[i];
+                    values.add(new SubcolumnValue(cambioMedidaPeso(valoresPeso[i]), Color.parseColor("#56b0ca")));
+                    ultimoPeso = cambioMedidaPeso(valoresPeso[i]);
                 }else {
-                    values.add(new SubcolumnValue(valoresPeso[i], Color.parseColor("#2b778c")));
+                    values.add(new SubcolumnValue(cambioMedidaPeso(valoresPeso[i]), Color.parseColor("#2b778c")));
                 }
             }
 
@@ -323,7 +336,7 @@ public class BasculaFragment extends Fragment  {
 
         String[] dias = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingas"};
         String[] diasPesado = new String[numColumns];
-        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
+        SimpleDateFormat formateador = tipoFecha();
 
 //            for(int i = 0; i<numColumns; i++){
 //                diasPesado[i] = formateador.format(fechas.get(i));
@@ -356,6 +369,59 @@ public class BasculaFragment extends Fragment  {
     private void datoUltimoPeso (){
         TextView vistaPeso = vistaBascula.findViewById(R.id.peso);
         vistaPeso.setText(Float.toString(ultimoPeso));
+    }
+
+    //funcion de cambio de peso
+    public float cambioMedidaPeso (float pesoACambiar) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        DecimalFormat formato = new DecimalFormat("#.#");
+
+        if (pref.getString("masa", "0").equals("1")) {
+            float res;
+            res = pesoACambiar * 0.157473f; //stones
+            return Float.parseFloat(formato.format(res));
+        } else if (pref.getString("masa", "0").equals("2")) {
+            float res;
+            res = pesoACambiar * 2.20462f; //libras
+            return Float.parseFloat(formato.format(res));
+        } else {
+            return Float.parseFloat(formato.format(pesoACambiar)); //kg
+        }
+    }
+
+    // funcion cambio de altura
+    public float cambioMedidaAltura (float alturaACambiar) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        DecimalFormat formato = new DecimalFormat("#.#");
+
+        if (pref.getString("altura", "0").equals("1")) {
+            float res;
+            res = alturaACambiar * 0.0328084f; //stones
+            return Float.parseFloat(formato.format(res));
+        } else if (pref.getString("altura", "0").equals("2")) {
+            float res;
+            res = alturaACambiar * 0.393701f;
+            return Float.parseFloat(formato.format(res));
+        } else {
+            return Float.parseFloat(formato.format(alturaACambiar));
+        }
+    }
+
+    // funcion para cambiar el formato de fecha
+    public SimpleDateFormat tipoFecha () {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SimpleDateFormat formato;
+
+        if (pref.getString("fecha", "0").equals("1")) {
+            formato = new SimpleDateFormat("MM/dd/yyyy");
+            return formato;
+        } else if (pref.getString("fecha", "0").equals("2")) {
+            formato = new SimpleDateFormat("yyyy/MM/dd");
+            return formato;
+        } else {
+            formato = new SimpleDateFormat("dd/MM/yyyy");
+            return formato;
+        }
     }
 
 

@@ -4,8 +4,10 @@ package com.GTI.Grupo1.IoT;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -42,6 +44,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -141,10 +144,22 @@ public class PerfilFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-                date = day + "/" + month + "/" + year;
-                mDisplayDate.setText(date);
+                    if (pref.getString("fecha", "0").equals("1")) {
+                        Log.d(TAG, "onDateSet: dd/mm/yyyy: " + month + "/" + day + "/" + year);
+                        date = month + "/" + day + "/" + year;
+                        mDisplayDate.setText(date);
+                    } else if (pref.getString("fecha", "0").equals("2")) {
+                        Log.d(TAG, "onDateSet: yyyy/mm/dd: " + year + "/" + month + "/" + day);
+                        date = year + "/" + month + "/" + day;
+                        mDisplayDate.setText(date);
+                    } else {
+                        Log.d(TAG, "onDateSet: mm/dd/yyyy: " + day + "/" + month + "/" + year);
+                        date = day + "/" + month + "/" + year;
+                        mDisplayDate.setText(date);
+                    }
+
             }
         };
 

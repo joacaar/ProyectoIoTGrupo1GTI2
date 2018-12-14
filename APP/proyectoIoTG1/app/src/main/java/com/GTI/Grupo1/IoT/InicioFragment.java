@@ -2,7 +2,9 @@ package com.GTI.Grupo1.IoT;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -25,6 +27,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DecimalFormat;
+
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 
@@ -40,8 +44,6 @@ public class InicioFragment extends Fragment {
     private String estadoLuces;
     private String personas;
 
-    private String tiposMedidasPeso = " Kg ";
-    private String tiposMedidasAltura = " cm ";
 
     private FirebaseUser user = MainActivity.user;
 
@@ -78,9 +80,23 @@ public class InicioFragment extends Fragment {
                             //Recoger los valores de la bd
                             peso = document.getData().get("peso").toString();
                             altura = document.getData().get("altura").toString();
+                            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                             //Añadir el texto de la bd en el layout
-                            textoPeso.setText(peso + tiposMedidasPeso);
-                            textoAltura.setText(altura + tiposMedidasAltura);
+                            if (pref.getString("masa", "0").equals("1")) {
+                                textoPeso.setText(cambioMedidaPeso(Float.parseFloat(peso)) + " st");
+                            } else if (pref.getString("masa", "0").equals("2")) {
+                                textoPeso.setText(cambioMedidaPeso(Float.parseFloat(peso)) + " lb");
+                            } else {
+                                textoPeso.setText(cambioMedidaPeso(Float.parseFloat(peso)) + " kg");
+                            }
+                            if (pref.getString("altura", "0").equals("1")) {
+                                textoAltura.setText(cambioMedidaAltura(Float.parseFloat(altura)) + " ft");
+                            } else if (pref.getString("altura", "0").equals("2")) {
+                                textoAltura.setText(cambioMedidaAltura(Float.parseFloat(altura)) + " in");
+                            } else {
+                                textoAltura.setText(cambioMedidaAltura(Float.parseFloat(altura)) + " cm");
+                            }
+
 
                             i++;
                         }
@@ -128,5 +144,41 @@ public class InicioFragment extends Fragment {
         return view;
 
     }//onCreate()
+
+    //funcion de cambio de peso
+    public float cambioMedidaPeso (float pesoACambiar) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        DecimalFormat formato = new DecimalFormat("#.#");
+
+        if (pref.getString("masa", "0").equals("1")) {
+            float res;
+            res = pesoACambiar * 0.157473f; //stones
+            return Float.parseFloat(formato.format(res));
+        } else if (pref.getString("masa", "0").equals("2")) {
+            float res;
+            res = pesoACambiar * 2.20462f; //libras
+            return Float.parseFloat(formato.format(res));
+        } else {
+            return Float.parseFloat(formato.format(pesoACambiar)); //kg
+        }
+    }
+
+    // funcion cambio de altura
+    public float cambioMedidaAltura (float alturaACambiar) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        DecimalFormat formato = new DecimalFormat("#.#");
+
+        if (pref.getString("altura", "0").equals("1")) {
+            float res;
+            res = alturaACambiar * 0.0328084f; //stones
+            return Float.parseFloat(formato.format(res));
+        } else if (pref.getString("altura", "0").equals("2")) {
+            float res;
+            res = alturaACambiar * 0.393701f;
+            return Float.parseFloat(formato.format(res));
+        } else {
+            return Float.parseFloat(formato.format(alturaACambiar));
+        }
+    }
 
 }//()

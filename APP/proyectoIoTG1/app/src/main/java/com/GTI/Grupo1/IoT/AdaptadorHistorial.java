@@ -1,8 +1,10 @@
 package com.GTI.Grupo1.IoT;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +13,14 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 public class AdaptadorHistorial extends RecyclerView.Adapter<AdaptadorHistorial.ViewHolder> {
 
-    protected float[] datos; // Lista de datos a mostrar
+    protected float[] datos; // Lista de datos a mostrar //el peso
     protected List<Date> fechas;
     protected LayoutInflater inflador; // Crea Layouts a partir del XML
     protected Context contexto; // Lo necesitamos para el inflador
@@ -61,14 +64,39 @@ public class AdaptadorHistorial extends RecyclerView.Adapter<AdaptadorHistorial.
     }
 
     public void personalizaVista(ViewHolder holder, float dato, Date fecha, String altura1) {
-        String string1= String.valueOf(dato)+"kg";
-        holder.nombre.setText(string1);
-        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(contexto);
+        // tipo de peso representado
+        if (pref.getString("masa", "0").equals("1")) {
+            String string1= String.valueOf(cambioMedidaPeso(dato))+"st";
+            holder.nombre.setText(string1);
+        } else if (pref.getString("masa", "0").equals("2")) {
+            String string1= String.valueOf(cambioMedidaPeso(dato))+"lb";
+            holder.nombre.setText(string1);
+        } else {
+            String string1= String.valueOf(cambioMedidaPeso(dato))+"kg";
+            holder.nombre.setText(string1);
+        }
+
+
+
+        // tipo de fecha representada
+        SimpleDateFormat formateador = tipoFecha();
         String string2= "Fecha: "+String.valueOf(formateador.format(fecha));
         holder.fecha.setText(string2);
+
         float z= (float) 0.99;
         holder.itemView.setAlpha(z);
-        holder.altura.setText("Altura: "+altura1+"m");
+
+        // tipo de altura representada
+        if (pref.getString("altura", "0").equals("1")) {
+            holder.altura.setText("Altura: " + cambioMedidaAltura(Float.parseFloat(altura1)) + "ft");
+        } else if (pref.getString("altura", "0").equals("2")) {
+            holder.altura.setText("Altura: " + cambioMedidaAltura(Float.parseFloat(altura1)) + "in");
+        } else {
+            holder.altura.setText("Altura: " + cambioMedidaAltura(Float.parseFloat(altura1)) + "cm");
+        }
+
+        // cambiar el peso de color en funcion de su peligro
         holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
         //holder.itemView.setBackground(Drawable.createFromPath("@contenedor_rnd"));
         double imc=dato/Math.pow(Float.parseFloat(altura1)/100, 2);
@@ -90,5 +118,60 @@ public class AdaptadorHistorial extends RecyclerView.Adapter<AdaptadorHistorial.
     @Override public int getItemCount() {
         return datos.length;
     }
+
+    //funcion de cambio de peso
+    public float cambioMedidaPeso (float pesoACambiar) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(contexto);
+        DecimalFormat formato = new DecimalFormat("#.#");
+
+        if (pref.getString("masa", "0").equals("1")) {
+            float res;
+            res = pesoACambiar * 0.157473f; //stones
+            return Float.parseFloat(formato.format(res));
+        } else if (pref.getString("masa", "0").equals("2")) {
+            float res;
+            res = pesoACambiar * 2.20462f; //libras
+            return Float.parseFloat(formato.format(res));
+        } else {
+            return Float.parseFloat(formato.format(pesoACambiar)); //kg
+        }
+    }
+
+    // funcion cambio de altura
+    public float cambioMedidaAltura (float alturaACambiar) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(contexto);
+        DecimalFormat formato = new DecimalFormat("#.#");
+
+        if (pref.getString("altura", "0").equals("1")) {
+            float res;
+            res = alturaACambiar * 0.0328084f; //stones
+            return Float.parseFloat(formato.format(res));
+        } else if (pref.getString("altura", "0").equals("2")) {
+            float res;
+            res = alturaACambiar * 0.393701f;
+            return Float.parseFloat(formato.format(res));
+        } else {
+            return Float.parseFloat(formato.format(alturaACambiar));
+        }
+    }
+
+    // funcion para cambiar el formato de fecha
+    public SimpleDateFormat tipoFecha () {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(contexto);
+        SimpleDateFormat formato;
+
+        if (pref.getString("fecha", "0").equals("1")) {
+            formato = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+            return formato;
+        } else if (pref.getString("fecha", "0").equals("2")) {
+            formato = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+            return formato;
+        } else {
+            formato = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+            return formato;
+        }
+    }
+
+
 }
 
