@@ -38,7 +38,7 @@
         <activity
             android:name="com.GTI.Grupo1.IoT.PreferenciasActivity"
             android:label="Configuración"
-            android:theme="@android:style/Theme.DeviceDefault.Light"/>
+            android:theme="@style/Theme.AppCompat.Light"/>
 
         <!--<activity android:name="com.GTI.Grupo1.IoT.ChartActivity"-->
             <!--android:label="Chart"-->
