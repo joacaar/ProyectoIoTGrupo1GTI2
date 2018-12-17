@@ -240,6 +240,7 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
     // Hardware peripherals.
     private Button mButton;
     private Gpio mLed;
+    private Gpio Led2;
     private Max98357A mDac;
 
     // Assistant Thread and Runnables implementing the push-to-talk functionality.
@@ -352,10 +353,12 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
 
                 mButton = VoiceHat.openButton();
                 mLed = VoiceHat.openLed();
+                Led2 = VoiceHat.openLed();
             } else {
                 mButton = new Button(BoardDefaults.getGPIOForButton(),
                     Button.LogicState.PRESSED_WHEN_LOW);
                 mLed = PeripheralManager.getInstance().openGpio(BoardDefaults.getGPIOForLED());
+                Led2 = PeripheralManager.getInstance().openGpio("BCM8");
             }
 
             mButton.setDebounceDelay(BUTTON_DEBOUNCE_DELAY_MS);
@@ -363,6 +366,8 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
 
             mLed.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
             mLed.setActiveType(Gpio.ACTIVE_HIGH);
+            Led2.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
+            Led2.setActiveType(Gpio.ACTIVE_HIGH);
         } catch (IOException e) {
             Log.e(TAG, "error configuring peripherals:", e);
             return;
@@ -415,8 +420,10 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
     public void onButtonEvent(Button button, boolean pressed) {
         try {
             if (mLed != null) {
-                mLed.setValue(pressed);
-            }
+
+               mLed.setValue(pressed);
+               }
+
         } catch (IOException e) {
             Log.d(TAG, "error toggling LED:", e);
         }
@@ -426,11 +433,17 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
             mAssistantHandler.post(mStopAssistantRequest);
         }
     }
-
+boolean encendido=false;
     public void handleDeviceAction(String command, JSONObject params)
             throws JSONException, IOException {
-        if (command.equals("action.devices.traits.OnOff")) {
-            mLed.setValue(params.getBoolean("on"));
+        if (command.equals("action.devices.commands.OnOff")) {
+            if(!encendido) {
+                Led2.setValue(params.getBoolean("on"));
+            }else{
+                Led2.setValue(params.getBoolean("off"));
+                
+            }
+            Log.i(TAG, "hasta aquí llega");
         }
     }
 
