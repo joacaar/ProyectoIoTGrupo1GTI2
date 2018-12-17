@@ -222,7 +222,11 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
             mAssistantRequestObserver = mAssistantService.assist(mAssistantResponseObserver);
             AssistConfig.Builder converseConfigBuilder = AssistConfig.newBuilder()
                     .setAudioInConfig(ASSISTANT_AUDIO_REQUEST_CONFIG)
-                    .setAudioOutConfig(ASSISTANT_AUDIO_RESPONSE_CONFIG)
+                    .setAudioOutConfig(AudioOutConfig.newBuilder()
+                            .setEncoding(ENCODING_OUTPUT)
+                            .setSampleRateHertz(SAMPLE_RATE)
+                            .setVolumePercentage(mVolumePercentage)
+                            .build())
                     .setDeviceConfig(DeviceConfig.newBuilder()
                             .setDeviceModelId(MyDevice.MODEL_ID)
                             .setDeviceId(MyDevice.INSTANCE_ID)
