@@ -441,7 +441,7 @@ boolean encendido=false;
                 Led2.setValue(params.getBoolean("on"));
             }else{
                 Led2.setValue(params.getBoolean("off"));
-                
+
             }
             Log.i(TAG, "hasta aquí llega");
         }

@@ -258,6 +258,7 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
     // Hardware peripherals.
     private Button mButton;
     private Gpio mLed;
+    private Gpio Led2;
     private Max98357A mDac;
     private Handler mLedHandler = new Handler(Looper.getMainLooper());
 
@@ -371,10 +372,12 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
 
                 mButton = VoiceHat.openButton();
                 mLed = VoiceHat.openLed();
+               Led2 = VoiceHat.openLed();
             } else {
                 mButton = new Button(BoardDefaults.getGPIOForButton(),
                     Button.LogicState.PRESSED_WHEN_LOW);
                 mLed = PeripheralManager.getInstance().openGpio(BoardDefaults.getGPIOForLED());
+               Led2 = PeripheralManager.getInstance().openGpio("BCM8");
             }
 
             mButton.setDebounceDelay(BUTTON_DEBOUNCE_DELAY_MS);
@@ -382,6 +385,8 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
 
             mLed.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
             mLed.setActiveType(Gpio.ACTIVE_HIGH);
+           Led2.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
+            Led2.setActiveType(Gpio.ACTIVE_HIGH);
         } catch (IOException e) {
             Log.e(TAG, "error configuring peripherals:", e);
             return;
@@ -445,14 +450,19 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
             mAssistantHandler.post(mStopAssistantRequest);
         }
     }
-
+    boolean encendido=false;
     public void handleDeviceAction(String command, JSONObject params)
             throws JSONException, IOException {
         mLedHandler.removeCallbacksAndMessages(null);
-        if (command.equals("action.devices.traits.OnOff")) {
+        if (command.equals("action.devices.commands.OnOff")) {
             mLedHandler.post(() -> {
                 try {
-                    mLed.setValue(params.getBoolean("on"));
+                    if(!encendido) {
+                        Led2.setValue(params.getBoolean("on"));
+                    }else{
+                        Led2.setValue(params.getBoolean("off"));
+
+                    }
                 } catch (IOException | JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -469,7 +479,7 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
             for (int i = 0; i < blinkCount * 2; i++) {
                 mLedHandler.postDelayed(() -> {
                     try {
-                        mLed.setValue(!mLed.getValue());
+                        Led2.setValue(!Led2.getValue());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
