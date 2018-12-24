@@ -15,17 +15,20 @@
  */
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
 
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.1'
 
     defaultConfig {
-        applicationId "com.example.androidthings.assistant"
+        applicationId "com.proyectoiot.grupo1gti.rpi_uart"
         minSdkVersion 27
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -41,5 +44,22 @@ android {
 }
 
 dependencies {
+  // classpath 'com.google.gms:google-services:3.3.0'
     implementation project(':shared')
+    //compileOnly 'com.google.android.things:androidthings:1.0'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+  //  implementation 'com.google.firebase:firebase-firestore:17.0.2'
+    implementation 'com.google.firebase:firebase-storage:11.6.0'
+    implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation 'com.google.android.things.contrib:driver-button:1.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
+    implementation 'com.google.android.gms:play-services:12.0.1'
+//implementation 'com.google.android.gms:play-services-auth:9.4.0'
+    //implementation 'com.google.api-client:google-api-client-android:1.22.0' exclude module: 'httpclient'
+    //implementation 'com.google.http-client:google-http-client-gson:1.22.0' exclude module: 'httpclient'
+
 }
+
+
+
+

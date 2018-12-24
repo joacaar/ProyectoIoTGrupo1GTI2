@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-include ':step1-start-here', ':step2-volume-control', ':step3-builtin-device-actions', ':shared', ':step4-custom-device-actions'
+include  ':shared', ':step4-custom-device-actions'

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.androidthings.assistant.shared;
+package com.proyectoiot.grupo1gti.rpi_uart.shared;
 
 import android.content.Context;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.androidthings.assistant.shared;
+package com.proyectoiot.grupo1gti.rpi_uart.shared;
 
 public class MyDevice {
     public static final String MODEL_ID = "assistantprojectg1-502a3-producto-dig9n0";

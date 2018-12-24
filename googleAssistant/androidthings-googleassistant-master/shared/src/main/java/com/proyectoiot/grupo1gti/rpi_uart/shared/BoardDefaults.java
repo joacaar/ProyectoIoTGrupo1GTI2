@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.androidthings.assistant.shared;
+package com.proyectoiot.grupo1gti.rpi_uart.shared;
 
 import android.os.Build;
 
@@ -37,10 +37,13 @@ public class BoardDefaults {
                 return "GPIO4_IO22";
             case DEVICE_IMX7D_PICO:
                 return "GPIO2_IO02";
+            case "doorbelPin":
+
             default:
                 throw new IllegalStateException("Unknown Build.DEVICE " + Build.DEVICE);
         }
     }
+
 
     /**
      * Return the GPIO pin that the Button is connected on.
@@ -57,4 +60,6 @@ public class BoardDefaults {
                 throw new IllegalStateException("Unknown Build.DEVICE " + Build.DEVICE);
         }
     }
+
+
 }
