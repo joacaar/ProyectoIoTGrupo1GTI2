@@ -29,6 +29,7 @@ const int TriggerPin = 16;
 const int EchoPin1 = 5;
 const int TriggerPin1 = 26;
 
+const int MQ_PIN = 36;
 
  const char * ssid = "Grupo1";
 const char * password = "123456789";
@@ -222,6 +223,16 @@ void loop() {
                }else{
                   digitalWrite(17, LOW);
                   }
+
+                  
+                  //-----------------------GAS--------------------------------------------
+
+  int raw_adc = analogRead(MQ_PIN);
+  float value_adc = raw_adc * (5.0 / 1023.0);
+  if (value_adc > 4)
+  {
+    client.publish("Grupo1/practica/alertas/gas", "¡Atención! Posible fuga de gas");
+  }
                   
                   //------------------------medicamentos--------------------------------
                   // Revisamos si hay nuevas tarjetas presentes
@@ -311,16 +322,30 @@ M5.Lcd.println("PASE OTRO MEDICAMENTO");
     StaticJsonBuffer<500> jsonBufferRecv; //definición del buffer para almacenar el objero JSON, 200 máximo
     JsonObject& recibo = jsonBufferRecv.parseObject(texto); //paso de texto a formato JSON
     //recibo.printTo(Serial);       //envio por el puerto serie el objeto "recibido"
-
+if(recibo["Altura"] != NULL){
     altura = recibo["Altura"];
+}
+if(recibo["Peso"] != NULL){
     peso = recibo["Peso"];
+}
+if(recibo["Estado"] != NULL){
     puerta = recibo["Estado"];
+}
+if(recibo["EstadoM"] != NULL){
     movimiento = recibo["EstadoM"];
+}
+if(recibo["Incendio"] != NULL){
     incendio = recibo["Incendio"];
+}
+if(recibo["Luces"] != NULL){
     luz = recibo["Luces"];
+}
+if(recibo["Temperatura"] != NULL){
     temperatura = recibo["Temperatura"];
+}
+if(recibo["Humedad"] != NULL){
     humedad = recibo["Humedad"];
-
+}
     
     if((int)peso > 2){
       char texto2[100];
