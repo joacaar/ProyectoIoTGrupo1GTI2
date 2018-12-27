@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity
             fragment = new InicioFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);//.addToBackStack(null); //para hacer que al pulsar atras no salga de la aplicación
+            fragmentTransaction.replace(R.id.fragment_container, fragment, "fragmentInicio");//.addToBackStack(null); //para hacer que al pulsar atras no salga de la aplicación
             fragmentTransaction.commit();
 
 
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity
             fragment = new SensoresFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);//.addToBackStack(null); //para hacer que al pulsar atras no salga de la aplicación
+            fragmentTransaction.replace(R.id.fragment_container, fragment, "fragmentCasa");//.addToBackStack(null); //para hacer que al pulsar atras no salga de la aplicación
             fragmentTransaction.commit();
 
         }  else if (id == R.id.nav_preferencias) {
@@ -307,5 +307,4 @@ public class MainActivity extends AppCompatActivity
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
     }
-
 }

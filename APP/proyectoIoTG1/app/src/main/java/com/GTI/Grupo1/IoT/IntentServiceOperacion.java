@@ -7,17 +7,20 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -34,6 +37,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import static santi.example.rpi_uart.comun.Mqtt.TAG;
@@ -194,7 +198,7 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
 
             @Override
             public void onClick(View view) {
-            //Apagar encender luz
+                //Apagar encender luz
                 try {
                     Log.i(TAG, "Publicando mensaje: " + "acción luz");
                     MqttMessage message = new MqttMessage("TOGGLE".getBytes());
@@ -205,6 +209,7 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
                 } catch (MqttException e) {
                     Log.e(TAG, "Error al publicar.", e);
                 }
+            botonLuz(view);
             }
         });
 
@@ -411,7 +416,11 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
         synchronized (this) {
 
             double modulo=Math.sqrt(event.values[0]*event.values[0]+event.values[1]*event.values[1]+event.values[2]*event.values[2]);
-            if(modulo > 40){
+
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+            int valorPreferencias = Integer.parseInt(pref.getString("moduloAcelerometro", "40"));
+
+            if(modulo > valorPreferencias){
                 notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     NotificationChannel notificationChannel = new NotificationChannel(
@@ -436,12 +445,33 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
                         that, 0, new Intent(IntentServiceOperacion.this, MainActivity.class), 0);
                 notificacion.setContentIntent(intencionPendiente);
                 notificationManager.notify(NOTIFICACION_ID[5], notificacion.build());
+                if(pref.getString("NumeroEmergencia", "0").length() == 9) {
+                    Llamada(pref.getString("NumeroEmergencia", "0"));
+                }
             }
         }
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {    }
 
+    public void botonLuz (View view){
+        try {
+            Log.i(TAG, "Publicando mensaje: " + "acción luz");
+            MqttMessage message = new MqttMessage("TOGGLE".getBytes());
+            message.setQos(qos);
+            message.setRetained(false);
+            client.publish(topicRoot+ "cmnd/POWER", message);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al publicar.", e);
+        }
+    }
+
+    public void Llamada(String tlf) {
+        Intent intent = new Intent(Intent.ACTION_CALL,
+                Uri.parse("tel:"+tlf));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
