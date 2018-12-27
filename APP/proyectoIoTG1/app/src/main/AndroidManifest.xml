@@ -6,6 +6,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission  android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
+<!--Permisos para nearby-->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/nublado"
@@ -47,6 +54,8 @@
         <activity android:name="com.GTI.Grupo1.IoT.SensoresActivity"
             android:label="Sensores"
             android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".PesoNow"/>
 
     </application>
 </manifest>

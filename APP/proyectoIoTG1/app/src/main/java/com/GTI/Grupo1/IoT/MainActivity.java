@@ -241,7 +241,12 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.fragment_container, fragment, "fragmentCasa");//.addToBackStack(null); //para hacer que al pulsar atras no salga de la aplicación
             fragmentTransaction.commit();
 
-        }  else if (id == R.id.nav_preferencias) {
+        } else if (id == R.id.nav_pesarme){
+
+            Intent i = new Intent (this, PesoNow.class);
+            startActivity(i);
+
+        } else if (id == R.id.nav_preferencias) {
             lanzarPreferencias(null);
             return true;
 

@@ -5,6 +5,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.connection.AdvertisingOptions;
+import com.google.android.gms.nearby.connection.ConnectionInfo;
+import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
+import com.google.android.gms.nearby.connection.ConnectionResolution;
+import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
+import com.google.android.gms.nearby.connection.Payload;
+import com.google.android.gms.nearby.connection.PayloadCallback;
+import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
+import com.google.android.gms.nearby.connection.Strategy;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.things.pio.UartDevice;
@@ -25,6 +35,8 @@ import static android.content.ContentValues.TAG;
 public class MainActivity extends Activity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String SERVICE_ID = "com.GTI.Grupo1.IoT";
+    private static String nameNearby = "DomoHouse.zx45b";
 
     private ArduinoUart uart;
 
@@ -33,7 +45,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Log.i(TAG, "Lista de UART disponibles: " + ArduinoUart.disponibles());
-        uart = new ArduinoUart("UART0", 115200);
+        uart = new ArduinoUart("MINIUART", 115200);
+
+        startAdvertising();
 
     }
 
@@ -133,6 +147,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        stopAdvertising();
     }
 
     public void sendToFirestore (Map datos){
@@ -145,6 +160,83 @@ public class MainActivity extends Activity {
 
     }
 
+    //----------------------------------------------------------------------------------------------
+    // Nearby connections
+    //----------------------------------------------------------------------------------------------
 
+    private void startAdvertising() {
+        Nearby.getConnectionsClient(this).startAdvertising(
+                nameNearby, SERVICE_ID, mConnectionLifecycleCallback,
+                new AdvertisingOptions(Strategy.P2P_STAR))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override public void onSuccess(Void unusedResult) {
+                        Log.i(TAG, "Estamos en modo anunciante!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override public void onFailure(@NonNull Exception e) {
+
+                        Log.e(TAG, "Error al comenzar el modo anunciante", e);
+                    }
+                });
+    }
+
+    private void stopAdvertising() {
+        Nearby.getConnectionsClient(this).stopAdvertising();
+        Log.i(TAG, "Detenido el modo anunciante!");
+    }
+
+    private final ConnectionLifecycleCallback mConnectionLifecycleCallback =
+            new ConnectionLifecycleCallback() {
+                @Override public void onConnectionInitiated(
+                        String endpointId, ConnectionInfo connectionInfo) {
+                    // Aceptamos la conexión automáticamente en ambos lados.
+                    Nearby.getConnectionsClient(getApplicationContext())
+                            .acceptConnection(endpointId, mPayloadCallback);
+                    Log.i(TAG, "Aceptando conexión entrante sin autenticación");
+                }
+                @Override public void onConnectionResult(String endpointId,
+                                                         ConnectionResolution result) {
+                    switch (result.getStatus().getStatusCode()) {
+                        case ConnectionsStatusCodes.STATUS_OK:
+                            Log.i(TAG, "Estamos conectados!");
+                            stopAdvertising();
+                            break;
+                        case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
+                            Log.i(TAG, "Conexión rechazada por uno o ambos lados");
+                            break;
+                        case ConnectionsStatusCodes.STATUS_ERROR:
+                            Log.i(TAG, "Conexión perdida antes de ser aceptada");
+                            break;
+                    }
+                }
+                @Override
+                public void onDisconnected(String endpointId) {
+                    Log.i(TAG, "Desconexión del endpoint, no se pueden " +
+                            "intercambiar más datos.");
+                    startAdvertising();
+                }
+            };
+
+    private final PayloadCallback mPayloadCallback = new PayloadCallback() {
+        @Override public void onPayloadReceived(String endpointId,
+                                                Payload payload) {
+            String message = new String(payload.asBytes());
+            Log.i(TAG, "Se ha recibido una transferencia desde (" +
+                    endpointId + ") con el siguiente contenido: " + message);
+            disconnect(endpointId);
+        }
+        @Override public void onPayloadTransferUpdate(String endpointId,
+                                                      PayloadTransferUpdate update) {
+            // Actualizaciones sobre el proceso de transferencia
+        }
+    };
+
+    protected void disconnect(String endpointId) {
+        Nearby.getConnectionsClient(this)
+                .disconnectFromEndpoint(endpointId);
+        Log.i(TAG, "Desconectado del endpoint (" + endpointId + ").");
+        startAdvertising();
+    }
 
 }
