@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                             | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
                 }else{
-                    Intent i = new Intent(this, MainActivity.class);
+                    Intent i = new Intent(this, FingerprintActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                             | Intent.FLAG_ACTIVITY_NEW_TASK
                             | Intent.FLAG_ACTIVITY_CLEAR_TASK);

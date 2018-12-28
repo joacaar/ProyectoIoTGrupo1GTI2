@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
 
     <application
         android:allowBackup="true"
@@ -54,6 +56,10 @@
         <activity android:name="com.GTI.Grupo1.IoT.SensoresActivity"
             android:label="Sensores"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".FingerprintActivity"
+            android:label="title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity android:name=".PesoNow"/>
 

@@ -62,8 +62,8 @@ public class InicioFragment extends Fragment {
         view = inflater.inflate(R.layout.inicio, container, false);
 
 
-        getActivity().startService(new Intent(getActivity(),
-                IntentServiceOperacion.class));
+       /* getActivity().startService(new Intent(getActivity(),
+                IntentServiceOperacion.class));*/
 //----------------------------- DATOS DE BASCULA Y ALTURA ---------------------------------------------------------
         final TextView textoPeso = view.findViewById(R.id.peso);
         final TextView textoAltura = view.findViewById(R.id.altura);
