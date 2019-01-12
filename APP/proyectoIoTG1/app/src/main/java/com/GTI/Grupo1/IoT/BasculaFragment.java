@@ -64,12 +64,13 @@ public class BasculaFragment extends Fragment  {
     private RecyclerView.LayoutManager layoutManager;
     private FirebaseUser user = MainActivity.user;
     float ultimoPeso;
-    float[] valoresPeso = new float[5];
-    float[] valoresPeso1 = new float[10];
+    float[] valoresPeso = new float[10];
+    // float[] valoresPeso1 = new float[10];
     String altura;
+    String altura1;
 
     List<Date> fechas = new ArrayList<Date>();
-    List<Date> fechas1 = new ArrayList<Date>();
+    // List<Date> fechas1 = new ArrayList<Date>();
     Date ultimaFecha = new Date();
     boolean fabPulsado=false;
 
@@ -89,8 +90,8 @@ public class BasculaFragment extends Fragment  {
         vistaGraficas=vistaBascula.findViewById(R.id.esteConstraint);
 
         Historial = vistaBascula.findViewById(R.id.historial);
-        adaptador = new AdaptadorHistorial(getActivity(), valoresPeso1, fechas1, altura);
-        Historial.setAdapter(adaptador);
+        // adaptador = new AdaptadorHistorial(getActivity(), valoresPeso, fechas, altura);
+        // Historial.setAdapter(adaptador);
 
         layoutManager = new LinearLayoutManager(getActivity());
         Historial.setLayoutManager(layoutManager);
@@ -159,7 +160,7 @@ public class BasculaFragment extends Fragment  {
     //}
 
     private void consultaDatos (){
-        altura="187";
+        altura="Tu altura";
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 //            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
 //                    .setTimestampsInSnapshotsEnabled(true)
@@ -170,7 +171,7 @@ public class BasculaFragment extends Fragment  {
                 .document(user.getUid())
                 .collection("Bascula")
                 .orderBy("fecha", Query.Direction.ASCENDING)
-                .limit(5)
+                .limit(10)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -184,7 +185,10 @@ public class BasculaFragment extends Fragment  {
                                 String numero = document.getData().get("peso").toString();
                                 valoresPeso[i] = Float.parseFloat(numero);
 
-                                altura = document.getData().get("altura").toString();
+                                altura1 = document.getData().get("altura").toString();
+                                if (Float.parseFloat(altura1)>0.0){
+                                    altura=altura1;
+                                }
                                 //altura = Float.parseFloat(alturaS);
 
                                 Timestamp timestamp = document.getTimestamp("fecha");
@@ -193,10 +197,16 @@ public class BasculaFragment extends Fragment  {
                                 i++;
                             }
 
+
+
                             generateData();
                             datoUltimoPeso();
                             graficaCircular();
                             mostrarAltura();
+
+                            adaptador = new AdaptadorHistorial(getActivity(), valoresPeso, fechas, altura);
+                            Historial.setAdapter(adaptador);
+
 
                         } else {
                             System.out.println("Error getting documents." + task.getException());
@@ -240,24 +250,25 @@ public class BasculaFragment extends Fragment  {
                         }
                     }
                 });*/
-        for(int i=0; i<5; i++) {
+       /* for(int i=0; i<5; i++) {
             String numero = "67";
             valoresPeso[i] = Float.parseFloat(numero)+i;
             Timestamp timestamp = Timestamp.now();
             fechas.add(timestamp.toDate());
         }
-
-        for(int i=0; i<10; i++) {
+*/
+       /* for(int i=0; i<10; i++) {
             String numero2 = "50";
             valoresPeso1[i] = Float.parseFloat(numero2)+i*i;
             SimpleDateFormat formateador = tipoFecha();
             Timestamp timestamp1 = Timestamp.now();
+            fechas.add(timestamp1.toDate());
             fechas1.add(timestamp1.toDate());
         }
         generateData();
         datoUltimoPeso();
         graficaCircular();
-        mostrarAltura();
+        mostrarAltura();*/
 
     }
 
@@ -296,8 +307,12 @@ public class BasculaFragment extends Fragment  {
 
     private void generateData() {
         int numSubcolumns = 1;
-        int numColumns = 5;
-
+        int numColumns;
+        if(fechas.size()<5) {
+            numColumns = fechas.size();
+        }else{
+            numColumns=5;
+        }
         ColumnChartView chart = (ColumnChartView) vistaBascula.findViewById(R.id.chart);
 
         // Column can have many subcolumns, here by default I use 1 subcolumn in each of 8 columns.

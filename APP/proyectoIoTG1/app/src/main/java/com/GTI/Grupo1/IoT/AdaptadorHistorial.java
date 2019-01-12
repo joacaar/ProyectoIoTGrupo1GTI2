@@ -57,10 +57,12 @@ public class AdaptadorHistorial extends RecyclerView.Adapter<AdaptadorHistorial.
     // Usando como base el ViewHolder y lo personalizamos
     @Override
     public void onBindViewHolder(ViewHolder holder, int posicion) {
-        float dato = this.datos[posicion];
-        Date fecha=fechas.get(posicion);
-        String altura1=this.altura;
-        personalizaVista(holder, dato, fecha, altura);
+        if(posicion < fechas.size()) {
+            float dato = this.datos[posicion];
+            Date fecha = fechas.get(posicion);
+            String altura1 = this.altura;
+            personalizaVista(holder, dato, fecha, altura);
+        }
     }
 
     public void personalizaVista(ViewHolder holder, float dato, Date fecha, String altura1) {
@@ -116,7 +118,7 @@ public class AdaptadorHistorial extends RecyclerView.Adapter<AdaptadorHistorial.
 
     // Indicamos el número de elementos de la lista
     @Override public int getItemCount() {
-        return datos.length;
+        return fechas.size();
     }
 
     //funcion de cambio de peso
