@@ -47,7 +47,11 @@
         <activity
             android:name="com.GTI.Grupo1.IoT.PreferenciasActivity"
             android:label="Configuración"
-            android:theme="@style/Theme.AppCompat.Light"/>
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name="com.GTI.Grupo1.IoT.TemperaturaActivity"
+            android:label="Configuracion termostato"
+            android:theme="@style/AppTheme"/>
 
         <!--<activity android:name="com.GTI.Grupo1.IoT.ChartActivity"-->
             <!--android:label="Chart"-->

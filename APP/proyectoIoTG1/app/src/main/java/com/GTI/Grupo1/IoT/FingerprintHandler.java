@@ -66,10 +66,10 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     public void update(String e, Boolean success){
         TextView textView = (TextView) ((Activity)context).findViewById(R.id.errorText);
 
-        textView.setText(e);
         if(success){
             context.startActivity(new Intent(context,MainActivity.class));
-
+        }else {
+            textView.setText(e);
         }
     }
 

@@ -110,12 +110,17 @@ public class PerfilFragment extends Fragment {
             System.out.println("dentro de getPhoto");
         }
 
+        //Sexo
         sexoo = vistaPerfil.findViewById(R.id.sexo);
         sexoo.setText(usuario.getSexo());
 
-        /*fecha = vistaPerfil.findViewById(R.id.edFecha);
-        fecha.setText(usuario.getFechaNacimiento());*/
+        //Fecha
+        fecha = vistaPerfil.findViewById(R.id.editfecha);
+        if(!fecha.getText().equals(null)) {
+            fecha.setText(usuario.getFechaNacimiento());
+        }
 
+        //Telefono
         telefono = vistaPerfil.findViewById(R.id.textoTel);
         telefono.setText(usuario.getTelefono());
 
@@ -167,7 +172,7 @@ public class PerfilFragment extends Fragment {
         seekBar = vistaPerfil.findViewById(R.id.seekBar);
         textViewEjer = vistaPerfil.findViewById(R.id.TextoEjer);
 
-        //seekBar.setProgress((int) usuario.getNivelEjercicio());
+        seekBar.setProgress((int) usuario.getNivelEjercicio());
 
         if (seekBar != null) {
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -234,16 +239,17 @@ public class PerfilFragment extends Fragment {
 //-------------------------GUARDAR LOS DATOS DEL USUARIO EN LA BASE DE DATOS---------------------------------------
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    // Create a new user with a first and last name
+
                     Map<String, Object> perfilUser = new HashMap<>();
                     if(date!=null) {
-                        perfilUser.put("Fecha de nacimiento", date);
+                        perfilUser.put("FechaNacimiento", date);
+                        usuario.setFechaNacimiento(date);
                     }
                     if(perfilUser!=null) {
                         perfilUser.put("NivelEjer", seekBar.getProgress());
                     }
+                    usuario.setNivelEjercicio(seekBar.getProgress());
 
-                    // Add a new document with a generated ID
                     db.collection("USUARIOS").document(user.getUid()).update(perfilUser);
 
             }

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -181,5 +182,6 @@ public class InicioFragment extends Fragment {
             return Float.parseFloat(formato.format(alturaACambiar));
         }
     }
+
 
 }//()

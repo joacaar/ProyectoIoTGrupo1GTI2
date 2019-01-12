@@ -393,11 +393,15 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
                     }
                     if (Topic.equals(topicRoot+"humedad")) {
                         TextView i = inicio.findViewById(R.id.hum);
+                        //TextView e = layouttemp.findViewById(R.id.hum);
                         i.setText(payload);
+                        //e.setText(payload);
                     }
                     if (Topic.equals(topicRoot+"temperatura")){
-                        TextView e = inicio.findViewById(R.id.temp);
-                        e.setText(payload);
+                        TextView f = inicio.findViewById(R.id.temp);
+                        //TextView g = layouttemp.findViewById(R.id.temp);
+                        f.setText(payload);
+                        //g.setText(payload);
                     }
 
 

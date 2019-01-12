@@ -121,8 +121,7 @@ public class MainActivity extends AppCompatActivity
 
 //------------------------------------------------------------------------------------------------------------------
 
-        // se hace una busqueda a la base de datos que voy a aprovechar para descargar datos
-
+        // Se hace una busqueda a la base de datos que voy a aprovechar para descargar datos
 
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -136,7 +135,7 @@ public class MainActivity extends AppCompatActivity
 
                                     usuario = new Usuario(
                                              task.getResult().getString("Correo")
-                                            ,task.getResult().getString("FechaNaci")
+                                            ,task.getResult().getString("FechaNacimiento")
                                             ,task.getResult().getLong("NivelEjer")
                                             ,task.getResult().getString("Nombre")
                                             ,task.getResult().getString("Sexo")
@@ -302,14 +301,15 @@ public class MainActivity extends AppCompatActivity
             foto_gallery.setImageURI(imageUri);
         }
     }
-
-
-
     public void editarFoto (View view){
         openGallery();
     }
     private void openGallery(){
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
+    }
+    public void abrirTemperatura (View view){
+        Intent intent = new Intent(this, TemperaturaActivity.class);
+        startActivity(intent);
     }
 }
