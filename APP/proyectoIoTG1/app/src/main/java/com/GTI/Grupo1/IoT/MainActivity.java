@@ -28,6 +28,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -64,8 +67,7 @@ public class MainActivity extends AppCompatActivity
     Uri imageUri;
     ImageView foto_gallery;
 
-
-
+    private StorageReference mStorageRef;
 
 
 
@@ -159,8 +161,9 @@ public class MainActivity extends AppCompatActivity
                         }
                 );
 //-------------------------------------------------------------------------------------------------------------------
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
-    }
+    }//onCreate()
 
     @Override
     public void onBackPressed() {
@@ -289,16 +292,19 @@ public class MainActivity extends AppCompatActivity
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-
-
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
             foto_gallery = findViewById(R.id.fotoUsuario);
             imageUri = data.getData();
             foto_gallery.setImageURI(imageUri);
+
+            Uri uri = data.getData();
+            StorageReference filePath = mStorageRef.child("fotos").child(uri.getLastPathSegment());
+
+            filePath.putFile(uri);
+            Toast.makeText(this, "Foto guardada con éxito", Toast.LENGTH_SHORT).show();
+
         }
     }
     public void editarFoto (View view){

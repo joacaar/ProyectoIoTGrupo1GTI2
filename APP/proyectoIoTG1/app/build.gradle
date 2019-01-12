@@ -51,7 +51,9 @@ dependencies {
     //nearby
     implementation 'com.google.android.gms:play-services-nearby:16.0.0'
 
-
+    implementation 'com.firebaseui:firebase-ui-storage:4.1.0'
+    implementation 'com.google.firebase:firebase-storage:16.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.1'
 }
 apply plugin: 'com.google.gms.google-services'
 

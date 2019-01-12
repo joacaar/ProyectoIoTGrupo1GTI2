@@ -74,10 +74,12 @@ public class PerfilFragment extends Fragment {
     public TextView sexoo;
     public TextView telefono;
 
-
     private Usuario usuario = MainActivity.usuario;
 
     private long progreso;
+
+    StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+
 
 
     public PerfilFragment() {
@@ -209,7 +211,6 @@ public class PerfilFragment extends Fragment {
         }
 
 
-
 //-------------------------------------------------------------------
         //Guardar datos del usuario
        addListenerOnButton(vistaPerfil);
@@ -226,6 +227,7 @@ public class PerfilFragment extends Fragment {
         progreso = seekBar.getProgress();
         //seekBar.setProgress((int) usuario.getNivelEjercicio());
         btnGuardar = view.findViewById(R.id.guardar);
+        final ImageView imageView = view.findViewById(R.id.fotoUsuario);
 
 
 
@@ -251,7 +253,6 @@ public class PerfilFragment extends Fragment {
                     usuario.setNivelEjercicio(seekBar.getProgress());
 
                     db.collection("USUARIOS").document(user.getUid()).update(perfilUser);
-
             }
 
         });
