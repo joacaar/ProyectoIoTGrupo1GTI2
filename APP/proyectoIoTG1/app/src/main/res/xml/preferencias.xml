@@ -30,6 +30,29 @@
             android:defaultValue="0"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="Sensor de caida">
+
+        <EditTextPreference
+            android:defaultValue="0"
+            android:inputType="phone"
+            android:key="NumeroEmergencia"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="Numero al que se llamara cuando usted se caiga. Dejelo en blanco para no llamar a nadie, pero recomendamos poner un numero de emergencia."
+            android:title="Numero de emergencia:" />
+        <EditTextPreference
+            android:defaultValue="40"
+            android:inputType="number|phone"
+            android:key="moduloAcelerometro"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="El valor por defecto es 40, a mayor valor menor sensibilidad. Acomodelo como más prefiera."
+            android:title="Valor del acelerometro:" />
+        <Preference
+            android:key="TestAcelerometro"
+            android:widgetLayout="@layout/test_acelerometro_bt" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
 
 
