@@ -46,13 +46,13 @@ public class InicioFragment extends Fragment {
     private String peso;
     private String altura;
     private boolean puerta;
-    private String estadoPuerta;
-    private String temperatura;
-    private String humedad;
+    public static String estadoPuerta;
+    public static String temperatura;
+    public static String humedad;
     private boolean luces;
-    private String estadoLuces;
-    private String personas;
-
+    public static String estadoLuces;
+   public static String personas;
+    public static String medicamentos;
 
     private FirebaseUser user = MainActivity.user;
 
@@ -68,13 +68,24 @@ public class InicioFragment extends Fragment {
                              Bundle savedInstanceState) {
         //Inflate the layout for this fragment
         view = inflater.inflate(R.layout.inicio, container, false);
+refresh();
+view.findViewById(R.id.imageView2).setOnClickListener(new View.OnClickListener() {
 
-
+    @Override
+    public void onClick(View view) {
+        refresh();
+    }
+    });
         getActivity().startService(new Intent(getActivity(),
                 IntentServiceOperacion.class));
 //----------------------------- DATOS DE BASCULA Y ALTURA ---------------------------------------------------------
         final TextView textoPeso = view.findViewById(R.id.peso);
         final TextView textoAltura = view.findViewById(R.id.altura);
+        final TextView textoPuerta = view.findViewById(R.id.puerta);
+        final TextView textoTemp = view.findViewById(R.id.temp);
+        final TextView textoHum = view.findViewById(R.id.hum);
+        final TextView textoLuces = view.findViewById(R.id.luces);
+        final TextView textoPersonas = view.findViewById(R.id.personas);
         view.findViewById(R.id.botonLuz).setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -129,11 +140,11 @@ public class InicioFragment extends Fragment {
                     }
                 });
 //----------------------------- DATOS DE SENSORES ---------------------------------------------------------
-        final TextView textoPuerta = view.findViewById(R.id.puerta);
+        /*final TextView textoPuerta = view.findViewById(R.id.puerta);
         final TextView textoTemp = view.findViewById(R.id.temp);
         final TextView textoHum = view.findViewById(R.id.hum);
         //final TextView textoLuces = view.findViewById(R.id.luces);
-        final TextView textoPersonas = view.findViewById(R.id.personas);
+        final TextView textoPersonas = view.findViewById(R.id.personas);*/
 
 
         FirebaseFirestore db2 = FirebaseFirestore.getInstance();
@@ -170,7 +181,20 @@ public class InicioFragment extends Fragment {
         return view;
 
     }//onCreate()
+public void refresh(){
 
+    final TextView textoPuerta = view.findViewById(R.id.puerta);
+    final TextView textoTemp = view.findViewById(R.id.temp);
+    final TextView textoHum = view.findViewById(R.id.hum);
+    final TextView textoLuces = view.findViewById(R.id.luces);
+    final TextView textoPersonas = view.findViewById(R.id.personas);
+    final TextView textoMedic = view.findViewById(R.id.medicamentos);
+    textoPuerta.setText(estadoPuerta);
+    textoTemp.setText(temperatura + " ºC");
+    textoHum.setText(humedad + " % ");
+    textoPersonas.setText("Hay " + personas);
+    textoMedic.setText(medicamentos);
+}
     //funcion de cambio de peso
     public float cambioMedidaPeso (float pesoACambiar) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());

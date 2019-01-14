@@ -174,7 +174,7 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        // inicio = InicioFragment.view;
+         inicio = InicioFragment.view;
         SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
         listaSensores = sm.getSensorList(Sensor.TYPE_LINEAR_ACCELERATION);
 
@@ -462,32 +462,22 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
 //--------------------------------------------------
                 if (!payload.isEmpty()) {
                     if (payload.equals("ON") || payload.equals("OFF")) {
-                        TextView a = inicio.findViewById(R.id.luces);
-                        a.setText(payload);
+                        InicioFragment.estadoLuces=payload;
                     }
                     if (Topic.equals(topicRoot+"medicamentos")) {
-                        TextView b = inicio.findViewById(R.id.medicamentos);
-                        b.setText(payload);
+                        InicioFragment.medicamentos=payload;
                     }
                     if (Topic.equals(topicRoot+"personas")) {
-                        TextView c = inicio.findViewById(R.id.personas);
-                        c.setText(payload);
+                      InicioFragment.personas=payload;
                     }
                     if (Topic.equals(topicRoot+"puerta")) {
-                        TextView d = inicio.findViewById(R.id.puerta);
-                        d.setText(payload);
+                       InicioFragment.estadoPuerta=payload;
                     }
                     if (Topic.equals(topicRoot+"humedad")) {
-                        TextView i = inicio.findViewById(R.id.hum);
-                        //TextView e = layouttemp.findViewById(R.id.hum);
-                        i.setText(payload);
-                        //e.setText(payload);
+                       InicioFragment.humedad=payload;
                     }
                     if (Topic.equals(topicRoot+"temperatura")){
-                        TextView f = inicio.findViewById(R.id.temp);
-                        //TextView g = layouttemp.findViewById(R.id.temp);
-                        f.setText(payload);
-                        //g.setText(payload);
+                       InicioFragment.temperatura=payload;
                     }
 
 
