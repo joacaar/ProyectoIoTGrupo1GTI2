@@ -170,7 +170,11 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
             Log.e(TAG, "Error al suscribir.", e);
         }
     }
-   /* @Override public void onCreate() {
+
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        // inicio = InicioFragment.view;
         SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
         listaSensores = sm.getSensorList(Sensor.TYPE_LINEAR_ACCELERATION);
 
@@ -180,8 +184,23 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
             sm.registerListener((SensorEventListener) that, sensor, SensorManager.SENSOR_DELAY_UI);
             n++;
         }
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(
+                    CANAL_ID, "Mis Notificaciones",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setDescription("Descripcion del canal");
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setVibrationPattern(new long[]{0, 100, 300, 100});
+            notificationChannel.enableVibration(true);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
 
+    }
 
+    @Override
+    public void connectionLost(Throwable cause) {
         try {
             Log.i(TAG, "Conectando al broker " + broker);
             client = new MqttClient(broker, clientId, new MemoryPersistence());
@@ -290,97 +309,6 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
         } catch (MqttException e) {
             Log.e(TAG, "Error al suscribir.", e);
         }
-    }
-    @Override
-    public int onStartCommand(Intent intenc, int flags, int idArranque) {
-
-
-        inicio = InicioFragment.view;
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(
-                    CANAL_ID, "Mis Notificaciones",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setDescription("Descripcion del canal");
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.setVibrationPattern(new long[]{0, 100, 300, 100});
-            notificationChannel.enableVibration(true);
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
-        inicio.findViewById(R.id.botonLuz).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                //Apagar encender luz
-                try {
-                    Log.i(TAG, "Publicando mensaje: " + "acción luz");
-                    MqttMessage message = new MqttMessage("TOGGLE".getBytes());
-                    message.setQos(qos);
-                    message.setRetained(false);
-                    client.publish(topicRoot+ "cmnd/POWER", message);
-
-                } catch (MqttException e) {
-                    Log.e(TAG, "Error al publicar.", e);
-                }
-            botonLuz(view);
-            }
-        });
-
-        return START_STICKY;
-    }
-
-    @Override public IBinder onBind(Intent intencion) {
-        return null;
-    }*/
-
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        // inicio = InicioFragment.view;
-        SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
-        listaSensores = sm.getSensorList(Sensor.TYPE_LINEAR_ACCELERATION);
-
-        int n = 0;
-        for (Sensor sensor : listaSensores) {
-
-            sm.registerListener((SensorEventListener) that, sensor, SensorManager.SENSOR_DELAY_UI);
-            n++;
-        }
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(
-                    CANAL_ID, "Mis Notificaciones",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setDescription("Descripcion del canal");
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.setVibrationPattern(new long[]{0, 100, 300, 100});
-            notificationChannel.enableVibration(true);
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
-       /* inicio.findViewById(R.id.botonLuz).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                //Apagar encender luz
-                try {
-                    Log.i(TAG, "Publicando mensaje: " + "acción luz");
-                    MqttMessage message = new MqttMessage("TOGGLE".getBytes());
-                    message.setQos(qos);
-                    message.setRetained(false);
-                    client.publish(topicRoot+ "cmnd/POWER", message);
-
-                } catch (MqttException e) {
-                    Log.e(TAG, "Error al publicar.", e);
-                }
-                botonLuz(view);
-            }
-        });*/
-    }
-
-    @Override
-    public void connectionLost(Throwable cause) {
-
     }
 
     @Override public void messageArrived( String topic, MqttMessage message)
@@ -635,5 +563,12 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
                 Uri.parse("tel:"+tlf));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+    public void onDestroy() {
+
+       /* super.onDestroy();
+        startService(new Intent(this,
+                IntentServiceOperacion.class));*/
+
     }
 }
