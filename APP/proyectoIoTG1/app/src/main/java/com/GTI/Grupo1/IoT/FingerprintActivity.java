@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
@@ -68,19 +70,11 @@ public class FingerprintActivity extends AppCompatActivity {
 
             // Check whether the device has a Fingerprint sensor.
             if (!fingerprintManager.isHardwareDetected()) {
+                    textView.setText("Your Device does not have a Fingerprint Sensor");
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
 
-                /**
-                 * An error message will be displayed if the device does not contain the fingerprint hardware.
-                 * However if you plan to implement a default authentication method,
-                 * you can redirect the user to a default authentication activity from here.
-                 * Example:
-                 * Intent intent = new Intent(this, DefaultAuthenticationActivity.class);
-                 * startActivity(intent);
-                 */
-                textView.setText("Your Device does not have a Fingerprint Sensor");
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                finish();
             } else {
                 // Checks whether fingerprint permission is set on manifest
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {

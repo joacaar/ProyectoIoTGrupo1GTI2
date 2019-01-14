@@ -10,8 +10,10 @@
         android:key="otraCosa"
         android:title="Seguridad">
         <SwitchPreference
+            android:id="@+id/huell"
             android:defaultValue="false"
             android:key="huella"
+            android:summary="Tienes que tener registrada al menos una huella en tu dispositivo"
             android:title="Identificación por huella" />
     </PreferenceCategory>
     <PreferenceCategory
