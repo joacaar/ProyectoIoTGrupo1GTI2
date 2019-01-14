@@ -50,7 +50,7 @@
             android:title="Valor del acelerometro:" />
         <Preference
             android:key="TestAcelerometro"
-            android:widgetLayout="@layout/test_acelerometro_bt" />
+            android:widgetLayout="@layout/reiniciar_aplicacion_bt" />
     </PreferenceCategory>
 
 </PreferenceScreen>

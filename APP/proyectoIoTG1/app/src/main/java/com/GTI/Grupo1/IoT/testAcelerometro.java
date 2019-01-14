@@ -7,8 +7,9 @@ public class testAcelerometro extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getFragmentManager().beginTransaction()
+        /*getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new PreferenciasFragment())
-                .commit();
+                .commit();*/
+        setContentView(R.layout.temperatura);
     }
 }
