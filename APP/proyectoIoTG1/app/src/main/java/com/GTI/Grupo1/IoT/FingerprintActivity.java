@@ -3,18 +3,25 @@ package com.GTI.Grupo1.IoT;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -90,11 +97,14 @@ public class FingerprintActivity extends AppCompatActivity {
                         finish();
                     } else {
                         // Checks whether lock screen security is enabled or not
-                        if (!keyguardManager.isKeyguardSecure()) {
-                            textView.setText("Lock screen security not enabled in Settings");
+                        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+                        Boolean c = pref.getBoolean("huella",false);
+                        if (c.equals(false)) {
+                            Intent intent = new Intent(this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
                         } else {
                             generateKey();
-
 
                             if (cipherInit()) {
                                 FingerprintManager.CryptoObject cryptoObject = new FingerprintManager.CryptoObject(cipher);
