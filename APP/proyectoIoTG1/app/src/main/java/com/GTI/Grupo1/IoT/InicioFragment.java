@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,9 +30,15 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
 import java.text.DecimalFormat;
 
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+import static santi.example.rpi_uart.comun.Mqtt.TAG;
+import static santi.example.rpi_uart.comun.Mqtt.qos;
+import static santi.example.rpi_uart.comun.Mqtt.topicRoot;
 
 
 public class InicioFragment extends Fragment {
@@ -68,7 +75,24 @@ public class InicioFragment extends Fragment {
 //----------------------------- DATOS DE BASCULA Y ALTURA ---------------------------------------------------------
         final TextView textoPeso = view.findViewById(R.id.peso);
         final TextView textoAltura = view.findViewById(R.id.altura);
+        view.findViewById(R.id.botonLuz).setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View view) {
+                //Apagar encender luz
+                try {
+                    Log.i(TAG, "Publicando mensaje: " + "acción luz");
+                    MqttMessage message = new MqttMessage("TOGGLE".getBytes());
+                    message.setQos(qos);
+                    message.setRetained(false);
+                    IntentServiceOperacion.client.publish(topicRoot + "cmnd/POWER", message);
+
+                } catch (MqttException e) {
+                    Log.e(TAG, "Error al publicar.", e);
+                }
+                IntentServiceOperacion.botonLuz(view);
+            }
+        });
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("USUARIOS")
                 .document(user.getUid())

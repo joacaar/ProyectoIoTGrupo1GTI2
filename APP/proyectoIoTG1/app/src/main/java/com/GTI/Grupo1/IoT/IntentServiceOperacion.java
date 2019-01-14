@@ -46,7 +46,7 @@ import static santi.example.rpi_uart.comun.Mqtt.clientId;
 import static santi.example.rpi_uart.comun.Mqtt.qos;
 import static santi.example.rpi_uart.comun.Mqtt.topicRoot;
 
-public class IntentServiceOperacion extends Service implements MqttCallback, SensorEventListener {
+public class IntentServiceOperacion extends IntentService implements MqttCallback, SensorEventListener {
     private NotificationManager notificationManager;
     static final String CANAL_ID = "mi_canal";
     static final int[] NOTIFICACION_ID = {1,2,3,4,5,6};
@@ -54,9 +54,123 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
     View inicio;
     Context that=this;
     private List<Sensor> listaSensores;
-    MqttClient client;
+    static MqttClient client;
 
-    @Override public void onCreate() {
+    public IntentServiceOperacion() {
+        super("IntentServiceOperacion");
+
+
+
+        try {
+            Log.i(TAG, "Conectando al broker " + broker);
+            client = new MqttClient(broker, clientId, new MemoryPersistence());
+            MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts.setCleanSession(true);
+            connOpts.setKeepAliveInterval(60);
+            connOpts.setWill(topicRoot, "App desconectada".getBytes(),
+                    qos, false);
+
+            client.connect(connOpts);
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al conectar.", e);
+        }
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot+"alertas");
+            client.subscribe(topicRoot+"alertas/puerta", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot+"alertas");
+            client.subscribe(topicRoot+"alertas/incendio", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot+"alertas");
+            client.subscribe(topicRoot+"alertas/intruso", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        } try {
+            Log.i(TAG, "Suscrito a " + topicRoot+"alertas");
+            client.subscribe(topicRoot+"alertas/apagon", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot+"alertas");
+            client.subscribe(topicRoot+"alertas/letargo", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+
+
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "POWER");
+            client.subscribe(topicRoot + "POWER", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "medicamentos");
+            client.subscribe(topicRoot + "medicamentos", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "personas");
+            client.subscribe(topicRoot + "personas", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "puerta");
+            client.subscribe(topicRoot + "puerta", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "temperatura");
+            client.subscribe(topicRoot + "temperatura", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        //----
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot + "humedad");
+            client.subscribe(topicRoot + "humedad", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+    }
+   /* @Override public void onCreate() {
         SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
         listaSensores = sm.getSensorList(Sensor.TYPE_LINEAR_ACCELERATION);
 
@@ -218,6 +332,50 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
 
     @Override public IBinder onBind(Intent intencion) {
         return null;
+    }*/
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        // inicio = InicioFragment.view;
+        SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+        listaSensores = sm.getSensorList(Sensor.TYPE_LINEAR_ACCELERATION);
+
+        int n = 0;
+        for (Sensor sensor : listaSensores) {
+
+            sm.registerListener((SensorEventListener) that, sensor, SensorManager.SENSOR_DELAY_UI);
+            n++;
+        }
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(
+                    CANAL_ID, "Mis Notificaciones",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setDescription("Descripcion del canal");
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setVibrationPattern(new long[]{0, 100, 300, 100});
+            notificationChannel.enableVibration(true);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+       /* inicio.findViewById(R.id.botonLuz).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                //Apagar encender luz
+                try {
+                    Log.i(TAG, "Publicando mensaje: " + "acción luz");
+                    MqttMessage message = new MqttMessage("TOGGLE".getBytes());
+                    message.setQos(qos);
+                    message.setRetained(false);
+                    client.publish(topicRoot+ "cmnd/POWER", message);
+
+                } catch (MqttException e) {
+                    Log.e(TAG, "Error al publicar.", e);
+                }
+                botonLuz(view);
+            }
+        });*/
     }
 
     @Override
@@ -459,7 +617,7 @@ public class IntentServiceOperacion extends Service implements MqttCallback, Sen
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {    }
 
-    public void botonLuz (View view){
+    public static void botonLuz (View view){
         try {
             Log.i(TAG, "Publicando mensaje: " + "acción luz");
             MqttMessage message = new MqttMessage("TOGGLE".getBytes());
