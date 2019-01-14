@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -78,10 +79,6 @@ public class PerfilFragment extends Fragment {
 
     private long progreso;
 
-    StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-
-
-
     public PerfilFragment() {
         // Required empty public constructor
     }
@@ -103,6 +100,7 @@ public class PerfilFragment extends Fragment {
         nombre.setText(user.getDisplayName());
         correo.setText(user.getEmail());
         String proveedor = user.getProviders().get(0);
+
 
         if (proveedor.equals("google.com")) {
             String uri = user.getPhotoUrl().toString();
