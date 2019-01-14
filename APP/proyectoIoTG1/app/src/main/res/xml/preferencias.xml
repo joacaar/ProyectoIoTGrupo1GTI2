@@ -6,7 +6,14 @@
         android:key="notificaciones"
         android:title="Recibir Notificaciones"
         android:summary="Recibir notificaciones en la barra de estado"/>
-
+    <PreferenceCategory
+        android:key="otraCosa"
+        android:title="Seguridad">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="huella"
+            android:title="Identificación por huella" />
+    </PreferenceCategory>
     <PreferenceCategory
         android:key="otraCosa"
         android:title="Selección de medidas">
