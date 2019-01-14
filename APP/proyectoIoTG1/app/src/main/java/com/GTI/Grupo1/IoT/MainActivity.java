@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,7 +69,6 @@ public class MainActivity extends AppCompatActivity
     ImageView foto_gallery;
 
     private StorageReference mStorageRef;
-
 
 
     @Override
@@ -318,4 +318,9 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, TemperaturaActivity.class);
         startActivity(intent);
     }
+    public void lanzarTest(View view){
+        Intent i = new Intent(this, testAcelerometro.class);
+        startActivity(i);
+    }
+
 }
