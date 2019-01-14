@@ -2,6 +2,9 @@ package com.GTI.Grupo1.IoT;
 
 import android.Manifest;
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,6 +36,8 @@ import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.protobuf.StringValue;
 
 import java.io.UnsupportedEncodingException;
@@ -50,6 +55,8 @@ public class PesoNow extends AppCompatActivity {
     private static final String TAG = "Mobile:";
 //    private String nameNearby = "DomoHouse.zx45b";
 
+    private BluetoothAdapter bAdapter;
+
     TextView info;
     ProgressBar buscando;
 
@@ -63,7 +70,7 @@ public class PesoNow extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.peso_now);
 
-        Log.i("Nearby"," Despues mostrar el layout");
+        //Log.i("Nearby"," Despues mostrar el layout");
 
         // Comprobación de permisos peligrosos
         if (ContextCompat.checkSelfPermission(this,
@@ -72,9 +79,16 @@ public class PesoNow extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+            if(ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED){
+                finish();
+            }
+        }else{
+            startDiscovery();
         }
 
-        Log.i("Nearby"," Despues comprobar permiso");
+        //Log.i("Nearby"," Despues comprobar permiso");
 
 
         dispositivos =new ArrayList<String>();
@@ -83,36 +97,37 @@ public class PesoNow extends AppCompatActivity {
         lista = findViewById(R.id.listaDispo);
         lista.setAdapter(adaptador);
 
-        Log.i("Nearby"," Despues inicializar los componentes de la lista");
+        //Log.i("Nearby"," Despues inicializar los componentes de la lista");
 
         info = findViewById(R.id.infoView);
 
-//        lista.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-//            @Override
-//            public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
-//            {
-//
-//                Nearby.getConnectionsClient(getApplicationContext())
-//                        .requestConnection(deviceInfo.get(position).getName(),deviceInfo.get(position).getEndPointId(),
-//                                mConnectionLifecycleCallback)
-//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                            @Override public void onSuccess(Void unusedResult) {
-//                                Log.i(TAG, "Solicitud lanzada, falta que ambos " +"lados acepten");
-//                            }
-//                        })
-//                        .addOnFailureListener(new OnFailureListener() {
-//                            @Override public void onFailure(@NonNull Exception e) {
-//                                Log.e(TAG, "Error en solicitud de conexión", e);
-//                                info.setText("Desconectado");
-//                            }
-//                        });
-//            }
-//        });
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
+            {
+                Nearby.getConnectionsClient(getApplicationContext())
+                        .requestConnection(deviceInfo.get(position).getName(),deviceInfo.get(position).getEndPointId(),
+                                mConnectionLifecycleCallback)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override public void onSuccess(Void unusedResult) {
+                                Log.i(TAG, "Solicitud lanzada, falta que ambos " +"lados acepten");
+                                System.out.println("Solicictud lanzada");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, "Error en solicitud de conexión", e);
+                                System.out.println("Error en la solicitud");
+                                info.setText("Desconectado");
+                            }
+                        });
+            }
+        });
 
-        Log.i("Nearby"," Despues esperar a que la lista escuche un click");
+        //Log.i("Nearby"," Despues esperar a que la lista escuche un click");
 
-        startDiscovery();
-        Log.i("Nearby"," Despues comenzar ");
+        //startDiscovery();
+        //Log.i("Nearby"," Despues comenzar ");
     }
 
     // Gestión de permisos
@@ -189,8 +204,9 @@ public class PesoNow extends AppCompatActivity {
                         case ConnectionsStatusCodes.STATUS_OK:
                             Log.i(TAG, "Estamos conectados!");
                             info.setText("Conectado");
+                            FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
                             //sendData(endpointId, texto.getText().toString());
-                            sendData(endpointId, "SWITCH");
+                            sendData(endpointId, usuario.getUid());
                             break;
                         case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
                             Log.i(TAG, "Conexión rechazada por uno o ambos lados");
@@ -206,7 +222,7 @@ public class PesoNow extends AppCompatActivity {
                 @Override public void onDisconnected(String endpointId) {
                     Log.i(TAG, "Desconexión del endpoint, no se pueden " +
                             "intercambiar más datos.");
-                    info.setText("Desconectado");
+
                 }
             };
     private final PayloadCallback mPayloadCallback = new PayloadCallback() {// En este ejemplo, el móvil no recibirá transmisiones de la RP3
@@ -229,8 +245,23 @@ public class PesoNow extends AppCompatActivity {
         }
         Nearby.getConnectionsClient(this).sendPayload(endpointId, data);
         Log.i(TAG, "Mensaje enviado.");
+        info.setText("Puedes pesarte");
     }
 
+    @Override
+    protected void onPause(){
+        Log.i("Nearby", "Dentro de onPause");
+        //stopDiscovery();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.i("Nearby", "Dentro de onDestroy");
+        stopDiscovery();
+        //bAdapter.disable(); //Desactivar el bluetooth, esto cierra la app. x
+        super.onDestroy();
+    }
 
 }
 

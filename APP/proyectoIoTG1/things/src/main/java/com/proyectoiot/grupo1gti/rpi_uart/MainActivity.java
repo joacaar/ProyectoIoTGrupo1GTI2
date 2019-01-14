@@ -37,6 +37,7 @@ public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String SERVICE_ID = "com.GTI.Grupo1.IoT";
     private static String nameNearby = "DomoHouse.zx45b";
+    private String usuario = null;
 
     private ArduinoUart uart;
 
@@ -48,7 +49,6 @@ public class MainActivity extends Activity {
         uart = new ArduinoUart("MINIUART", 115200);
 
         startAdvertising();
-
     }
 
     public void readUartBuffer(UartDevice uart) throws IOException {
@@ -153,8 +153,14 @@ public class MainActivity extends Activity {
     public void sendToFirestore (Map datos){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("USUARIOS").document("n5Mt1LUqQNWsRH2Ny21YZbia1Dh2")
-                .collection("Bascula").document().set(datos);
+        if(usuario == null) {
+            db.collection("USUARIOS").document("n5Mt1LUqQNWsRH2Ny21YZbia1Dh2")
+                    .collection("Bascula").document().set(datos);
+        }else{
+            db.collection("USUARIOS").document(usuario)
+                    .collection("Bascula").document().set(datos);
+            usuario = null;
+        }
 
         System.out.println("Datos añadidos a bd");
 
@@ -221,9 +227,9 @@ public class MainActivity extends Activity {
     private final PayloadCallback mPayloadCallback = new PayloadCallback() {
         @Override public void onPayloadReceived(String endpointId,
                                                 Payload payload) {
-            String message = new String(payload.asBytes());
+            usuario = new String(payload.asBytes());
             Log.i(TAG, "Se ha recibido una transferencia desde (" +
-                    endpointId + ") con el siguiente contenido: " + message);
+                    endpointId + ") con el siguiente contenido: " + usuario);
             disconnect(endpointId);
         }
         @Override public void onPayloadTransferUpdate(String endpointId,
