@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -109,16 +111,28 @@ public class MainActivity extends AppCompatActivity
         correo.setText(user.getEmail());
 // Codigo para identificar el provedor, soluciona problema cuando se hace login por Correo-contraseña
 // no hay foto y da error, de esta manera filtramos y solo ejecuta el codigo cuando se hace login por google.
-        String proveedor = user.getProviders().get(0);
-        if(proveedor.equals("google.com")){
-            String uri = user.getPhotoUrl().toString();
-            Picasso.with(getBaseContext()).load(uri).into(foto);
-            System.out.println("dentro de getPhoto");
-        }
-//        System.out.println("El proveedor de la cuenta es " + proveedor +".");
+        final String proveedor = user.getProviders().get(0);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
-
-
+        storageReference.child("imagenes/" + uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.with(getBaseContext()).load(uri.toString()).
+                        resize(168, 168).centerCrop()
+                        .into(foto);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                if (proveedor.equals("google.com")) {
+                    String uri = user.getPhotoUrl().toString();
+                    uri = uri.replace("s96-c", "s300-c");
+                    Picasso.with(getBaseContext()).load(uri).into(foto);
+                }
+            }
+        });
+        
         navigationView.setNavigationItemSelectedListener(this);
 
 //------------------------------------------------------------------------------------------------------------------
