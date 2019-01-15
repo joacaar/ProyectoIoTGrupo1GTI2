@@ -59,8 +59,6 @@ void loop()
     }*/
 
   // delay(500);
-  Serial.println(" MIDIENDO");
-
   int dis = distancia();
   double pes = peso();
   if (pes >= 1 && aux == false) {
