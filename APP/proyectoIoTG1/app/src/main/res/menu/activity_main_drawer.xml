@@ -26,11 +26,6 @@
         <!--android:icon="@drawable/ic_menu_gallery"-->
 
         <item
-            android:id="@+id/nav_pesarme"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/pesarme" />
-
-        <item
             android:id="@+id/nav_preferencias"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/configuraci_n" />
