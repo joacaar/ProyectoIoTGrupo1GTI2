@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,8 +69,8 @@ public class InicioFragment extends Fragment {
                              Bundle savedInstanceState) {
         //Inflate the layout for this fragment
         view = inflater.inflate(R.layout.inicio, container, false);
-refresh();
-view.findViewById(R.id.imageView2).setOnClickListener(new View.OnClickListener() {
+        refresh();
+        view.findViewById(R.id.imageView2).setOnClickListener(new View.OnClickListener() {
 
     @Override
     public void onClick(View view) {
@@ -78,6 +79,16 @@ view.findViewById(R.id.imageView2).setOnClickListener(new View.OnClickListener()
     });
         getActivity().startService(new Intent(getActivity(),
                 IntentServiceOperacion.class));
+
+        FloatingActionButton pesarme = view.findViewById(R.id.pesarme);
+        pesarme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), PesoNow.class);
+                getActivity().startActivity(i);
+            }
+            });
+
 //----------------------------- DATOS DE BASCULA Y ALTURA ---------------------------------------------------------
         final TextView textoPeso = view.findViewById(R.id.peso);
         final TextView textoAltura = view.findViewById(R.id.altura);
