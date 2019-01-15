@@ -309,13 +309,9 @@ public class MainActivity extends AppCompatActivity
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
     }
-    public void abrirTemperatura (View view){
+    public void abrirTemperatura (View view) {
         Intent intent = new Intent(this, TemperaturaActivity.class);
         startActivity(intent);
-    }
-    public void lanzarTest(View view){
-        Intent i = new Intent(this, testAcelerometro.class);
-        startActivity(i);
     }
 
 }

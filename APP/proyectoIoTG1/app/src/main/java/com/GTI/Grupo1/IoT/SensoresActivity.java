@@ -17,7 +17,7 @@ public class SensoresActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sensores_layout);
 
-        recyclerView = findViewById(R.id.recycler_view);
+        //recyclerView = findViewById(R.id.recycler_view);
         adaptador = new SensoresAdaptador(this, sensores);
         recyclerView.setAdapter(adaptador);
         layoutManager = new LinearLayoutManager(this);
