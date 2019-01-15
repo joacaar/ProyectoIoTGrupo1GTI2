@@ -59,6 +59,7 @@ void loop()
     }*/
 
   // delay(500);
+  Serial.println(" MIDIENDO");
 
   int dis = distancia();
   double pes = peso();
@@ -68,6 +69,8 @@ void loop()
 
     envio["Altura"] = dis;
     envio["Peso"] = peso();
+
+    Serial.println(pes);
 
     envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
 

@@ -55,11 +55,7 @@
         <activity
             android:name="com.GTI.Grupo1.IoT.TemperaturaActivity"
             android:label="Configuracion termostato"
-            android:theme="@style/AppTheme"/>
-
-        <!--<activity android:name="com.GTI.Grupo1.IoT.ChartActivity"-->
-            <!--android:label="Chart"-->
-            <!--android:theme="@android:style/Theme.DeviceDefault.Light.DarkActionBar"/>-->
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
 
         <activity android:name="com.GTI.Grupo1.IoT.SensoresActivity"
             android:label="Sensores"
