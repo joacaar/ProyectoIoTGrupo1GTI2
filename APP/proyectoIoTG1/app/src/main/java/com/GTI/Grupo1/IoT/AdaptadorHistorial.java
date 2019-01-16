@@ -91,11 +91,11 @@ public class AdaptadorHistorial extends RecyclerView.Adapter<AdaptadorHistorial.
 
         // tipo de altura representada
         if (pref.getString("altura", "0").equals("1")) {
-            holder.altura.setText("Altura: " + cambioMedidaAltura(Float.parseFloat(altura1)) + "ft");
+            holder.altura.setText("Altura: " + cambioMedidaAltura(Float.parseFloat(altura1.replaceAll(",", "."))) + "ft");
         } else if (pref.getString("altura", "0").equals("2")) {
-            holder.altura.setText("Altura: " + cambioMedidaAltura(Float.parseFloat(altura1)) + "in");
+            holder.altura.setText("Altura: " + cambioMedidaAltura(Float.parseFloat(altura1.replaceAll(",", "."))) + "in");
         } else {
-            holder.altura.setText("Altura: " + cambioMedidaAltura(Float.parseFloat(altura1)) + "cm");
+            holder.altura.setText("Altura: " + cambioMedidaAltura(Float.parseFloat(altura1.replaceAll(",", "."))) + "cm");
         }
 
         // cambiar el peso de color en funcion de su peligro
@@ -129,13 +129,13 @@ public class AdaptadorHistorial extends RecyclerView.Adapter<AdaptadorHistorial.
         if (pref.getString("masa", "0").equals("1")) {
             float res;
             res = pesoACambiar * 0.157473f; //stones
-            return Float.parseFloat(formato.format(res));
+            return Float.parseFloat(formato.format(res).replaceAll(",", "."));
         } else if (pref.getString("masa", "0").equals("2")) {
             float res;
             res = pesoACambiar * 2.20462f; //libras
-            return Float.parseFloat(formato.format(res));
+            return Float.parseFloat(formato.format(res).replaceAll(",", "."));
         } else {
-            return Float.parseFloat(formato.format(pesoACambiar)); //kg
+            return Float.parseFloat(formato.format(pesoACambiar).replaceAll(",", ".")); //kg
         }
     }
 
@@ -147,13 +147,13 @@ public class AdaptadorHistorial extends RecyclerView.Adapter<AdaptadorHistorial.
         if (pref.getString("altura", "0").equals("1")) {
             float res;
             res = alturaACambiar * 0.0328084f; //stones
-            return Float.parseFloat(formato.format(res));
+            return Float.parseFloat(formato.format(res).replaceAll(",", "."));
         } else if (pref.getString("altura", "0").equals("2")) {
             float res;
             res = alturaACambiar * 0.393701f;
-            return Float.parseFloat(formato.format(res));
+            return Float.parseFloat(formato.format(res).replaceAll(",", "."));
         } else {
-            return Float.parseFloat(formato.format(alturaACambiar));
+            return Float.parseFloat(formato.format(alturaACambiar).replaceAll(",", "."));
         }
     }
 

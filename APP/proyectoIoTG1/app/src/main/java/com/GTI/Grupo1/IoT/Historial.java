@@ -88,7 +88,7 @@ public class Historial extends Fragment {
 //                                System.out.println(document.getData().get("peso").getClass());
 
                                 String numero = document.getData().get("peso").toString();
-                                valoresPeso[i] = Float.parseFloat(numero);
+                                valoresPeso[i] = Float.parseFloat(numero.replaceAll(",", "."));
 
                                 altura1 = document.getData().get("altura").toString();
                                 if (Float.parseFloat(altura1) > 0.0) {
@@ -114,61 +114,6 @@ public class Historial extends Fragment {
                     }
                 });
     }
-    //funcion de cambio de peso
-    public float cambioMedidaPeso(float pesoACambiar) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        DecimalFormat formato = new DecimalFormat("#.#");
-
-        if (pref.getString("masa", "0").equals("1")) {
-            float res;
-            res = pesoACambiar * 0.157473f; //stones
-            return Float.parseFloat(formato.format(res));
-        } else if (pref.getString("masa", "0").equals("2")) {
-            float res;
-            res = pesoACambiar * 2.20462f; //libras
-            return Float.parseFloat(formato.format(res));
-        } else {
-            return Float.parseFloat(formato.format(pesoACambiar)); //kg
-        }
-    }
-
-    // funcion cambio de altura
-    public float cambioMedidaAltura (float alturaACambiar) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        DecimalFormat formato = new DecimalFormat("#.#");
-
-        if (pref.getString("altura", "0").equals("1")) {
-            float res;
-            res = alturaACambiar * 0.0328084f; //stones
-            return Float.parseFloat(formato.format(res));
-        } else if (pref.getString("altura", "0").equals("2")) {
-            float res;
-            res = alturaACambiar * 0.393701f;
-            return Float.parseFloat(formato.format(res));
-        } else {
-            return Float.parseFloat(formato.format(alturaACambiar));
-        }
-    }
-
-    // funcion para cambiar el formato de fecha
-    public SimpleDateFormat tipoFecha () {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        SimpleDateFormat formato;
-
-        if (pref.getString("fecha", "0").equals("1")) {
-            formato = new SimpleDateFormat("MM/dd/yyyy");
-            return formato;
-        } else if (pref.getString("fecha", "0").equals("2")) {
-            formato = new SimpleDateFormat("yyyy/MM/dd");
-            return formato;
-        } else {
-            formato = new SimpleDateFormat("dd/MM/yyyy");
-            return formato;
-        }
-    }
-
-
-
 }
 
 

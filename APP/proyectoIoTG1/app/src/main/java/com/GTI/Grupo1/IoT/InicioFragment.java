@@ -199,13 +199,13 @@ public class InicioFragment extends Fragment {
         if (pref.getString("masa", "0").equals("1")) {
             float res;
             res = pesoACambiar * 0.157473f; //stones
-            return Float.parseFloat(formato.format(res));
+            return Float.parseFloat(formato.format(res).replaceAll(",", "."));
         } else if (pref.getString("masa", "0").equals("2")) {
             float res;
             res = pesoACambiar * 2.20462f; //libras
-            return Float.parseFloat(formato.format(res));
+            return Float.parseFloat(formato.format(res).replaceAll(",", "."));
         } else {
-            return Float.parseFloat(formato.format(pesoACambiar)); //kg
+            return Float.parseFloat(formato.format(pesoACambiar).replaceAll(",", ".")); //kg
         }
     }
 
@@ -217,13 +217,13 @@ public class InicioFragment extends Fragment {
         if (pref.getString("altura", "0").equals("1")) {
             float res;
             res = alturaACambiar * 0.0328084f; //stones
-            return Float.parseFloat(formato.format(res));
+            return Float.parseFloat(formato.format(res).replaceAll(",", "."));
         } else if (pref.getString("altura", "0").equals("2")) {
             float res;
             res = alturaACambiar * 0.393701f;
-            return Float.parseFloat(formato.format(res));
+            return Float.parseFloat(formato.format(res).replaceAll(",", "."));
         } else {
-            return Float.parseFloat(formato.format(alturaACambiar));
+            return Float.parseFloat(formato.format(alturaACambiar).replaceAll(",", "."));
         }
     }
 
