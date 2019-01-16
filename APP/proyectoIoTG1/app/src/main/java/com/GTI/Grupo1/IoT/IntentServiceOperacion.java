@@ -40,6 +40,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import static com.GTI.Grupo1.IoT.TemperaturaActivity.numero;
 import static santi.example.rpi_uart.comun.Mqtt.TAG;
 import static santi.example.rpi_uart.comun.Mqtt.broker;
 import static santi.example.rpi_uart.comun.Mqtt.clientId;
@@ -55,11 +56,10 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
     Context that=this;
     private List<Sensor> listaSensores;
     static MqttClient client;
-int cont=0;
+    int cont=0;
+    String temp;
     public IntentServiceOperacion() {
         super("IntentServiceOperacion");
-
-
 
         try {
             Log.i(TAG, "Conectando al broker " + broker);
@@ -526,6 +526,10 @@ int cont=0;
                     }
                     if (Topic.equals(topicRoot+"temperatura")){
                        InicioFragment.temperatura=payload;
+                       /* if(payload == numero){
+                             temp.length() = payload.length() - 2;
+                        }else{
+                        }*/
                     }
 
 InicioFragment.refresh();
@@ -595,6 +599,27 @@ InicioFragment.refresh();
             Log.e(TAG, "Error al publicar.", e);
         }
     }
+/*
+    public static void calefaccion (View view){
+        try {
+            Log.i(TAG, "Publicando mensaje: " + "acción calefacción");
+            if (TemperaturaActivity.comprobarTemp() == true) {
+                MqttMessage message = new MqttMessage("Encender calefacción".getBytes());
+                message.setQos(qos);
+                message.setRetained(false);
+                client.publish(topicRoot, message);
+            }else if(TemperaturaActivity.comprobarTemp() == false){
+                MqttMessage message = new MqttMessage("Apagar calefacción".getBytes());
+                message.setQos(qos);
+                message.setRetained(false);
+                client.publish(topicRoot, message);
+            }
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al publicar.", e);
+        }
+    }
+    */
 
     public void Llamada(String tlf) {
         Intent intent = new Intent(Intent.ACTION_CALL,

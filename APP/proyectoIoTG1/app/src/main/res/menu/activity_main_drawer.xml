@@ -21,7 +21,7 @@
         <item
             android:id="@+id/nav_casa"
             android:icon="@drawable/phone_home"
-            android:title="@string/casa" />
+            android:title="@string/casaNav" />
         <!--android:icon="@drawable/phone_home"-->
         <!--android:icon="@drawable/ic_menu_gallery"-->
 
@@ -33,7 +33,7 @@
         <item
             android:id="@+id/nav_compartir"
             android:icon="@drawable/ic_menu_send"
-            android:title="Compartir" />
+            android:title="@string/compartir" />
         <!--android:icon="@drawable/settings_power"-->
     </group>
 
@@ -42,11 +42,11 @@
             <item
                 android:id="@+id/nav_perfil"
                 android:icon="@drawable/ic_user"
-                android:title="Perfil" />
+                android:title="@string/perfilNav" />
             <item
                 android:id="@+id/nav_cerrar_sesion"
                 android:icon="@drawable/cerrar_sesion"
-                android:title="Cerrar Sesión" />
+                android:title="@string/cerrar_sesi_n" />
         </menu>
     </item>
 

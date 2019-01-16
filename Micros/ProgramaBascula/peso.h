@@ -30,7 +30,7 @@ double peso() {
   if(medida <= 0 && medida<=0.6){
     medida=0;
   }
-  Serial.println(medida,3);
+  //Serial.println(medida,3);
   //delay(100);
   return medida;
 }

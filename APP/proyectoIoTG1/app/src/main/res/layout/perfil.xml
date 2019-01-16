@@ -49,7 +49,8 @@
                     android:gravity="center_horizontal"
                     android:paddingTop="10dp"
                     android:text="@string/usuario"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused" />
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:layout_marginStart="60dp" />
 
                 <ImageButton
                     android:id="@+id/imageButton"
@@ -247,7 +248,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_weight="6"
-                                android:text="Nivel de ejercicio"
+                                android:text="@string/nivel_de_ejercicio2"
                                 android:textColor="@color/browser_actions_text_color" />
                         </LinearLayout>
 
@@ -267,7 +268,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/my_button_bg"
-                    android:text="Guardar" />
+                    android:text="@string/guardar" />
 
             </LinearLayout>
         </LinearLayout>

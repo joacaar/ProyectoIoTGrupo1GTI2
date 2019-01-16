@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:padding="8dp"
-                android:text="Introduzca el nombre de su casa ylos datos requeridos"
+                android:text="@string/introduzca_el_nombre_de_su_casa_ylos_datos_requeridos"
                 android:textColor="@color/browser_actions_bg_grey"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -191,7 +191,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="6"
-                        android:text="Nivel de ejercicio"
+                        android:text="@string/nivel_de_ejercicio1"
                         android:textColor="@color/common_google_signin_btn_text_dark_default" />
                 </LinearLayout>
 
@@ -217,7 +217,7 @@
                 android:background="@drawable/boton_introduction"
                 android:paddingLeft="64dp"
                 android:paddingRight="64dp"
-                android:text="Enviar"
+                android:text="@string/enviar"
                 android:textColor="@color/common_google_signin_btn_text_dark_default"
                 app:layout_constraintBottom_toTopOf="@+id/protecDatos"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -238,7 +238,7 @@
                 android:gravity="center_horizontal"
                 android:onClick="leerDatos"
                 android:padding="10dp"
-                android:text="Protección de Datos. Todos sus datos son de acceso privado y estan bajo la regulación vigente"
+                android:text="@string/protecci_n_de_datos_todos_sus_datos_son_de_acceso_privado_y_estan_bajo_la_regulaci_n_vigente"
                 android:textColor="@color/browser_actions_bg_grey"
                 android:textSize="10sp"
                 tools:layout_editor_absoluteY="175dp" />

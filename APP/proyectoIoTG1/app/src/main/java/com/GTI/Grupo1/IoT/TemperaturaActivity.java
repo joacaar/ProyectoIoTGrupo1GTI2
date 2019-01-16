@@ -10,41 +10,42 @@ import android.widget.TextView;
 
 public class TemperaturaActivity extends Activity {
 
-    private int numero = 20;
-   public static String temperatura ="0";
+    public static int numero = 20;
+    public static String temperatura ="0";
+    public static String humedad ="0";
+
     static TextView t;
+    static TextView textoTemp;
+    static TextView textoHum;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.temperatura);
 
-        t = findViewById(R.id.textotempActual);
+        t = findViewById(R.id.cambiarValor);
         t.setText(String.valueOf(numero));
+
+        textoTemp = findViewById(R.id.textotempActual);
+        textoHum = findViewById(R.id.textoHumActual);
 
     }
     public void Sumar (View view){
-        TextView t = findViewById(R.id.textotemp);
+        TextView t = findViewById(R.id.cambiarValor);
         numero++;
         t.setText(String.valueOf(numero));
     }
     public void Restar (View view){
-        TextView t = findViewById(R.id.textotemp);
+        TextView t = findViewById(R.id.cambiarValor);
         numero--;
         t.setText(String.valueOf(numero));
     }
 
-    //PONER EN EL SERVICIO
-    public boolean comprobarTemp (){
-        if(temperatura == String.valueOf(numero) || temperatura == String.valueOf(numero - 5)){
-            //PARAR CALEFACCION
-            return false;
-        }else{
-            return true;
+    public static void refresh(){
+        if(temperatura!=null&&textoTemp!=null) {
+            textoTemp.setText(temperatura);
+        }else if(humedad!=null&&textoHum!=null) {
+            textoHum.setText(humedad);
         }
     }
-public static void refresh(){
-if(temperatura!=null&&t!=null) {
-    t.setText(temperatura);
-}
-}
-}
+}//()

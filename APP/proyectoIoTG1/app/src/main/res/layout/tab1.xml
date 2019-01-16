@@ -110,7 +110,7 @@
                         android:id="@+id/textoPeso"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Peso: "
+                        android:text="@string/peso_bascula"
                         android:textColor="@color/browser_actions_text_color"
                         android:textSize="24sp" />
 
@@ -139,9 +139,10 @@
                     <Button
                         android:id="@+id/botonCompartir"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="Boton Compartir" />
+                        android:background="@drawable/contenedor_rnd"
+                        android:text="@string/boton_compartir" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -166,7 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:text="Altura: "
+                    android:text="@string/altura"
                     android:textColor="@color/browser_actions_text_color"
                     android:textSize="30sp" />
 

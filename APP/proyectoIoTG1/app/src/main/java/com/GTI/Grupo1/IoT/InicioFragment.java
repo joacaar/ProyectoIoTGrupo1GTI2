@@ -52,7 +52,7 @@ public class InicioFragment extends Fragment {
     public static String humedad;
     private boolean luces;
     public static String estadoLuces;
-   public static String personas;
+    public static String personas;
     public static String medicamentos;
 
     private FirebaseUser user = MainActivity.user;
@@ -72,11 +72,11 @@ public class InicioFragment extends Fragment {
         refresh();
         view.findViewById(R.id.imageView2).setOnClickListener(new View.OnClickListener() {
 
-    @Override
-    public void onClick(View view) {
-        refresh();
-    }
-    });
+            @Override
+            public void onClick(View view) {
+                refresh();
+            }
+        });
         getActivity().startService(new Intent(getActivity(),
                 IntentServiceOperacion.class));
 
@@ -87,7 +87,7 @@ public class InicioFragment extends Fragment {
                 Intent i = new Intent(getActivity(), PesoNow.class);
                 getActivity().startActivity(i);
             }
-            });
+        });
 
 //----------------------------- DATOS DE BASCULA Y ALTURA ---------------------------------------------------------
         final TextView textoPeso = view.findViewById(R.id.peso);
@@ -97,6 +97,7 @@ public class InicioFragment extends Fragment {
         final TextView textoHum = view.findViewById(R.id.hum);
         final TextView textoLuces = view.findViewById(R.id.luces);
         final TextView textoPersonas = view.findViewById(R.id.personas);
+        final TextView textoMedicamentos = view.findViewById(R.id.medicamentos);
         view.findViewById(R.id.botonLuz).setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -142,78 +143,53 @@ public class InicioFragment extends Fragment {
                     }
                 });
 //----------------------------- DATOS DE SENSORES ---------------------------------------------------------
-        /*final TextView textoPuerta = view.findViewById(R.id.puerta);
-        final TextView textoTemp = view.findViewById(R.id.temp);
-        final TextView textoHum = view.findViewById(R.id.hum);
-        //final TextView textoLuces = view.findViewById(R.id.luces);
-        final TextView textoPersonas = view.findViewById(R.id.personas);*/
 
+        //Añadir el texto en el layout
+        temperatura = "22";
+        textoLuces.setText("OFF");
+        textoPuerta.setText("Cerrada");
+        textoHum.setText("5 %");
+        textoPersonas.setText("Hay 1 persona en la casa");
+        textoMedicamentos.setText("Pasa el medicamento para saber si está en su lista");
 
-        FirebaseFirestore db2 = FirebaseFirestore.getInstance();
-        db2.collection("CASAS").document("Casa1.123456789").get()
-                .addOnCompleteListener(
-                        new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task){
-                                if (task.isSuccessful()) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-                                    //Recoger los valores de la bd
-                                    puerta = task.getResult().getBoolean("PuertaAbierta");
-                                    temperatura = task.getResult().getDouble("Temperatura").toString();
-                                    humedad = task.getResult().getDouble("Humedad").toString();
-                                    //luces = task.getResult().getBoolean("Luces");
-                                    personas = task.getResult().getDouble("Personas").toString();
-
-                                    if(puerta==false || luces==false) {
-                                        estadoPuerta = "Cerrada";
-                                        estadoLuces = "OFF";
-
-                                    }
-
-                                    //Añadir el texto de la bd en el layout
-                                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                                    if (pref.getString("temperatura", "0").equals("1")) {
-                                        textoTemp.setText(cambioMedidaTemperatura(Float.parseFloat(temperatura)) + "ºF");
-                                    } else if (pref.getString("temperatura", "0").equals("2")) {
-                                        textoTemp.setText(cambioMedidaTemperatura(Float.parseFloat(temperatura)) + "ºK");
-                                    } else {
-                                        textoTemp.setText(cambioMedidaTemperatura(Float.parseFloat(temperatura)) + "ºC");
-                                    }
-
-                                    textoPuerta.setText(estadoPuerta);
-                                    textoHum.setText(humedad + " % ");
-                                    textoPersonas.setText("Hay " + personas);
-
-                                }
-                            }
-                        });
+        if (pref.getString("temperatura", "0").equals("1")) {
+            textoTemp.setText(cambioMedidaTemperatura(Float.parseFloat(temperatura)) + "ºF");
+        } else if (pref.getString("temperatura", "0").equals("2")) {
+            textoTemp.setText(cambioMedidaTemperatura(Float.parseFloat(temperatura)) + "ºK");
+        } else {
+            textoTemp.setText(cambioMedidaTemperatura(Float.parseFloat(temperatura)) + "ºC");
+        }
 
         return view;
 
     }//onCreate()
-public static void refresh(){
-if(view!=null) {
-    final TextView textoPuerta = view.findViewById(R.id.puerta);
-    final TextView textoTemp = view.findViewById(R.id.temp);
-    final TextView textoHum = view.findViewById(R.id.hum);
-    final TextView textoLuces = view.findViewById(R.id.luces);
-    final TextView textoPersonas = view.findViewById(R.id.personas);
-    final TextView textoMedic = view.findViewById(R.id.medicamentos);
+    public static void refresh(){
+
+        final TextView textoPuerta = view.findViewById(R.id.puerta);
+        final TextView textoTemp = view.findViewById(R.id.temp);
+        final TextView textoHum = view.findViewById(R.id.hum);
+        final TextView textoLuces = view.findViewById(R.id.luces);
+        final TextView textoPersonas = view.findViewById(R.id.personas);
+        final TextView textoMedic = view.findViewById(R.id.medicamentos);
 
 
-    textoPuerta.setText(estadoPuerta);
-    textoTemp.setText(temperatura);
-    if (temperatura != null) {
-        TemperaturaActivity.temperatura = temperatura;
-        TemperaturaActivity.refresh();
+        textoPuerta.setText(estadoPuerta);
+        textoTemp.setText(temperatura);
+        if(temperatura!=null) {
+            TemperaturaActivity.temperatura = temperatura;
+            TemperaturaActivity.refresh();
+        }if(humedad!=null) {
+            TemperaturaActivity.humedad = humedad;
+            TemperaturaActivity.refresh();
+        }
+        textoHum.setText(humedad);
+        textoPersonas.setText(personas);
+        textoLuces.setText(estadoLuces);
+        textoMedic.setText(medicamentos);
+
     }
-    textoHum.setText(humedad);
-    textoPersonas.setText(personas);
-    textoLuces.setText(estadoLuces);
-    textoMedic.setText(medicamentos);
-}
-
-}
     //funcion de cambio de peso
     public float cambioMedidaPeso (float pesoACambiar) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -270,3 +246,4 @@ if(view!=null) {
 
 
 }//()
+
