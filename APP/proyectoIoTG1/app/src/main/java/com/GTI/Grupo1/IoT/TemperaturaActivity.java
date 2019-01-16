@@ -18,7 +18,7 @@ public class TemperaturaActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.temperatura);
 
-        t = findViewById(R.id.textotemp);
+        t = findViewById(R.id.textotempActual);
         t.setText(String.valueOf(numero));
 
     }

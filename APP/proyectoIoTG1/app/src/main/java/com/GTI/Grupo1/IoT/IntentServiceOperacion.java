@@ -55,7 +55,7 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
     Context that=this;
     private List<Sensor> listaSensores;
     static MqttClient client;
-
+int cont=0;
     public IntentServiceOperacion() {
         super("IntentServiceOperacion");
 
@@ -209,9 +209,12 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
 
     @Override
     public void connectionLost(Throwable cause) {
+        if(cont==13){
+            cont=0;
+        }
         try {
             Log.i(TAG, "Conectando al broker " + broker);
-            client = new MqttClient(broker, clientId.replace("T", "S"), new MemoryPersistence());
+            client = new MqttClient(broker, clientId.replace(clientId.charAt(cont), 'z'), new MemoryPersistence());
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
             connOpts.setKeepAliveInterval(60);
@@ -222,6 +225,7 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
         } catch (MqttException e) {
             Log.e(TAG, "Error al conectar.", e);
         }
+        cont++;
         try {
             Log.i(TAG, "Suscrito a " + topicRoot+"alertas");
             client.subscribe(topicRoot+"alertas/puerta", qos);
