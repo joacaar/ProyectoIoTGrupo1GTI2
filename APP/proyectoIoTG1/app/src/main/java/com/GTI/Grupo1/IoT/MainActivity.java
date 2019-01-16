@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_TEXT,
-                    "Mira mi último peso, podría tener mi propia gravedad y todo: " + ultimoPeso);
+                    "¡Mira mi último peso! Poco a poco estoy consiguiendo mi objetivo, ahora peso : " + ultimoPeso + " Kg");
             startActivity(intent);
         return true;
 
