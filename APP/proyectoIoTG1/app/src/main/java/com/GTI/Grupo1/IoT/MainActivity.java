@@ -278,13 +278,6 @@ public class MainActivity extends AppCompatActivity
             return true;
 
         }  else if (id == R.id.nav_compartir) {
-        LinearLayout layoutGrafica = findViewById(R.id.linearChartLayout);
-        if (layoutGrafica != null) {
-
-            Bitmap bitmap = getBitmap(layoutGrafica);
-            saveChart(bitmap, layoutGrafica.getMeasuredHeight(), layoutGrafica.getMeasuredWidth());
-
-        } else {
             DecimalFormat formato = new DecimalFormat("#.##");
             String ultimoPeso = formato.format(Float.parseFloat(peso));
 
@@ -293,8 +286,6 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra(Intent.EXTRA_TEXT,
                     "Mira mi último peso, podría tener mi propia gravedad y todo: " + ultimoPeso);
             startActivity(intent);
-
-        }
         return true;
 
 

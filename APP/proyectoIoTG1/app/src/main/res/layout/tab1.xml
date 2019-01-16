@@ -123,12 +123,6 @@
                         android:textSize="24sp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/linearChartLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
                 <lecho.lib.hellocharts.view.ColumnChartView
                     android:id="@+id/chart"
                     android:layout_width="match_parent"
@@ -136,14 +130,6 @@
                     android:layout_marginBottom="8dp"
                     android:paddingTop="16dp"></lecho.lib.hellocharts.view.ColumnChartView>
 
-                    <Button
-                        android:id="@+id/botonCompartir"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/contenedor_rnd"
-                        android:text="@string/boton_compartir" />
-                </LinearLayout>
 
             </LinearLayout>
 

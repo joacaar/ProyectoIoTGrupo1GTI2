@@ -87,15 +87,6 @@ public class Bascula extends Fragment {
         vistaBascula= inflater.inflate(R.layout.tab1, container, false);
         consultaDatos();
         vistaGraficas=vistaBascula.findViewById(R.id.esteConstraint);
-        layoutGrafica = vistaBascula.findViewById(R.id.linearChartLayout);
-
-        vistaBascula.findViewById(R.id.botonCompartir).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bm = getBitmap(layoutGrafica);
-                saveChart(bm, 600, 800);
-            }
-        });
 
         return vistaBascula;
     }
@@ -330,7 +321,7 @@ public class Bascula extends Fragment {
         }
     }
 
-    public void compartirCosas (LinearLayout layoutGrafica) {
+    /*public void compartirCosas (LinearLayout layoutGrafica) {
 
         if (layoutGrafica != null) {
 
@@ -421,6 +412,6 @@ public class Bascula extends Fragment {
             Toast.makeText(getContext(), "IO error", Toast.LENGTH_SHORT);
             // Toast.makeText(getApplicationContext(), "IO error", Toast.LENGTH_SHORT).show();<br />
         }
-    }
+    }*/
 
 }
