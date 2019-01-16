@@ -100,8 +100,8 @@ public class BasculaFragment extends  Fragment{
 
 
         Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(new Bascula(), "        Tus gráficas       ");
-        adapter.addFragment(new Historial(), "         Historial         ");
+        adapter.addFragment(new Bascula(), getString(R.string.tusGraficas));
+        adapter.addFragment(new Historial(), getString(R.string.historial));
 
         viewPager.setAdapter(adapter);
 

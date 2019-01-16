@@ -49,6 +49,33 @@
     <string name="nivel_de_ejercicio2">Exercise Level</string>
     <string name="guardar">Save</string>
     <string name="peso_bascula">Weight: </string>
+    <string name="cerrada">Closed</string>
+    <string name="personasEnLaCasa">There is 1 person in the house</string>
+    <string name="medicamentosTexto">Pass the medication to see if it is on your list</string>
+    <string name="tusGraficas">Your graphics</string>
+    <string name="historial">Record</string>
+    <string name="grasaCorporal">Body fat</string>
+    <string name="masaCorporal">Body mass</string>
+    <string name="agua">Water</string>
+    <string name="diasMes">Days of the month</string>
+    <string name="pesoGraF">Weight</string>
+    <string name="seguridadPrivacidad">Security and privacy</string>
+    <string name="descripHuella">You must have registered at least one fingerprint on your device</string>
+    <string name="titHuella">Fingerprint identification</string>
+    <string name="selectMed">Selection of measures</string>
+    <string name="titMas">Select units of mass</string>
+    <string name="titLong">Select units of length</string>
+    <string name="titFecha">Select date format</string>
+    <string name="titFormTemp">Select temperature format</string>
+    <string name="sensorCaida">Fall sensor</string>
+    <string name="titNumEmerg">Emergency number:</string>
+    <string name="descNumEmerg">Number to be called when you fall. Leave it blank to not call anyone, but we recommend putting an emergency number.</string>
+    <string name="sensibilidad">Sensitivity:</string>
+    <string name="descSensi">The default value is 40, the higher the value, the lower the sensitivity. Arrange it as you prefer.</string>
+
+
+
+
 
 
 </resources>

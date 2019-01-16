@@ -162,9 +162,9 @@ public class Bascula extends Fragment {
     private void graficaCircular (){
         PieChartView pieChartView = (PieChartView) vistaBascula.findViewById(R.id.graficaInicio);
         List<SliceValue> pieData = new ArrayList<>();
-        pieData.add(new SliceValue(10, Color.parseColor("#2b778c")).setLabel("Grasa corporal"));
-        pieData.add(new SliceValue(23, Color.parseColor("#56b0ca")).setLabel("Masa corporal"));
-        pieData.add(new SliceValue(17, Color.parseColor("#f1a378")).setLabel("Agua"));
+        pieData.add(new SliceValue(10, Color.parseColor("#2b778c")).setLabel(getString(R.string.grasaCorporal)));
+        pieData.add(new SliceValue(23, Color.parseColor("#56b0ca")).setLabel(getString(R.string.masaCorporal)));
+        pieData.add(new SliceValue(17, Color.parseColor("#f1a378")).setLabel(getString(R.string.agua)));
         //pieData.add(new SliceValue(50, Color.WHITE).setLabel(""));
         PieChartData pieChartData = new PieChartData(pieData);
         pieChartData.setHasLabels(true);
@@ -260,8 +260,8 @@ public class Bascula extends Fragment {
         axisY.setHasLines(true);
 
         // Añadimos titulo a los indices
-        axisX.setName("Dias del mes");
-        axisY.setName("Peso");
+        axisX.setName(getString(R.string.diasMes));
+        axisY.setName(getString(R.string.peso));
 
         // asignamos cada eje a su posicion en la grafica
         data.setAxisXBottom(axisX);

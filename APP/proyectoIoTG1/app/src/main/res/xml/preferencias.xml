@@ -8,32 +8,32 @@
         android:summary="Recibir notificaciones en la barra de estado"/> -->
     <PreferenceCategory
         android:key="otraCosa"
-        android:title="Seguridad y privacidad">
+        android:title="@string/seguridadPrivacidad">
         <SwitchPreference
             android:id="@+id/huell"
             android:defaultValue="false"
             android:key="huella"
-            android:summary="Tienes que tener registrada al menos una huella en tu dispositivo"
-            android:title="Identificación por huella" />
+            android:summary="@string/descripHuella"
+            android:title="@string/titHuella" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="otraCosa"
-        android:title="Selección de medidas">
+        android:title="@string/selectMed">
         <ListPreference
             android:key="masa"
-            android:title="Seleccione unidades de masa"
+            android:title="@string/titMas"
             android:entries="@array/masa"
             android:entryValues="@array/masaIndice"
             android:defaultValue="0"/>
         <ListPreference
             android:key="longitud"
-            android:title="Seleccione unidades de longitud"
+            android:title="@string/titLong"
             android:entries="@array/longitud"
             android:entryValues="@array/longitudIndice"
             android:defaultValue="0"/>
         <ListPreference
             android:key="fecha"
-            android:title="Seleccione formato de fecha"
+            android:title="@string/titFecha"
             android:entries="@array/fecha"
             android:entryValues="@array/fechaIndice"
             android:defaultValue="0"/>
@@ -45,7 +45,7 @@
             android:defaultValue="0"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Sensor de caida">
+    <PreferenceCategory android:title="@string/sensorCaida">
 
         <EditTextPreference
             android:defaultValue="0"
@@ -53,16 +53,16 @@
             android:key="NumeroEmergencia"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:summary="Numero al que se llamara cuando usted se caiga. Dejelo en blanco para no llamar a nadie, pero recomendamos poner un numero de emergencia."
-            android:title="Numero de emergencia:" />
+            android:summary="@string/descNumEmerg"
+            android:title="@string/titNumEmerg" />
         <EditTextPreference
             android:defaultValue="40"
             android:inputType="number|phone"
             android:key="moduloAcelerometro"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:summary="El valor por defecto es 40, a mayor valor menor sensibilidad. Acomodelo como más prefiera."
-            android:title="Sensibilidad:" />
+            android:summary="@string/descSensi"
+            android:title="@string/sensibilidad" />
     </PreferenceCategory>
 
 </PreferenceScreen>

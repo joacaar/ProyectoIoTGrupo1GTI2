@@ -48,5 +48,47 @@
     <string name="nivel_de_ejercicio2">Nivel de ejercicio</string>
     <string name="guardar">Guardar</string>
     <string name="peso_bascula">Peso: </string>
+    <string name="cerrada">Cerrada </string>
+    <string name="personasEnLaCasa">Hay 1 persona en la casa</string>
+    <string name="medicamentosTexto">"Pasa el medicamento para saber si está en su lista"</string>
+    <string name="tusGraficas">Tus gráficas </string>
+    <string name="historial">Historial </string>
+    <string name="grasaCorporal">Grasa corporal</string>
+    <string name="masaCorporal">Masa corporal</string>
+    <string name="agua">Agua</string>
+    <string name="diasMes">Dias del mes</string>
+    <string name="pesoGraF">Peso</string>
+    <string name="seguridadPrivacidad">Seguridad y privacidad</string>
+    <string name="descripHuella">Tienes que tener registrada al menos una huella en tu dispositivo</string>
+    <string name="titHuella">Identificación por huella</string>
+    <string name="selectMed">Selección de medidas</string>
+    <string name="titMas">Seleccione unidades de masa</string>
+    <string name="titLong">Seleccione unidades de longitud</string>
+    <string name="titFecha">Seleccione formato de fecha</string>
+    <string name="titFormTemp">Seleccione formato de temperatura</string>
+    <string name="sensorCaida">Sensor de caida</string>
+    <string name="titNumEmerg">Numero de emergencia:</string>
+    <string name="descNumEmerg">Numero al que se llamara cuando usted se caiga. Dejelo en blanco para no llamar a nadie, pero recomendamos poner un numero de emergencia.</string>
+    <string name="sensibilidad">Sensibilidad:</string>
+    <string name="descSensi">El valor por defecto es 40, a mayor valor menor sensibilidad. Acomodelo como más prefiera.</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </resources>

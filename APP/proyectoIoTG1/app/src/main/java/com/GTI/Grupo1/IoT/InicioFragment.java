@@ -147,10 +147,11 @@ public class InicioFragment extends Fragment {
         //Añadir el texto en el layout
         temperatura = "22";
         textoLuces.setText("OFF");
-        textoPuerta.setText("Cerrada");
+        textoPuerta.setText(getString(R.string.cerrada));
+
         textoHum.setText("5 %");
-        textoPersonas.setText("Hay 1 persona en la casa");
-        textoMedicamentos.setText("Pasa el medicamento para saber si está en su lista");
+        textoPersonas.setText(getString(R.string.personasEnLaCasa));
+        textoMedicamentos.setText(getString(R.string.medicamentosTexto));
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
