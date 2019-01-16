@@ -200,7 +200,7 @@ public class InicioFragment extends Fragment {
         return view;
 
     }//onCreate()
-public void refresh(){
+public static void refresh(){
 
     final TextView textoPuerta = view.findViewById(R.id.puerta);
     final TextView textoTemp = view.findViewById(R.id.temp);
@@ -211,7 +211,7 @@ public void refresh(){
     textoPuerta.setText(estadoPuerta);
     textoTemp.setText(temperatura + " ºC");
     textoHum.setText(humedad + " % ");
-    textoPersonas.setText("Hay " + personas);
+    textoPersonas.setText( personas);
     textoMedic.setText(medicamentos);
 }
     //funcion de cambio de peso
