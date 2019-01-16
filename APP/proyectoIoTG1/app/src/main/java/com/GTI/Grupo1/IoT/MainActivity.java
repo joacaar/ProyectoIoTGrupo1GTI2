@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity
 
 
 /*
-*  Codigo para el funcionamiento del segundo menu, ubicado a la parte superio derecha del activity_main
+*  Codigo para el funcionamiento del segundo menu, ubicado a la parte superior derecha del activity_main
 */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
