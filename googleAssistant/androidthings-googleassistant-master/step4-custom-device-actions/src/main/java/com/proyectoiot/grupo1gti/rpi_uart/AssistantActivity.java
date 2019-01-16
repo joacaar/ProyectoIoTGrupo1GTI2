@@ -100,13 +100,14 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
     private static final String TAG = AssistantActivity.class.getSimpleName();
 
 
-
     private static final String TAG2 = AssistantActivity.class.getSimpleName();
     private static final String SERVICE_ID = "com.GTI.Grupo1.IoT";
     private static String nameNearby = "DomoHouse.zx45b";
     private String usuario = null;
 
     private ArduinoUart uart;
+
+
 
 
 
@@ -411,10 +412,10 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //----------------------------------------------------
-        Log.i(TAG, "Lista de UART disponibles: " + ArduinoUart.disponibles());
+
+        Log.i(TAG2, "Lista de UART disponibles: " + ArduinoUart.disponibles());
         uart = new ArduinoUart("MINIUART", 115200);
-        //-----------------------------------------------------
+
         Log.i(TAG, "starting assistant demo");
 //----------------------------------------------
 
@@ -733,6 +734,7 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
         mAssistantHandler.post(() -> mAssistantHandler.removeCallbacks(mStreamAssistantRequest));
         mAssistantThread.quitSafely();
     }
+
     public void readUartBuffer(UartDevice uart) throws IOException {
 //        // Maximum amount of data to read at one time
 //        final int maxCount =8;
@@ -823,7 +825,6 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
         // Interrupt events no longer necessary
         uart.uartPrivada.unregisterUartDeviceCallback(mUartCallback);
     }
-
 
 
 
