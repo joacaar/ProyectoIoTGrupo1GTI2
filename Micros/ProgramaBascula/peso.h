@@ -2,7 +2,7 @@
 #include "HX711.h"
 #include <M5Stack.h>
 
-#define DOUT  5
+#define DOUT  6
 #define CLK  2
 
 HX711 balanza(DOUT, CLK);
