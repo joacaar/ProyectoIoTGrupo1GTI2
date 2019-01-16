@@ -160,6 +160,14 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
         } catch (MqttException e) {
             Log.e(TAG, "Error al suscribir.", e);
         }
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot+"alertas");
+            client.subscribe(topicRoot+"alertas/gas", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
         //----
         try {
             Log.i(TAG, "Suscrito a " + topicRoot + "humedad");
@@ -217,6 +225,14 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
         try {
             Log.i(TAG, "Suscrito a " + topicRoot+"alertas");
             client.subscribe(topicRoot+"alertas/puerta", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot+"alertas");
+            client.subscribe(topicRoot+"alertas/gas", qos);
             client.setCallback(this);
 
         } catch (MqttException e) {
@@ -394,6 +410,34 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
                                     .setLargeIcon(BitmapFactory.decodeResource(getResources(),
                                             R.drawable.alerta))
                                     .setContentTitle("¡Fuego!")
+                                    .setContentText(payload)
+                                    .setDefaults(Notification.DEFAULT_SOUND)
+                                    .setDefaults(Notification.DEFAULT_VIBRATE)
+                                    .setAutoCancel(true)
+                                    //.setVibrate(new long[]{0, 100, 200, 300})
+                                    .setWhen(System.currentTimeMillis());
+                    PendingIntent intencionPendiente = PendingIntent.getActivity(
+                            that, 0, new Intent(IntentServiceOperacion.this, MainActivity.class), 0);
+                    notificacion.setContentIntent(intencionPendiente);
+
+                    notificationManager.notify(NOTIFICACION_ID[2], notificacion.build());
+
+                }
+                if (Topic.equals(topicRoot + "alertas/gas")) {
+                    notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        NotificationChannel notificationChannel = new NotificationChannel(
+                                CANAL_ID, "Mis Notificaciones",
+                                NotificationManager.IMPORTANCE_DEFAULT);
+                        notificationChannel.setDescription("Descripcion del canal");
+                        notificationManager.createNotificationChannel(notificationChannel);
+                    }
+                    NotificationCompat.Builder notificacion =
+                            new NotificationCompat.Builder(IntentServiceOperacion.this, CANAL_ID)
+                                    .setSmallIcon(R.mipmap.ic_launcher)
+                                    .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                                            R.drawable.alerta))
+                                    .setContentTitle("¡Atención! Posible fuga de gas")
                                     .setContentText(payload)
                                     .setDefaults(Notification.DEFAULT_SOUND)
                                     .setDefaults(Notification.DEFAULT_VIBRATE)

@@ -102,16 +102,7 @@ public class InicioFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Apagar encender luz
-                try {
-                    Log.i(TAG, "Publicando mensaje: " + "acción luz");
-                    MqttMessage message = new MqttMessage("TOGGLE".getBytes());
-                    message.setQos(qos);
-                    message.setRetained(false);
-                    IntentServiceOperacion.client.publish(topicRoot + "cmnd/POWER", message);
 
-                } catch (MqttException e) {
-                    Log.e(TAG, "Error al publicar.", e);
-                }
                 IntentServiceOperacion.botonLuz(view);
             }
         });
@@ -175,7 +166,7 @@ public class InicioFragment extends Fragment {
 
                                     if(puerta==false || luces==false) {
                                         estadoPuerta = "Cerrada";
-                                        //estadoLuces = "Apagada";
+                                        estadoLuces = "OFF";
 
                                     }
 
@@ -208,11 +199,19 @@ public static void refresh(){
     final TextView textoLuces = view.findViewById(R.id.luces);
     final TextView textoPersonas = view.findViewById(R.id.personas);
     final TextView textoMedic = view.findViewById(R.id.medicamentos);
+
+
     textoPuerta.setText(estadoPuerta);
-    textoTemp.setText(temperatura + " ºC");
-    textoHum.setText(humedad + " % ");
+    textoTemp.setText(temperatura );
+    if(temperatura!=null) {
+        TemperaturaActivity.temperatura = temperatura;
+        TemperaturaActivity.refresh();
+    }
+    textoHum.setText(humedad );
     textoPersonas.setText( personas);
+    textoLuces.setText(estadoLuces);
     textoMedic.setText(medicamentos);
+
 }
     //funcion de cambio de peso
     public float cambioMedidaPeso (float pesoACambiar) {

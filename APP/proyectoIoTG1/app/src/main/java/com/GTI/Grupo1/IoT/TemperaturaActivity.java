@@ -11,14 +11,14 @@ import android.widget.TextView;
 public class TemperaturaActivity extends Activity {
 
     private int numero = 20;
-    private int temperatura = 0;
-
+   public static String temperatura ="0";
+    static TextView t;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.temperatura);
 
-        TextView t = findViewById(R.id.textotemp);
+        t = findViewById(R.id.textotemp);
         t.setText(String.valueOf(numero));
 
     }
@@ -35,12 +35,16 @@ public class TemperaturaActivity extends Activity {
 
     //PONER EN EL SERVICIO
     public boolean comprobarTemp (){
-        if(temperatura == numero || temperatura == numero - 5){
+        if(temperatura == String.valueOf(numero) || temperatura == String.valueOf(numero - 5)){
             //PARAR CALEFACCION
             return false;
         }else{
             return true;
         }
     }
-
+public static void refresh(){
+if(temperatura!=null&&t!=null) {
+    t.setText(temperatura);
+}
+}
 }
