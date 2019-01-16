@@ -1,7 +1,9 @@
 package com.GTI.Grupo1.IoT;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +19,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.text.DecimalFormat;
 
 
 public class SensoresFragment extends Fragment {
@@ -86,8 +90,16 @@ public class SensoresFragment extends Fragment {
                                     }
 
                                     //Añadir el texto de la bd en el layout
+                                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                                    if (pref.getString("temperatura", "0").equals("1")) {
+                                        textoTemp.setText(cambioMedidaTemperatura(Float.parseFloat(temperatura)) + "ºF");
+                                    } else if (pref.getString("temperatura", "0").equals("2")) {
+                                        textoTemp.setText(cambioMedidaTemperatura(Float.parseFloat(temperatura)) + "ºK");
+                                    } else {
+                                        textoTemp.setText(cambioMedidaTemperatura(Float.parseFloat(temperatura)) + "ºC");
+                                    }
+
                                     textoPuerta.setText(estadoPuerta);
-                                    textoTemp.setText(temperatura + " ºC");
                                     textoHum.setText(humedad + " % ");
                                     textoPersonas.setText("Hay " + personas);
                                     tipoHum.setImageResource(R.drawable.ic_humedad);
@@ -104,10 +116,27 @@ public class SensoresFragment extends Fragment {
                                 }
                             }
                         });
-
-
         return view;
     }
+
+    // funcion cambio de temperatura
+    public float cambioMedidaTemperatura (float temperaturaACambiar) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        if (pref.getString("temperatura", "0").equals("1")) {
+            float res;
+            res = temperaturaACambiar * 1.8f; //fahrenheit
+            res = res + 32;
+            return res;
+        } else if (pref.getString("temperatura", "0").equals("2")) {
+            float res;
+            res = temperaturaACambiar + 273.15f;
+            return res;
+        } else {
+            return temperaturaACambiar;
+        }
+    }
+
 
 
 }

@@ -2,13 +2,13 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="preferencias_principal" >
-    <CheckBoxPreference
+    <!--<CheckBoxPreference
         android:key="notificaciones"
         android:title="Recibir Notificaciones"
-        android:summary="Recibir notificaciones en la barra de estado"/>
+        android:summary="Recibir notificaciones en la barra de estado"/> -->
     <PreferenceCategory
         android:key="otraCosa"
-        android:title="Seguridad">
+        android:title="Seguridad y privacidad">
         <SwitchPreference
             android:id="@+id/huell"
             android:defaultValue="false"
@@ -37,6 +37,12 @@
             android:entries="@array/fecha"
             android:entryValues="@array/fechaIndice"
             android:defaultValue="0"/>
+        <ListPreference
+            android:key="temperatura"
+            android:title="Seleccione formato de temperatura"
+            android:entries="@array/temperatura"
+            android:entryValues="@array/temperaturaIndice"
+            android:defaultValue="0"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Sensor de caida">
@@ -56,10 +62,7 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="El valor por defecto es 40, a mayor valor menor sensibilidad. Acomodelo como más prefiera."
-            android:title="Valor del acelerometro:" />
-        <Preference
-            android:key="TestAcelerometro"
-            android:widgetLayout="@layout/reiniciar_aplicacion_bt" />
+            android:title="Sensibilidad:" />
     </PreferenceCategory>
 
 </PreferenceScreen>

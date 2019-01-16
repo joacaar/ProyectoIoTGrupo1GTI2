@@ -203,7 +203,7 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
     public void connectionLost(Throwable cause) {
         try {
             Log.i(TAG, "Conectando al broker " + broker);
-            client = new MqttClient(broker, clientId, new MemoryPersistence());
+            client = new MqttClient(broker, clientId.replace("T", "S"), new MemoryPersistence());
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
             connOpts.setKeepAliveInterval(60);
@@ -480,7 +480,7 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
                        InicioFragment.temperatura=payload;
                     }
 
-
+InicioFragment.refresh();
                 }
             }
         });

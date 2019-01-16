@@ -180,8 +180,16 @@ public class InicioFragment extends Fragment {
                                     }
 
                                     //Añadir el texto de la bd en el layout
+                                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                                    if (pref.getString("temperatura", "0").equals("1")) {
+                                        textoTemp.setText(cambioMedidaTemperatura(Float.parseFloat(temperatura)) + "ºF");
+                                    } else if (pref.getString("temperatura", "0").equals("2")) {
+                                        textoTemp.setText(cambioMedidaTemperatura(Float.parseFloat(temperatura)) + "ºK");
+                                    } else {
+                                        textoTemp.setText(cambioMedidaTemperatura(Float.parseFloat(temperatura)) + "ºC");
+                                    }
+
                                     textoPuerta.setText(estadoPuerta);
-                                    textoTemp.setText(temperatura + " ºC");
                                     textoHum.setText(humedad + " % ");
                                     textoPersonas.setText("Hay " + personas);
 
@@ -192,7 +200,7 @@ public class InicioFragment extends Fragment {
         return view;
 
     }//onCreate()
-public void refresh(){
+public static void refresh(){
 
     final TextView textoPuerta = view.findViewById(R.id.puerta);
     final TextView textoTemp = view.findViewById(R.id.temp);
@@ -203,7 +211,7 @@ public void refresh(){
     textoPuerta.setText(estadoPuerta);
     textoTemp.setText(temperatura + " ºC");
     textoHum.setText(humedad + " % ");
-    textoPersonas.setText("Hay " + personas);
+    textoPersonas.setText( personas);
     textoMedic.setText(medicamentos);
 }
     //funcion de cambio de peso
@@ -239,6 +247,24 @@ public void refresh(){
             return Float.parseFloat(formato.format(res));
         } else {
             return Float.parseFloat(formato.format(alturaACambiar));
+        }
+    }
+
+    // funcion cambio de temperatura
+    public float cambioMedidaTemperatura (float temperaturaACambiar) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        if (pref.getString("temperatura", "0").equals("1")) {
+            float res;
+            res = temperaturaACambiar * 1.8f; //fahrenheit
+            res = res + 32;
+            return res;
+        } else if (pref.getString("temperatura", "0").equals("2")) {
+            float res;
+            res = temperaturaACambiar + 273.15f;
+            return res;
+        } else {
+            return temperaturaACambiar;
         }
     }
 
