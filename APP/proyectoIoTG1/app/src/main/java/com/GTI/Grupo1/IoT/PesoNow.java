@@ -104,14 +104,14 @@ public class PesoNow extends AppCompatActivity {
                                 mConnectionLifecycleCallback)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override public void onSuccess(Void unusedResult) {
-                                Log.i(TAG, "Solicitud lanzada, falta que ambos " +"lados acepten");
-                                System.out.println("Solicictud lanzada");
+//                                Log.i(TAG, "Solicitud lanzada, falta que ambos " +"lados acepten");
+//                                System.out.println("Solicictud lanzada");
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override public void onFailure(@NonNull Exception e) {
-                                Log.e(TAG, "Error en solicitud de conexión", e);
-                                System.out.println("Error en la solicitud");
+//                                Log.e(TAG, "Error en solicitud de conexión", e);
+//                                System.out.println("Error en la solicitud");
                                 info.setText("Desconectado");
                             }
                         });
@@ -125,9 +125,9 @@ public class PesoNow extends AppCompatActivity {
             case MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.i(TAG, "Permisos concedidos");
+//                    Log.i(TAG, "Permisos concedidos");
                 } else {
-                    Log.i(TAG, "Permisos denegados");
+//                    Log.i(TAG, "Permisos denegados");
                     info.setText("Debe aceptar los permisos para comenzar");
                 }
                 return;
@@ -140,12 +140,12 @@ public class PesoNow extends AppCompatActivity {
                 mEndpointDiscoveryCallback, new DiscoveryOptions(Strategy.P2P_STAR))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override public void onSuccess(Void unusedResult) {
-                        Log.i(TAG, "Estamos en modo descubrimiento!");
+                        //Log.i(TAG, "Estamos en modo descubrimiento!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Modo descubrimiento no iniciado.", e);
+                        //Log.e(TAG, "Modo descubrimiento no iniciado.", e);
                     }
                 });
     }
@@ -153,7 +153,7 @@ public class PesoNow extends AppCompatActivity {
     // Fncion para para de descubrir puntos por nearby
     private void stopDiscovery() {
         Nearby.getConnectionsClient(this).stopDiscovery();
-        Log.i(TAG, "Se ha detenido el modo descubrimiento.");
+        //Log.i(TAG, "Se ha detenido el modo descubrimiento.");
     }
 
     // Funcion callback que se ejecuta al descubrir un endpoint por nearby
@@ -162,22 +162,22 @@ public class PesoNow extends AppCompatActivity {
                 @Override public void onEndpointFound(String endpointId,
                                                       DiscoveredEndpointInfo discoveredEndpointInfo) {
 
-                    Log.i(TAG, "Descubierto dispositivo con Id: " + endpointId);
+                    //Log.i(TAG, "Descubierto dispositivo con Id: " + endpointId);
 
                     dispositivos.add(discoveredEndpointInfo.getEndpointName());
 
-                    Log.i(TAG, "Despues de añadir el nombre del dispositivo a la lista");
-                    Log.i(TAG, "Endpoint: " + endpointId + " getId: " + discoveredEndpointInfo.getServiceId());
+//                    Log.i(TAG, "Despues de añadir el nombre del dispositivo a la lista");
+//                    Log.i(TAG, "Endpoint: " + endpointId + " getId: " + discoveredEndpointInfo.getServiceId());
                     Dispositivo device = new Dispositivo(endpointId, discoveredEndpointInfo);
-                    Log.i(TAG, "Despues de crear el objeto device");
+//                    Log.i(TAG, "Despues de crear el objeto device");
                     deviceInfo.add(device);
 
-                    Log.i(TAG, "Despues de añadir el dispositivo a la lista");
+//                    Log.i(TAG, "Despues de añadir el dispositivo a la lista");
 
 
                     adaptador.notifyDataSetChanged();
 
-                    Log.i(TAG, "Despues de notificar que los datos a mostrar han cambiado");
+//                    Log.i(TAG, "Despues de notificar que los datos a mostrar han cambiado");
 
                 }
                 @Override public void onEndpointLost(String endpointId) {}
@@ -189,7 +189,7 @@ public class PesoNow extends AppCompatActivity {
                 @Override public void onConnectionInitiated(
                         String endpointId, ConnectionInfo connectionInfo) {
                     // Aceptamos la conexión automáticamente en ambos lados.
-                    Log.i(TAG, "Aceptando conexión entrante sin autenticación");
+//                    Log.i(TAG, "Aceptando conexión entrante sin autenticación");
                     Nearby.getConnectionsClient(getApplicationContext())
                             .acceptConnection(endpointId, mPayloadCallback);
                 }
@@ -197,26 +197,26 @@ public class PesoNow extends AppCompatActivity {
                                                          ConnectionResolution result) {
                     switch (result.getStatus().getStatusCode()) {
                         case ConnectionsStatusCodes.STATUS_OK:
-                            Log.i(TAG, "Estamos conectados!");
+//                            Log.i(TAG, "Estamos conectados!");
                             info.setText("Conectado");
                             FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
                             //sendData(endpointId, texto.getText().toString());
                             sendData(endpointId, usuario.getUid());
                             break;
                         case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
-                            Log.i(TAG, "Conexión rechazada por uno o ambos lados");
+//                            Log.i(TAG, "Conexión rechazada por uno o ambos lados");
                             info.setText("Desconectado");
                             break;
                         case ConnectionsStatusCodes.STATUS_ERROR:
-                            Log.i(TAG, "Conexión perdida antes de poder ser " +
-                                    "aceptada");
+//                            Log.i(TAG, "Conexión perdida antes de poder ser " +
+//                                    "aceptada");
                             info.setText("Desconectado");
                             break;
                     }
                 }
                 @Override public void onDisconnected(String endpointId) {
-                    Log.i(TAG, "Desconexión del endpoint, no se pueden " +
-                            "intercambiar más datos.");
+//                    Log.i(TAG, "Desconexión del endpoint, no se pueden " +
+//                            "intercambiar más datos.");
 
                 }
             };
@@ -240,7 +240,7 @@ public class PesoNow extends AppCompatActivity {
         try {
             data = Payload.fromBytes(mensaje.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            Log.e(TAG, "Error en la codificación del mensaje.", e);
+//            Log.e(TAG, "Error en la codificación del mensaje.", e);
         }
         Nearby.getConnectionsClient(this).sendPayload(endpointId, data);
         info.setText("Puedes pesarte");
