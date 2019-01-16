@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.os.SystemClock.sleep;
 import static com.firebase.ui.auth.ui.email.RegisterEmailFragment.TAG;
 
 public class PesoNow extends AppCompatActivity {
@@ -243,6 +244,8 @@ public class PesoNow extends AppCompatActivity {
         }
         Nearby.getConnectionsClient(this).sendPayload(endpointId, data);
         info.setText("Puedes pesarte");
+        sleep(2000);
+        finish();
     }
 
     @Override
