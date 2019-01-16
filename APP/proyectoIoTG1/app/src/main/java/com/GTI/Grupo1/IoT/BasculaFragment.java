@@ -64,6 +64,8 @@ import lecho.lib.hellocharts.view.PieChartView;
 
 public class BasculaFragment extends  Fragment{
 
+    static float ultimoPeso;
+
     private FragmentTabHost tabHost;
     public BasculaFragment() {
         // Required empty public constructor
@@ -86,7 +88,6 @@ public class BasculaFragment extends  Fragment{
         // Set Tabs inside Toolbar
         TabLayout tabs = (TabLayout) view.findViewById(R.id.result_tabs);
         tabs.setupWithViewPager(viewPager);
-
 
         return view;
 

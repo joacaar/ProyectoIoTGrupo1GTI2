@@ -1,8 +1,14 @@
 package com.GTI.Grupo1.IoT;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -19,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +51,16 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import static santi.example.rpi_uart.comun.Mqtt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import static com.GTI.Grupo1.IoT.InicioFragment.peso;
 
 /*
 * TODO: Modificar la foto que se muestra de la cuenta de google en forma redonda
@@ -261,7 +277,28 @@ public class MainActivity extends AppCompatActivity
             lanzarPreferencias(null);
             return true;
 
-        } else if (id == R.id.nav_perfil) {
+        }  else if (id == R.id.nav_compartir) {
+        LinearLayout layoutGrafica = findViewById(R.id.linearChartLayout);
+        if (layoutGrafica != null) {
+
+            Bitmap bitmap = getBitmap(layoutGrafica);
+            saveChart(bitmap, layoutGrafica.getMeasuredHeight(), layoutGrafica.getMeasuredWidth());
+
+        } else {
+            DecimalFormat formato = new DecimalFormat("#.##");
+            String ultimoPeso = formato.format(Float.parseFloat(peso));
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT,
+                    "Mira mi último peso, podría tener mi propia gravedad y todo: " + ultimoPeso);
+            startActivity(intent);
+
+        }
+        return true;
+
+
+        }  else if (id == R.id.nav_perfil) {
 
             fragment = new PerfilFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -328,4 +365,78 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    //metodo para transformar un View en un bitmap
+    @NonNull
+    public Bitmap getBitmap(LinearLayout layout){
+
+        layout.setDrawingCacheEnabled(true);
+        layout.buildDrawingCache();
+        Bitmap bmp = Bitmap.createBitmap(layout.getDrawingCache());
+        layout.setDrawingCacheEnabled(false);
+        return bmp;
+
+    }
+
+    //metodo para guardar el bitmap en una imagen
+    public void saveChart(Bitmap getbitmap, float height, float width){
+        File folder = new File(Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                "files");
+        Toast.makeText(this, "Inicio funcion", Toast.LENGTH_SHORT);
+        boolean success = false;
+        if (!folder.exists())
+        {
+            success = folder.mkdirs();
+        }
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+
+        File file = new File(folder.getPath() + File.separator + "/" + timeStamp + ".png");
+
+        if ( !file.exists() )
+        {
+            try {
+                success = file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        FileOutputStream ostream = null;
+        try
+        {
+            ostream = new FileOutputStream(file);
+            System.out.println(ostream);
+            Bitmap well = getbitmap;
+            Bitmap save = Bitmap.createBitmap((int) width, (int) height, Bitmap.Config.ARGB_8888);
+            Paint paint = new Paint();
+            paint.setColor(Color.WHITE);
+            Canvas now = new Canvas(save);
+            now.drawRect(new Rect(0,0,(int) width, (int) height), paint);
+            now.drawBitmap(well,
+                    new Rect(0,0,well.getWidth(),well.getHeight()),
+                    new Rect(0,0,(int) width, (int) height), null);
+            if(save == null) {
+                System.out.println("NULL bitmap save\n");
+            }
+            save.compress(Bitmap.CompressFormat.PNG, 100, ostream);
+            Toast.makeText(this, "Creado con exito", Toast.LENGTH_SHORT);
+        }catch (NullPointerException e)
+        {
+            e.printStackTrace();
+            Toast.makeText(this, "Null error", Toast.LENGTH_SHORT);
+            //Toast.makeText(getApplicationContext(), "Null error", Toast.LENGTH_SHORT).show();<br />
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+            Toast.makeText(this, "File error", Toast.LENGTH_SHORT);
+            // Toast.makeText(getApplicationContext(), "File error", Toast.LENGTH_SHORT).show();<br />
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            Toast.makeText(this, "IO error", Toast.LENGTH_SHORT);
+            // Toast.makeText(getApplicationContext(), "IO error", Toast.LENGTH_SHORT).show();<br />
+        }
+    }
 }

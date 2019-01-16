@@ -65,7 +65,7 @@ public class Historial extends Fragment {
         return vistaBascula;
     }
     private void consultaDatos () {
-        altura = "Tu altura";
+        altura = "0";
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 //            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
 //                    .setTimestampsInSnapshotsEnabled(true)

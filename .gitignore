@@ -46,3 +46,5 @@ APP/proyectoIoTG1/.gradle/buildOutputCleanup/cache.properties
 APP/proyectoIoTG1/.gradle/buildOutputCleanup/cache.properties
 *.properties
 APP/proyectoIoTG1/app/src/main/AndroidManifest.xml
+APP/proyectoIoTG1/app/src/main/java/com/GTI/Grupo1/IoT/InicioFragment.java
+APP/proyectoIoTG1/app/src/main/java/com/GTI/Grupo1/IoT/MainActivity.java

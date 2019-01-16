@@ -44,7 +44,7 @@ import static santi.example.rpi_uart.comun.Mqtt.topicRoot;
 
 public class InicioFragment extends Fragment {
 
-    private String peso;
+    public static String peso;
     private String altura;
     private boolean puerta;
     public static String estadoPuerta;

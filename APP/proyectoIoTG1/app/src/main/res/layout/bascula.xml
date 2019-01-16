@@ -140,14 +140,15 @@
                         android:text="80kg"
                         android:textColor="@color/browser_actions_text_color"
                         android:textSize="24sp" />
+
                 </LinearLayout>
 
-                <lecho.lib.hellocharts.view.ColumnChartView
-                    android:id="@+id/chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_marginBottom="8dp"
-                    android:paddingTop="16dp"></lecho.lib.hellocharts.view.ColumnChartView>
+                    <lecho.lib.hellocharts.view.ColumnChartView
+                        android:id="@+id/chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_marginBottom="8dp"
+                        android:paddingTop="16dp"></lecho.lib.hellocharts.view.ColumnChartView>
 
             </LinearLayout>
 

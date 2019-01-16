@@ -1,19 +1,29 @@
 package com.GTI.Grupo1.IoT;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,11 +34,16 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import lecho.lib.hellocharts.formatter.SimpleColumnChartValueFormatter;
 import lecho.lib.hellocharts.model.Axis;
@@ -41,6 +56,8 @@ import lecho.lib.hellocharts.model.SubcolumnValue;
 import lecho.lib.hellocharts.view.ColumnChartView;
 import lecho.lib.hellocharts.view.PieChartView;
 
+import static com.squareup.okhttp.internal.http.HttpDate.format;
+
 public class Bascula extends Fragment {
     View vistaGraficas;
     View vistaBascula;
@@ -51,6 +68,10 @@ public class Bascula extends Fragment {
     // float[] valoresPeso1 = new float[10];
     String altura;
     String altura1;
+
+    LinearLayout layoutGrafica;
+    Bitmap bm;
+
 
     List<Date> fechas = new ArrayList<Date>();
     // List<Date> fechas1 = new ArrayList<Date>();
@@ -66,15 +87,21 @@ public class Bascula extends Fragment {
         vistaBascula= inflater.inflate(R.layout.tab1, container, false);
         consultaDatos();
         vistaGraficas=vistaBascula.findViewById(R.id.esteConstraint);
+        layoutGrafica = vistaBascula.findViewById(R.id.linearChartLayout);
 
-
-
+        vistaBascula.findViewById(R.id.botonCompartir).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bm = getBitmap(layoutGrafica);
+                saveChart(bm, 600, 800);
+            }
+        });
 
         return vistaBascula;
     }
 
     private void consultaDatos (){
-        altura="Tu altura";
+        altura="0";
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 //            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
 //                    .setTimestampsInSnapshotsEnabled(true)
@@ -201,6 +228,7 @@ public class Bascula extends Fragment {
 //                        return 0;
 //                    }
 //                }
+
             column.setFormatter(new SimpleColumnChartValueFormatter(2));
             column.setHasLabels(true);// muestra el valor de la columna
             column.setHasLabelsOnlyForSelected(false);//muestra el valor de la columna al pulsar en ella
@@ -301,4 +329,98 @@ public class Bascula extends Fragment {
             return formato;
         }
     }
+
+    public void compartirCosas (LinearLayout layoutGrafica) {
+
+        if (layoutGrafica != null) {
+
+            Bitmap bitmap = getBitmap(layoutGrafica);
+            saveChart(bitmap, layoutGrafica.getMeasuredHeight(), layoutGrafica.getMeasuredWidth());
+
+        } else {
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT,
+                    "Mira mi último peso, podría tener mi propia gravedad y todo: " + ultimoPeso);
+            startActivity(intent);
+
+        }
+    }
+
+    //metodo para transformar un View en un bitmap
+    @NonNull
+    public Bitmap getBitmap(LinearLayout layout){
+
+        layout.setDrawingCacheEnabled(true);
+        layout.buildDrawingCache();
+        Bitmap bmp = Bitmap.createBitmap(layout.getDrawingCache());
+        layout.setDrawingCacheEnabled(false);
+        return bmp;
+
+    }
+
+    //metodo para guardar el bitmap en una imagen
+    public void saveChart(Bitmap getbitmap, float height, float width){
+        File folder = new File(Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                "files");
+        Toast.makeText(getActivity(), "Inicio funcion", Toast.LENGTH_SHORT);
+        boolean success = false;
+        if (!folder.exists())
+        {
+            success = folder.mkdirs();
+        }
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+
+        File file = new File(folder.getPath() + File.separator + "/" + timeStamp + ".png");
+
+        if ( !file.exists() )
+        {
+            try {
+                success = file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        FileOutputStream ostream = null;
+        try
+        {
+            ostream = new FileOutputStream(file);
+            System.out.println(ostream);
+            Bitmap well = getbitmap;
+            Bitmap save = Bitmap.createBitmap((int) width, (int) height, Bitmap.Config.ARGB_8888);
+            Paint paint = new Paint();
+            paint.setColor(Color.WHITE);
+            Canvas now = new Canvas(save);
+            now.drawRect(new Rect(0,0,(int) width, (int) height), paint);
+            now.drawBitmap(well,
+                    new Rect(0,0,well.getWidth(),well.getHeight()),
+                    new Rect(0,0,(int) width, (int) height), null);
+            if(save == null) {
+                System.out.println("NULL bitmap save\n");
+            }
+            save.compress(Bitmap.CompressFormat.PNG, 100, ostream);
+            Toast.makeText(getActivity(), "Creado con exito", Toast.LENGTH_SHORT);
+        }catch (NullPointerException e)
+        {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "Null error", Toast.LENGTH_SHORT);
+            //Toast.makeText(getApplicationContext(), "Null error", Toast.LENGTH_SHORT).show();<br />
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "File error", Toast.LENGTH_SHORT);
+            // Toast.makeText(getApplicationContext(), "File error", Toast.LENGTH_SHORT).show();<br />
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "IO error", Toast.LENGTH_SHORT);
+            // Toast.makeText(getApplicationContext(), "IO error", Toast.LENGTH_SHORT).show();<br />
+        }
+    }
+
 }
