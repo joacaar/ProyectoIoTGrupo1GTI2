@@ -55,10 +55,7 @@ public class PesoNow extends AppCompatActivity {
     private static final String TAG = "Mobile:";
 //    private String nameNearby = "DomoHouse.zx45b";
 
-    private BluetoothAdapter bAdapter;
-
     TextView info;
-    ProgressBar buscando;
 
     private ArrayList<String> dispositivos;
     private ArrayList<Dispositivo> deviceInfo;
@@ -69,8 +66,6 @@ public class PesoNow extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.peso_now);
-
-        //Log.i("Nearby"," Despues mostrar el layout");
 
         // Comprobación de permisos peligrosos
         if (ContextCompat.checkSelfPermission(this,
@@ -88,19 +83,17 @@ public class PesoNow extends AppCompatActivity {
             startDiscovery();
         }
 
-        //Log.i("Nearby"," Despues comprobar permiso");
-
-
+        // Inicialización de los objetos y variables para el listView
         dispositivos =new ArrayList<String>();
         deviceInfo = new ArrayList<Dispositivo>();
         adaptador=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,dispositivos);
         lista = findViewById(R.id.listaDispo);
         lista.setAdapter(adaptador);
 
-        //Log.i("Nearby"," Despues inicializar los componentes de la lista");
-
+        //Inicializacion del texto para mostrar cuando ha terminado el porceso
         info = findViewById(R.id.infoView);
 
+        //Escuchador de evento para conectar por nearby cuando se pulse la opcion del listView
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
@@ -123,11 +116,6 @@ public class PesoNow extends AppCompatActivity {
                         });
             }
         });
-
-        //Log.i("Nearby"," Despues esperar a que la lista escuche un click");
-
-        //startDiscovery();
-        //Log.i("Nearby"," Despues comenzar ");
     }
 
     // Gestión de permisos
@@ -145,7 +133,7 @@ public class PesoNow extends AppCompatActivity {
             }
         }
     }
-
+    //Funcion para empezar a descubrir puntos por nearby
     private void startDiscovery() {
         Nearby.getConnectionsClient(this).startDiscovery(SERVICE_ID,
                 mEndpointDiscoveryCallback, new DiscoveryOptions(Strategy.P2P_STAR))
@@ -160,10 +148,14 @@ public class PesoNow extends AppCompatActivity {
                     }
                 });
     }
+
+    // Fncion para para de descubrir puntos por nearby
     private void stopDiscovery() {
         Nearby.getConnectionsClient(this).stopDiscovery();
         Log.i(TAG, "Se ha detenido el modo descubrimiento.");
     }
+
+    // Funcion callback que se ejecuta al descubrir un endpoint por nearby
     private final EndpointDiscoveryCallback mEndpointDiscoveryCallback =
             new EndpointDiscoveryCallback() {
                 @Override public void onEndpointFound(String endpointId,
@@ -189,6 +181,8 @@ public class PesoNow extends AppCompatActivity {
                 }
                 @Override public void onEndpointLost(String endpointId) {}
             };
+
+    //Funcion callabck que se ejecuta cuando se inicia conexion con un endpoint
     private final ConnectionLifecycleCallback mConnectionLifecycleCallback =
             new ConnectionLifecycleCallback() {
                 @Override public void onConnectionInitiated(
@@ -225,6 +219,8 @@ public class PesoNow extends AppCompatActivity {
 
                 }
             };
+
+    //Funcion callback para procesar el payload recibido y mostrar el porceso de descara del payload( si fuese muy grande)
     private final PayloadCallback mPayloadCallback = new PayloadCallback() {// En este ejemplo, el móvil no recibirá transmisiones de la RP3
         @Override public void onPayloadReceived(String endpointId,
                                                 Payload payload) {
@@ -235,6 +231,8 @@ public class PesoNow extends AppCompatActivity {
             // Actualizaciones sobre el proceso de transferencia
         }
     };
+
+    //Funcion para enviar información
     private void sendData(String endpointId, String mensaje) {
         info.setText("Transfiriendo...");
         Payload data = null;
@@ -244,27 +242,26 @@ public class PesoNow extends AppCompatActivity {
             Log.e(TAG, "Error en la codificación del mensaje.", e);
         }
         Nearby.getConnectionsClient(this).sendPayload(endpointId, data);
-        Log.i(TAG, "Mensaje enviado.");
         info.setText("Puedes pesarte");
     }
 
     @Override
     protected void onPause(){
-        Log.i("Nearby", "Dentro de onPause");
         //stopDiscovery();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        Log.i("Nearby", "Dentro de onDestroy");
         stopDiscovery();
-        //bAdapter.disable(); //Desactivar el bluetooth, esto cierra la app. x
         super.onDestroy();
     }
 
 }
 
+
+// Clase creada para almacenar todas las variables y datos necesarios para la conexion nearby
+// en un solo objeto
 class Dispositivo {
 
     private String endPointId;

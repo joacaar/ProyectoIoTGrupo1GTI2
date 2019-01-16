@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.content.ContentValues.TAG;
+import static android.os.SystemClock.sleep;
 
 public class MainActivity extends Activity {
 
@@ -47,6 +48,8 @@ public class MainActivity extends Activity {
 
         Log.i(TAG, "Lista de UART disponibles: " + ArduinoUart.disponibles());
         uart = new ArduinoUart("MINIUART", 115200);
+
+        sleep(2000);
 
         startAdvertising();
     }
@@ -86,10 +89,10 @@ public class MainActivity extends Activity {
                 case "altura":
                     map.put(entry[0].trim(), Integer.parseInt(entry[1].trim()));
                     break;
-                case "fecha":
-                    map.put(entry[0].trim(), fecha);
-
-                    break;
+//                case "fecha":
+//                    map.put(entry[0].trim(), fecha);
+//
+//                    break;
                 default:
                     Log.d("Prueba Uart", "En el default del switch");
                     break;
@@ -98,7 +101,7 @@ public class MainActivity extends Activity {
             //map.put(entry[0].trim(), Float.parseFloat(entry[1].trim()));          //add them to the hashmap and trim whitespaces
             //Log.d("Prueba Uart 2", map.get(entry[0]).toString());
         }
-
+        map.put("fecha", fecha);
         //Log.d("Prueba Uart 3", map.get("peso").toString());
         sendToFirestore(map);
         Log.d("Test BD", "Despues de la funcion senToFirestore");
@@ -153,16 +156,17 @@ public class MainActivity extends Activity {
     public void sendToFirestore (Map datos){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        if(usuario == null) {
-            db.collection("USUARIOS").document("n5Mt1LUqQNWsRH2Ny21YZbia1Dh2")
-                    .collection("Bascula").document().set(datos);
-        }else{
+        Log.i("Nearby", "Datos del usuario: " + usuario);
+
+        if(usuario != null) {
+//            db.collection("USUARIOS").document("n5Mt1LUqQNWsRH2Ny21YZbia1Dh2")
+//                    .collection("Bascula").document().set(datos);
             db.collection("USUARIOS").document(usuario)
                     .collection("Bascula").document().set(datos);
             usuario = null;
         }
 
-        System.out.println("Datos añadidos a bd");
+        System.out.println("Datos añadidos a bd" + datos);
 
     }
 
@@ -220,7 +224,7 @@ public class MainActivity extends Activity {
                 public void onDisconnected(String endpointId) {
                     Log.i(TAG, "Desconexión del endpoint, no se pueden " +
                             "intercambiar más datos.");
-                    startAdvertising();
+
                 }
             };
 
