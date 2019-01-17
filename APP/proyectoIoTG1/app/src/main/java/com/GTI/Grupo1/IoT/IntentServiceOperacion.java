@@ -50,8 +50,8 @@ import static santi.example.rpi_uart.comun.Mqtt.topicRoot;
 public class IntentServiceOperacion extends IntentService implements MqttCallback, SensorEventListener {
     private NotificationManager notificationManager;
     static final String CANAL_ID = "mi_canal";
-    static final int[] NOTIFICACION_ID = {1,2,3,4,5,6};
-
+    static final int[] NOTIFICACION_ID = {1,2,3,4,5,6, 7, 8, 9, 10, 11};
+    int cont2=6;
     View inicio;
     Context that=this;
     private List<Sensor> listaSensores;
@@ -85,6 +85,14 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
         try {
             Log.i(TAG, "Suscrito a " + topicRoot+"alertas");
             client.subscribe(topicRoot+"alertas/incendio", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot+"timbre");
+            client.subscribe(topicRoot+"timbre", qos);
             client.setCallback(this);
 
         } catch (MqttException e) {
@@ -182,7 +190,7 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
 
     @Override
     protected void onHandleIntent(Intent intent) {
-         inicio = InicioFragment.view;
+        inicio = InicioFragment.view;
         SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
         listaSensores = sm.getSensorList(Sensor.TYPE_LINEAR_ACCELERATION);
 
@@ -229,6 +237,14 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
         try {
             Log.i(TAG, "Suscrito a " + topicRoot+"alertas");
             client.subscribe(topicRoot+"alertas/puerta", qos);
+            client.setCallback(this);
+
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot+"timbre");
+            client.subscribe(topicRoot+"timbre", qos);
             client.setCallback(this);
 
         } catch (MqttException e) {
@@ -507,6 +523,41 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
                     notificacion.setContentIntent(intencionPendiente);
                     notificationManager.notify(NOTIFICACION_ID[4], notificacion.build());
                 }
+                if (Topic.equals(topicRoot + "timbre")) {
+                    notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        NotificationChannel notificationChannel = new NotificationChannel(
+                                CANAL_ID, "Mis Notificaciones",
+                                NotificationManager.IMPORTANCE_HIGH);
+                        notificationChannel.setDescription("Descripcion del canal");
+                        notificationManager.createNotificationChannel(notificationChannel);
+                    }
+                    NotificationCompat.Builder notificacion =
+                            new NotificationCompat.Builder(IntentServiceOperacion.this, CANAL_ID)
+                                    .setSmallIcon(R.mipmap.ic_launcher)
+                                    .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                                            R.drawable.ic_casa))
+                                    .setContentTitle("Alguien ha llamado al timbre")
+                                    .setContentText("Visualiza su foto para ver si le reconoces")
+                                    .setDefaults(Notification.DEFAULT_SOUND)
+                                    .setDefaults(Notification.DEFAULT_VIBRATE)
+                                    .setAutoCancel(true)
+                                    //.setVibrate(new long[]{0, 100, 200, 300})
+                                    .setWhen(System.currentTimeMillis());
+                    Intent aint = new Intent(getApplicationContext(), Foto.class);
+                    aint.putExtra("msg", payload);
+                    if(cont2==10){
+                        cont2=6;
+                    }
+
+                    PendingIntent intencionPendiente = PendingIntent.getActivity(
+                            that, cont2, aint, PendingIntent.FLAG_UPDATE_CURRENT |
+                                    PendingIntent.FLAG_ONE_SHOT);
+
+                    notificacion.setContentIntent(intencionPendiente);
+                    notificationManager.notify(NOTIFICACION_ID[cont2], notificacion.build());
+                    cont++;
+                }
 //--------------------------------------------------
                 if (!payload.isEmpty()) {
                     if (payload.equals("ON") || payload.equals("OFF")) {
@@ -516,23 +567,23 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
                         InicioFragment.medicamentos=payload;
                     }
                     if (Topic.equals(topicRoot+"personas")) {
-                      InicioFragment.personas=payload;
+                        InicioFragment.personas=payload;
                     }
                     if (Topic.equals(topicRoot+"puerta")) {
-                       InicioFragment.estadoPuerta=payload;
+                        InicioFragment.estadoPuerta=payload;
                     }
                     if (Topic.equals(topicRoot+"humedad")) {
-                       InicioFragment.humedad=payload;
+                        InicioFragment.humedad=payload;
                     }
                     if (Topic.equals(topicRoot+"temperatura")){
-                       InicioFragment.temperatura=payload;
+                        InicioFragment.temperatura=payload;
                        /* if(payload == numero){
                              temp.length() = payload.length() - 2;
                         }else{
                         }*/
                     }
 
-InicioFragment.refresh();
+                    InicioFragment.refresh();
                 }
             }
         });

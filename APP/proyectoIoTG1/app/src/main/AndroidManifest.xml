@@ -42,7 +42,9 @@
         <activity
             android:name="com.GTI.Grupo1.IoT.IntroductionActivity"
             />
-
+        <activity
+            android:name="com.GTI.Grupo1.IoT.Foto"
+            />
         <activity
             android:name="com.GTI.Grupo1.IoT.AcercaDeActivity"
             android:label="Acerca de ..."
