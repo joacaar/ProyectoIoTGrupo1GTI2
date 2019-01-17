@@ -26,7 +26,7 @@
             android:entryValues="@array/masaIndice"
             android:defaultValue="0"/>
         <ListPreference
-            android:key="longitud"
+            android:key="altura"
             android:title="@string/titLong"
             android:entries="@array/longitud"
             android:entryValues="@array/longitudIndice"
