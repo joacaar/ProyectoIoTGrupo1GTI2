@@ -57,6 +57,7 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
     private List<Sensor> listaSensores;
     static MqttClient client;
     int cont=0;
+    int cont3=0;
     String temp;
     public IntentServiceOperacion() {
         super("IntentServiceOperacion");
@@ -551,12 +552,12 @@ public class IntentServiceOperacion extends IntentService implements MqttCallbac
                     }
 
                     PendingIntent intencionPendiente = PendingIntent.getActivity(
-                            that, cont2, aint, PendingIntent.FLAG_UPDATE_CURRENT |
+                            that, cont3, aint, PendingIntent.FLAG_UPDATE_CURRENT |
                                     PendingIntent.FLAG_ONE_SHOT);
-
+cont3++;
                     notificacion.setContentIntent(intencionPendiente);
                     notificationManager.notify(NOTIFICACION_ID[cont2], notificacion.build());
-                    cont++;
+                    cont2++;
                 }
 //--------------------------------------------------
                 if (!payload.isEmpty()) {

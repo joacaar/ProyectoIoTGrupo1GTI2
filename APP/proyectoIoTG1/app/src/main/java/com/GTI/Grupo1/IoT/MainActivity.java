@@ -1,6 +1,10 @@
 package com.GTI.Grupo1.IoT;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,8 +15,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -70,6 +76,7 @@ import static com.GTI.Grupo1.IoT.InicioFragment.peso;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int SOLICITUD_PERMISO_WRITE_CALL_LOG = 0;
     public static FirebaseUser user;
 
     public static Usuario usuario;
@@ -96,6 +103,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    SOLICITUD_PERMISO_WRITE_CALL_LOG);
+        }
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -358,80 +373,5 @@ public class MainActivity extends AppCompatActivity
     public void abrirTemperatura (View view) {
         Intent intent = new Intent(this, TemperaturaActivity.class);
         startActivity(intent);
-    }
-
-    //metodo para transformar un View en un bitmap
-    @NonNull
-    public Bitmap getBitmap(LinearLayout layout){
-
-        layout.setDrawingCacheEnabled(true);
-        layout.buildDrawingCache();
-        Bitmap bmp = Bitmap.createBitmap(layout.getDrawingCache());
-        layout.setDrawingCacheEnabled(false);
-        return bmp;
-
-    }
-
-    //metodo para guardar el bitmap en una imagen
-    public void saveChart(Bitmap getbitmap, float height, float width){
-        File folder = new File(Environment
-                .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                "files");
-        Toast.makeText(this, "Inicio funcion", Toast.LENGTH_SHORT);
-        boolean success = false;
-        if (!folder.exists())
-        {
-            success = folder.mkdirs();
-        }
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                Locale.getDefault()).format(new Date());
-
-        File file = new File(folder.getPath() + File.separator + "/" + timeStamp + ".png");
-
-        if ( !file.exists() )
-        {
-            try {
-                success = file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        FileOutputStream ostream = null;
-        try
-        {
-            ostream = new FileOutputStream(file);
-            System.out.println(ostream);
-            Bitmap well = getbitmap;
-            Bitmap save = Bitmap.createBitmap((int) width, (int) height, Bitmap.Config.ARGB_8888);
-            Paint paint = new Paint();
-            paint.setColor(Color.WHITE);
-            Canvas now = new Canvas(save);
-            now.drawRect(new Rect(0,0,(int) width, (int) height), paint);
-            now.drawBitmap(well,
-                    new Rect(0,0,well.getWidth(),well.getHeight()),
-                    new Rect(0,0,(int) width, (int) height), null);
-            if(save == null) {
-                System.out.println("NULL bitmap save\n");
-            }
-            save.compress(Bitmap.CompressFormat.PNG, 100, ostream);
-            Toast.makeText(this, "Creado con exito", Toast.LENGTH_SHORT);
-        }catch (NullPointerException e)
-        {
-            e.printStackTrace();
-            Toast.makeText(this, "Null error", Toast.LENGTH_SHORT);
-            //Toast.makeText(getApplicationContext(), "Null error", Toast.LENGTH_SHORT).show();<br />
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-            Toast.makeText(this, "File error", Toast.LENGTH_SHORT);
-            // Toast.makeText(getApplicationContext(), "File error", Toast.LENGTH_SHORT).show();<br />
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            Toast.makeText(this, "IO error", Toast.LENGTH_SHORT);
-            // Toast.makeText(getApplicationContext(), "IO error", Toast.LENGTH_SHORT).show();<br />
-        }
     }
 }
