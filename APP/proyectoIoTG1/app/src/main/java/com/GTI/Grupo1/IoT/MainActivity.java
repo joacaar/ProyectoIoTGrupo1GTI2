@@ -131,11 +131,13 @@ public class MainActivity extends AppCompatActivity
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
+
+
         storageReference.child("imagenes/" + uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.with(getBaseContext()).load(uri.toString()).
-                        resize(168, 168).centerCrop()
+                Picasso.with(getBaseContext()).load(uri.toString())
+                        .resize(168, 168).centerCrop()
                         .into(foto);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -145,10 +147,10 @@ public class MainActivity extends AppCompatActivity
                     String uri = user.getPhotoUrl().toString();
                     uri = uri.replace("s96-c", "s300-c");
                     Picasso.with(getBaseContext()).load(uri).into(foto);
-                }
+                    }
             }
         });
-        
+
         navigationView.setNavigationItemSelectedListener(this);
 
 //------------------------------------------------------------------------------------------------------------------
@@ -336,10 +338,12 @@ public class MainActivity extends AppCompatActivity
             imageUri = data.getData();
             foto_gallery.setImageURI(imageUri);
 
-            Uri uri = data.getData();
-            StorageReference filePath = mStorageRef.child("fotos").child(uri.getLastPathSegment());
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            filePath.putFile(uri);
+            Uri uri = data.getData();
+            StorageReference dataRef = storageReference.child("imagenes/" + uid);
+            dataRef.putFile(uri);
             Toast.makeText(this, "Foto guardada con éxito", Toast.LENGTH_SHORT).show();
 
         }

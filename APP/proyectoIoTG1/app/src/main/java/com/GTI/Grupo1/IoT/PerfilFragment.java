@@ -112,26 +112,26 @@ public class PerfilFragment extends Fragment {
             Picasso.with(getActivity().getBaseContext()).load(uri).into(foto);
             System.out.println("dentro de getPhoto");
         }else {*/
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
-            storageReference.child("imagenes/" + uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Picasso.with(getActivity().getBaseContext()).load(uri.toString()).
-                            resize(168, 168).centerCrop()
-                            .into(foto);
+        storageReference.child("imagenes/" + uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.with(getActivity().getBaseContext()).load(uri.toString())
+                        .resize(168, 168).centerCrop()
+                        .into(foto);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                if (proveedor.equals("google.com")) {
+                    String uri = user.getPhotoUrl().toString();
+                    uri = uri.replace("s96-c", "s300-c");
+                    Picasso.with(getActivity().getBaseContext()).load(uri).into(foto);
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    if (proveedor.equals("google.com")) {
-                        String uri = user.getPhotoUrl().toString();
-                        uri = uri.replace("s96-c", "s300-c");
-                        Picasso.with(getActivity().getBaseContext()).load(uri).into(foto);
-                    }
-                }
-            });
+            }
+        });
         //}
 
         //Sexo
@@ -238,12 +238,8 @@ public class PerfilFragment extends Fragment {
 //-------------------------------------------------------------------
         //Guardar datos del usuario
        addListenerOnButton(vistaPerfil);
-
-
         return vistaPerfil;
     }//onCreate()
-
-
 
 //-------------------  GUARDAR DATOS DEL USUARIO  -----------------------------------------------------------------------
     public void addListenerOnButton(View view) {
@@ -282,75 +278,6 @@ public class PerfilFragment extends Fragment {
         });
 
     }//Addlistener()
-
-
-    //--------------------------------------------
-/*
-    private void escogerImagen() {
-        final String proveedor = user.getProviders().get(0);
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SOLICITUD_PERMISO_GALERIA);
-    }
-    //recibimos el request del startActivityfor...
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == SOLICITUD_PERMISO_GALERIA && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
-            filePath = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                foto_gallery.setImageBitmap(bitmap);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        guardarImagen();
-    }
-
-    //comprueba si el user tiene imagen en storage, si no la tiene comprueba en google, si no pondra una por defecto
-    private void comprobarImagen(){
-        final FirebaseUser usuario;
-        usuario = FirebaseAuth.getInstance().getCurrentUser();
-        //variables: imagen en Storage, uid del user actual y el proveedor de google
-        final String proveedor = usuario.getProviders().get(0);
-
-        //imagenPerfil = headerLayout.findViewById(R.id.imagenNav);
-        final ImageView imagenPerfil = findViewById(R.id.fotoCrearPerfil);
-
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-
-
-        storageReference.child("imagenesPerfil/" + uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                //POR SI ALGUIEN TIENE ALGUNA DUDA DE CUAL ES LA URL DE DESCARGA ES EL PUTO URI. BUENAS NOCHES.
-                Picasso.with().load(uri.toString()).resize(168, 168).centerCrop()
-                        .transform(new CircleTransform())
-                        .into(imagenPerfil);
-                System.out.println("dentro de getPhoto");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                if (proveedor.equals("google.com")) {
-                    final String uri = usuario.getPhotoUrl().toString();
-                    //carga la foto y usa transform para hacerla circular
-                    Picasso.with(CrearPerfil.this).load(uri).transform(new CircleTransform()).into(imagenPerfil);
-                    System.out.println("dentro de getPhoto");
-                } else {
-                    //   imagenPerfil.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_account_circle_black_55dp, null));
-                    Picasso.with(CrearPerfil.this).load(R.drawable.round_account_circle_black_48dp).transform(new CircleTransform()).into(imagenPerfil);
-                }
-            }
-        });
-    }*/
 
 }//()
 
