@@ -248,7 +248,6 @@
                                 android:layout_margin="10dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/contenedor_rnd"
-                                android:onClick="abrirTemperatura"
                                 android:orientation="horizontal"
                                 android:padding="5dp">
 
@@ -293,12 +292,12 @@
                                         android:id="@+id/textView16"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:paddingStart="10dp"
                                         android:paddingLeft="10dp"
+                                        android:paddingEnd="0dp"
                                         android:paddingRight="0dp"
                                         android:text="@string/temperatura"
-                                        android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                                        android:paddingStart="10dp"
-                                        android:paddingEnd="0dp" />
+                                        android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
                                 </LinearLayout>
 
