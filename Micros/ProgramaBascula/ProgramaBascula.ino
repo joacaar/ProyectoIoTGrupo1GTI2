@@ -34,10 +34,11 @@ void setup(){
 
   display.init();
   display.flipScreenVertically();
-  //display.setColor(WHITE);
+  //display.setColor(0xFFFF);
+  //display.setTextSize(2);
   display.setTextAlignment(TEXT_ALIGN_CENTER);
   //display.setFont(ArialMT_Plain_24);
-  
+
   configuracionAltura();
   configuracionPeso();
   
@@ -53,35 +54,43 @@ void setup(){
 bool aux = false;
 double listaDePesos[30];
 int cuantos = 0;
+
+  int dis;
+  float pes;
+
 void loop()
 {
-  /*if (digitalRead(4) == LOW) {
-    while (digitalRead(4) == LOW) {
-    }*/
-
-  // delay(500);
-  int dis = distancia();
-  double pes = peso();
-  //if (pes >= 1 && aux == false) {
+  
+  dis = distancia();
+  pes = peso();
+  
+  if (pes >= 1 && aux == false) {
+    
     delay(2000);
     char texto[200];
 
+    dis = distancia();
+    pes = peso();
+
     envio["altura"] = dis;
-    envio["peso"] = peso();
+    envio["peso"] = pes;
 
     envio.printTo(texto);         //paso del objeto "envio" a texto para transmitirlo
 
     udp.broadcastTo(texto, 1234); //se envía por el puerto 1234 el JSON como texto
 
-    Serial.println(texto);
-    display.clear();
-    display.drawString(30, 20, String(50));
-    display.drawString(60, 20, String(20));
-    //listaDePesos[cuantos]=pes;//rellenamos el array con medidas de peso significativas mientras este vaya variando con cada llamada a la funcion peso();
-    //cuantos++;
+    Serial.write(texto);
+    
+    display.clear(); 
+    
+    display.drawString(30, 20, String(dis) + " cm");
+    display.drawString(30, 40, String(pes) + " Kg");
+    display.display();
+
     aux = true;
-  //}
-  //if (pes < 1) {
+    
+  }else {
     aux = false;
-  //}
+    display.clear();
+  }
 }

@@ -2,7 +2,8 @@
 #include "HX711.h"
 #include <M5Stack.h>
 
-#define DOUT  6
+//#define DOUT 5
+#define DOUT  16
 #define CLK  2
 
 HX711 balanza(DOUT, CLK);
@@ -22,10 +23,10 @@ void configuracionPeso() {
 }
 
 
-double peso() {
+float peso() {
   
   //Serial.print("Valor de lectura:  ");
-  double medida = balanza.get_units(20);
+  float medida = balanza.get_units(20);
   //Serial.print(medida);
   if(medida <= 0 && medida<=0.6){
     medida=0;
